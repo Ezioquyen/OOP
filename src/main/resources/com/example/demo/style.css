@@ -1,0 +1,53 @@
+.menu-button {
+    -fx-background-color: transparent;
+}
+
+.menu-button .arrow {
+    -fx-background-color: red;
+}
+
+.button-menu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #00ACEA;
+}
+
+.button-menu:hover {
+    -fx-underline: true;
+    -fx-background-color: transparent;
+}
+
+bread-crumb-bar {
+    -fx-background-color: transparent;
+}
+
+.bread-crumb-bar .button {
+    -fx-padding: 8 12 8 20;
+    -fx-border-insets: 0;
+    -fx-content-display: left;
+    -fx-background-position: left center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url("/Image/slash.jpg");
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-shape: null;
+}
+
+.bread-crumb-bar .first {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 1.11em;
+    -fx-text-fill: #000;
+    -fx-background-image: null;
+    -fx-shape: null;
+    -fx-padding: 8 12 8 0;
+}
+
+.crumb {
+    -fx-text-fill: #000;
+}
+
+.crumb:hover,
+.crumb:selected,
+.crumb:focused {
+    -fx-border-color: null;
+}
