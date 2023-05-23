@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="336.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+
+    <VBox prefHeight="306.0" prefWidth="88.0" spacing="20.0" style="-fx-border-color: #C8CCE8;" VBox.vgrow="ALWAYS">
+
+        <CheckBox alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="53.0" prefWidth="190.0"
+                  text="Kiểm tra cuối kỳ môn IT4895Q">
+            <VBox.margin>
+                <Insets top="20.0"/>
+            </VBox.margin>
+        </CheckBox>
+        <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="204.0" text="Thi thử KTLT"/>
+        <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="176.0" text="Thi GK2 Tin học 7"/>
+        <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="171.0" text="Thi GK2 Sử Địa 7"/>
+        <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="194.0" text="Thi giữa kỳ 2 môn Công Nghệ"/>
+        <VBox.margin>
+            <Insets/>
+        </VBox.margin>
+        <padding>
+            <Insets left="30.0" top="10.0"/>
+        </padding>
+    </VBox>
+    <padding>
+        <Insets left="20.0" right="20.0" top="20.0"/>
+    </padding>
+</VBox>

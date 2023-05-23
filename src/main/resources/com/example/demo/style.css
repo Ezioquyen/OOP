@@ -18,6 +18,7 @@
 
 .editionbutton {
     -fx-background-color: #00ACEA;
+    -fx-text-fill: white;
 }
 
 bread-crumb-bar {
@@ -25,7 +26,8 @@ bread-crumb-bar {
 }
 
 .bread-crumb-bar .button {
-    -fx-padding: 8 12 8 20;
+    -fx-text-fill: red;
+    -fx-padding: 8 12 8 40;
     -fx-border-insets: 0;
     -fx-content-display: left;
     -fx-background-position: left center;
@@ -40,7 +42,6 @@ bread-crumb-bar {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-font-size: 1.11em;
-    -fx-text-fill: #000;
     -fx-background-image: null;
     -fx-shape: null;
     -fx-padding: 8 12 8 0;
@@ -56,23 +57,71 @@ bread-crumb-bar {
     -fx-border-color: null;
 }
 
-.tab-pane *.tab-header-background {
+.tabtab *.tab-header-background {
+
+    -fx-padding: 20 20 20 20;
     -fx-background-color: transparent;
 }
 
+.tabtab *.tab-content-area {
+    -fx-border-color: #C8CCE8 transparent transparent transparent;
+}
+
+.tabtab > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-insets: 0 1 0 0, 1 2 1 1, 2 3 1 2;
+}
+
+
 .tab {
+    -fx-start-margin: 10px;
+    -fx-pref-height: 50px;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
-.tab-label {
+.tab .tab-label {
+    -fx-font-size: 15px;
+    -fx-alignment: center;
     -fx-text-fill: #00ACEA;
 }
 
 .tab:selected {
-    -fx-border-color: #C8CCE8 #C8CCE8 white #C8CCE8;
+    -fx-border-color: #C8CCE8 #C8CCE8 transparent #C8CCE8;
+}
+
+.tab:selected .tab-label {
+    -fx-alignment: center;
+    -fx-text-fill: black;
 }
 
 .tab:selected .focus-indicator {
     -fx-focus-color: transparent;
+}
+
+.tabtab .tab:focused {
+    -fx-focus-color: transparent;
+}
+
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+}
+
+.check-box .box {
+
+    -fx-background-color: white;
+    -fx-border-color: grey;
+    -fx-border-radius: 3px;
+
+}
+
+.check-box:selected .mark {
+
+    -fx-background-color: white;
+
+}
+
+.check-box:selected .box {
+
+    -fx-background-color: #28a3f4;
 }

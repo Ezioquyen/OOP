@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -34,11 +36,19 @@
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
-                <Region prefHeight="83.0" prefWidth="914.0" HBox.hgrow="ALWAYS"/>
-                <Button mnemonicParsing="false">
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                <Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0"
+                        style="-fx-background-color: transparent;" text="Đăng nhập" textFill="WHITE">
                     <HBox.margin>
-                        <Insets right="10.0"/>
+                        <Insets right="15.0"/>
                     </HBox.margin>
+                    <graphic>
+                        <ImageView fitHeight="47.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../Image/avatar.jpg"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
                 </Button>
             </HBox>
 
@@ -51,7 +61,8 @@
                             <Font name="Times New Roman" size="27.0"/>
                         </font>
                     </Label>
-                    <Region layoutX="106.0" layoutY="10.0" prefHeight="73.0" prefWidth="690.0" HBox.hgrow="ALWAYS"/>
+                    <Region layoutX="106.0" layoutY="10.0" prefHeight="73.0" prefWidth="690.0" styleClass="avatar"
+                            HBox.hgrow="ALWAYS"/>
                     <MenuButton mnemonicParsing="false" prefHeight="34.0" prefWidth="46.0">
                         <graphic>
                             <FontIcon iconColor="#009fe5" iconLiteral="fas-cog" iconSize="27" selectionFill="#009fe5"
@@ -92,12 +103,17 @@
                         <Insets/>
                     </VBox.margin>
                 </HBox>
-                <BreadCrumbBar fx:id="bread" prefHeight="35.0" prefWidth="1238.0" styleClass="bread-crumb-bar"/>
+                <BreadCrumbBar fx:id="bread" onCrumbAction="#btnThiCuoiKy" prefHeight="70.0" prefWidth="906.0"
+                               styleClass="bread-crumb-bar"/>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
 
                     <Region prefHeight="73.0" prefWidth="749.0" HBox.hgrow="ALWAYS"/>
                     <Button alignment="CENTER" mnemonicParsing="false" prefHeight="47.0" prefWidth="175.0"
-                            styleClass="editonbutton" text="TURN EDITING ON"/>
+                            styleClass="editionbutton" text="TURN EDITING ON">
+                        <font>
+                            <Font name="Arial Bold" size="12.0"/>
+                        </font>
+                    </Button>
 
                     <VBox.margin>
                         <Insets right="10.0"/>
