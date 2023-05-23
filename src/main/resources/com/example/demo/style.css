@@ -16,6 +16,10 @@
     -fx-background-color: transparent;
 }
 
+.editionbutton {
+    -fx-background-color: #00ACEA;
+}
+
 bread-crumb-bar {
     -fx-background-color: transparent;
 }
@@ -50,4 +54,25 @@ bread-crumb-bar {
 .crumb:selected,
 .crumb:focused {
     -fx-border-color: null;
+}
+
+.tab-pane *.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.tab-label {
+    -fx-text-fill: #00ACEA;
+}
+
+.tab:selected {
+    -fx-border-color: #C8CCE8 #C8CCE8 white #C8CCE8;
+}
+
+.tab:selected .focus-indicator {
+    -fx-focus-color: transparent;
 }

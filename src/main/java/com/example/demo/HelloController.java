@@ -34,6 +34,7 @@ public class HelloController {
     @FXML
     private void btnQuestions(ActionEvent event) throws IOException {
         Pane view = FXMLLoader.load(getClass().getResource("questionbank.fxml"));
+        view.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         pane.setCenter(view);
     }
 }
