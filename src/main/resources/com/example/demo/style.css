@@ -82,6 +82,7 @@ bread-crumb-bar {
 }
 
 .tab:selected {
+
     -fx-background-color: white;
     -fx-border-color: #C8CCE8 #C8CCE8 transparent #C8CCE8;
 }
