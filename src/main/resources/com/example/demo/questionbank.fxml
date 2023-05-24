@@ -7,9 +7,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -20,7 +24,7 @@
                         <Tab text="Questions">
                             <content>
 
-                                <VBox prefHeight="434.0" prefWidth="786.0" spacing="10.0" styleClass="tab-pane">
+                                <VBox prefHeight="434.0" prefWidth="786.0" spacing="10.0" styleClass="tab-content-area">
 
                                     <Label prefHeight="46.0" prefWidth="238.0" text="Question Bank" textFill="#c02424">
                                         <font>
@@ -53,13 +57,87 @@
                                         </font>
                                     </Button>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" top="10.0"/>
                                     </padding>
 
                                 </VBox>
                             </content>
                         </Tab>
-                        <Tab text="Categories"/>
+                        <Tab text="Categories">
+                            <content>
+                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                                    <children>
+                                        <Label text="Add category" textFill="#be151d">
+                                            <graphic>
+                                                <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down"
+                                                          wrappingWidth="8.800018310546875"/>
+                                            </graphic>
+                                            <font>
+                                                <Font size="16.0"/>
+                                            </font>
+                                        </Label>
+                                        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                            <children>
+                                                <VBox prefHeight="416.0" prefWidth="210.0" spacing="20.0">
+                                                    <children>
+                                                        <Label text="Parent category"/>
+                                                        <Label text="Name"/>
+                                                        <Label text="Category info"/>
+                                                        <Region prefHeight="183.0" prefWidth="210.0"/>
+                                                        <Label text="ID Number"/>
+                                                    </children>
+                                                </VBox>
+                                                <Region prefHeight="256.0" prefWidth="225.0"/>
+                                                <VBox prefHeight="416.0" prefWidth="258.0" spacing="20.0"
+                                                      HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <ComboBox prefWidth="150.0"/>
+                                                        <VBox>
+                                                            <children>
+                                                                <HBox>
+                                                                    <children>
+                                                                        <TextField prefHeight="26.0" prefWidth="272.0"
+                                                                                   HBox.hgrow="ALWAYS"/>
+                                                                        <Region prefHeight="13.0" prefWidth="121.0"
+                                                                                HBox.hgrow="ALWAYS"/>
+                                                                    </children>
+                                                                </HBox>
+                                                            </children>
+                                                        </VBox>
+                                                        <TextArea prefHeight="200.0" prefWidth="200.0"
+                                                                  VBox.vgrow="ALWAYS"/>
+                                                        <HBox>
+                                                            <children>
+                                                                <TextField prefHeight="26.0" prefWidth="158.0"
+                                                                           HBox.hgrow="ALWAYS"/>
+                                                                <Region prefHeight="31.0" prefWidth="98.0"
+                                                                        HBox.hgrow="ALWAYS"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                        <VBox alignment="TOP_CENTER" prefHeight="102.0" prefWidth="740.0"
+                                              style="-fx-border-color: #C8CCE8 transparent transparent transparent;">
+                                            <children>
+                                                <Button mnemonicParsing="false" style="-fx-background-color: #C02424;"
+                                                        text="ADD CATEGORY" textFill="WHITE"/>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets/>
+                                            </VBox.margin>
+                                            <padding>
+                                                <Insets top="20.0"/>
+                                            </padding>
+                                        </VBox>
+                                    </children>
+                                    <padding>
+                                        <Insets left="10.0" right="10.0" top="10.0"/>
+                                    </padding>
+                                </VBox>
+                            </content>
+                        </Tab>
                         <Tab text="Import"/>
                         <Tab text="Export"/>
                     </tabs>

@@ -28,13 +28,14 @@ bread-crumb-bar {
 .bread-crumb-bar .button {
     -fx-text-fill: red;
     -fx-padding: 8 12 8 40;
+    -fx-border-color: null;
     -fx-border-insets: 0;
     -fx-content-display: left;
     -fx-background-position: left center;
     -fx-background-repeat: no-repeat;
     -fx-background-image: url("/Image/slash.jpg");
     -fx-background-color: transparent;
-    -fx-border-color: transparent;
+    /*-fx-border-color: transparent;*/
     -fx-shape: null;
 }
 
@@ -63,17 +64,12 @@ bread-crumb-bar {
     -fx-background-color: transparent;
 }
 
-.tabtab *.tab-content-area {
-    -fx-border-color: #C8CCE8 transparent transparent transparent;
+.tabtab .tab.tab-content-area {
+    -fx-background-color: inherit;
+    -fx-border-color: inherit;
 }
-
-.tabtab > .tab-header-area > .headers-region > .tab:selected {
-    -fx-background-insets: 0 1 0 0, 1 2 1 1, 2 3 1 2;
-}
-
 
 .tab {
-    -fx-start-margin: 10px;
     -fx-pref-height: 50px;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -86,6 +82,7 @@ bread-crumb-bar {
 }
 
 .tab:selected {
+    -fx-background-color: white;
     -fx-border-color: #C8CCE8 #C8CCE8 transparent #C8CCE8;
 }
 
