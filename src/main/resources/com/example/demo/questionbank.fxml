@@ -5,17 +5,22 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="672.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="723.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox prefHeight="625.0" prefWidth="762.0" style="-fx-border-color: #C8CCE8;" VBox.vgrow="ALWAYS">
             <children>
@@ -34,14 +39,16 @@
                                     <HBox prefHeight="31.0" prefWidth="600.0">
 
                                         <Label prefHeight="18.0" prefWidth="115.0" text="Select a category:"/>
-                                        <ComboBox prefWidth="150.0" promptText="Default" styleClass="combo-box">
-                                            <HBox.margin>
-                                                <Insets/>
-                                            </HBox.margin>
-                                            <padding>
-                                                <Insets left="10.0"/>
-                                            </padding>
-                                        </ComboBox>
+                                        <MenuButton mnemonicParsing="false" prefHeight="31.0" prefWidth="170.0"
+                                                    style="-fx-border-color: black;" text="Default">
+                                            <items>
+                                                <SeparatorMenuItem mnemonicParsing="false">
+                                                    <content>
+                                                        <TreeView prefHeight="200.0" prefWidth="200.0"/>
+                                                    </content>
+                                                </SeparatorMenuItem>
+                                            </items>
+                                        </MenuButton>
 
                                     </HBox>
                                     <Label prefHeight="18.0" prefWidth="282.0"
@@ -230,17 +237,21 @@
                                                                       style="-fx-border-style: dashed; -fx-border-color: grey;"
                                                                       VBox.vgrow="ALWAYS">
                                                                     <children>
-                                                                        <VBox alignment="CENTER" prefHeight="131.0"
-                                                                              prefWidth="142.0">
+                                                                        <VBox alignment="CENTER" prefHeight="95.0"
+                                                                              prefWidth="257.0">
                                                                             <VBox.margin>
                                                                                 <Insets bottom="20.0" left="60.0"
                                                                                         right="60.0" top="20.0"/>
                                                                             </VBox.margin>
                                                                             <children>
-                                                                                <FontIcon iconColor="#3679c1"
-                                                                                          iconLiteral="fas-download"
-                                                                                          iconSize="24"
-                                                                                          wrappingWidth="21.599913120269775"/>
+                                                                                <ImageView fitHeight="38.0"
+                                                                                           fitWidth="37.0"
+                                                                                           pickOnBounds="true"
+                                                                                           preserveRatio="true">
+                                                                                    <image>
+                                                                                        <Image url="@../../../Image/arrow-icon-blue-12.jpg"/>
+                                                                                    </image>
+                                                                                </ImageView>
                                                                                 <Label text="You can drag and drop files here to add them"/>
                                                                             </children>
                                                                         </VBox>

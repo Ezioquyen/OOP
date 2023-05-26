@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0"
+      prefWidth="974.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="508.0" prefWidth="686.0" spacing="10.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label text="Adding a new Quiz" textFill="#be151d">
+                     <font>
+                        <Font size="25.0"/>
+                     </font>
+                  </Label>
+                  <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" wrappingWidth="18.399962902069092">
+                     <HBox.margin>
+                        <Insets left="5.0" top="5.0"/>
+                     </HBox.margin>
+                  </FontIcon>
+               </children>
+            </HBox>
+            <Label prefHeight="30.0" prefWidth="77.0" text="General" textFill="#be151d">
+               <graphic>
+                  <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" iconSize="12" text=""
+                            wrappingWidth="13.600006103515625"/>
+               </graphic>
+               <font>
+                  <Font size="15.0"/>
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0"/>
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="211.0" prefWidth="714.0">
+               <children>
+                  <VBox prefHeight="211.0" prefWidth="242.0" spacing="20.0">
+                     <children>
+                        <Label text="Name"/>
+                        <Label text="Description"/>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0"/>
+                     </HBox.margin>
+                  </VBox>
+                  <Region prefHeight="211.0" prefWidth="124.0" HBox.hgrow="ALWAYS"/>
+                  <VBox prefHeight="211.0" prefWidth="33.0">
+                     <children>
+                        <FontIcon iconColor="#be151d" iconLiteral="fas-exclamation-circle"
+                                  wrappingWidth="13.5999755859375">
+                           <VBox.margin>
+                              <Insets left="7.0" top="7.0"/>
+                           </VBox.margin>
+                        </FontIcon>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="211.0" prefWidth="557.0" spacing="20.0">
+                     <children>
+                        <HBox>
+                           <children>
+                              <TextField prefHeight="26.0" prefWidth="230.0"/>
+                              <Region prefHeight="0.0" prefWidth="104.0" HBox.hgrow="ALWAYS"/>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <TextArea prefHeight="128.0" prefWidth="400.0"/>
+                              <Region prefHeight="200.0" prefWidth="200.0"/>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                              <CheckBox mnemonicParsing="false" text="Display description on course page"/>
+                              <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" text=""
+                                        wrappingWidth="18.399962902069092"/>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Label prefHeight="30.0" prefWidth="77.0" text="Timing" textFill="#be151d">
+               <graphic>
+                  <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" iconSize="12" text=""
+                            wrappingWidth="13.600006103515625"/>
+               </graphic>
+               <font>
+                  <Font size="15.0"/>
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0"/>
+               </VBox.margin>
+            </Label>
+            <HBox layoutX="10.0" layoutY="45.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="102.0" prefWidth="121.0" spacing="27.0">
+                     <children>
+                        <Label text="Open the quiz"/>
+                        <Label text="Close the quiz"/>
+                        <Label text="Time limit"/>
+                        <Label text="When the time expires"/>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" top="8.0"/>
+                     </HBox.margin>
+                  </VBox>
+                  <Region prefHeight="162.0" prefWidth="216.0" HBox.hgrow="ALWAYS"/>
+                  <VBox alignment="CENTER_RIGHT" prefHeight="162.0" prefWidth="36.0" spacing="25.0">
+                     <children>
+                        <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" text=""
+                                  wrappingWidth="18.399962902069092">
+                           <VBox.margin>
+                              <Insets bottom="10.0"/>
+                           </VBox.margin>
+                        </FontIcon>
+                        <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" layoutX="10.0" layoutY="21.0"
+                                  text="" wrappingWidth="18.399962902069092"/>
+                        <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" layoutX="10.0" layoutY="85.0"
+                                  text="" wrappingWidth="18.399962902069092">
+                           <VBox.margin>
+                              <Insets top="55.0"/>
+                           </VBox.margin>
+                        </FontIcon>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" top="5.0"/>
+                     </padding>
+                  </VBox>
+                  <VBox layoutX="376.0" layoutY="10.0" prefHeight="162.0" prefWidth="540.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                              <Spinner editable="true" prefHeight="26.0" prefWidth="52.0"/>
+                              <Spinner editable="true" layoutX="10.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="103.0"/>
+                              <Spinner editable="true" layoutX="160.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="73.0"/>
+                              <Spinner editable="true" layoutX="241.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="55.0"/>
+                              <Spinner editable="true" layoutX="253.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="55.0"/>
+                              <FontIcon iconColor="#009ee5" iconLiteral="fas-calendar-alt"
+                                        wrappingWidth="19.199950456619263"/>
+                              <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="61.0" text="Enable"/>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="5.0">
+                           <children>
+                              <Spinner editable="true" prefHeight="26.0" prefWidth="52.0"/>
+                              <Spinner editable="true" layoutX="10.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="103.0"/>
+                              <Spinner editable="true" layoutX="160.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="73.0"/>
+                              <Spinner editable="true" layoutX="241.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="55.0"/>
+                              <Spinner editable="true" layoutX="253.0" layoutY="10.0" prefHeight="26.0"
+                                       prefWidth="55.0"/>
+                              <FontIcon iconColor="#009ee5" iconLiteral="fas-calendar-alt"
+                                        wrappingWidth="19.199950456619263"/>
+                              <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="61.0" text="Enable"/>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                              <TextField prefHeight="26.0" prefWidth="49.0"/>
+                              <Spinner editable="true" prefHeight="26.0" prefWidth="103.0"/>
+                              <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="61.0" text="Enable"/>
+                           </children>
+                        </HBox>
+                        <ComboBox prefWidth="150.0"/>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0"/>
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets left="20.0" right="20.0" top="20.0"/>
+   </padding>
+</VBox>
