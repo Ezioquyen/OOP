@@ -13,79 +13,77 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="681.0"
-      prefWidth="775.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox prefHeight="686.0" prefWidth="600.0" spacing="20.0" style="-fx-border-color: #C8CCE8;" VBox.vgrow="ALWAYS">
-         <children>
-            <Label text="Adding a Multiple choice question" textFill="#be151d">
-               <font>
-                  <Font size="20.0"/>
-               </font>
-            </Label>
-            <Label layoutX="10.0" layoutY="10.0" text="General" textFill="#be151d">
-               <graphic>
-                  <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" wrappingWidth="7.999938011169434"/>
+<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox prefHeight="686.0" prefWidth="600.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
+              VBox.vgrow="ALWAYS">
+            <children>
+                <Label text="Adding a Multiple choice question" textFill="#be151d">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="10.0" layoutY="10.0" text="General" textFill="#be151d">
+                    <graphic>
+                        <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" wrappingWidth="7.999938011169434"/>
                </graphic>
             </Label>
             <HBox prefHeight="58.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox prefHeight="332.0" prefWidth="201.0" spacing="20.0">
-                     <children>
-                        <Label text="Category"/>
-                        <Label text="Question name"/>
-                        <Label layoutX="10.0" layoutY="52.0" text="Question text"/>
-                        <Region prefHeight="170.0" prefWidth="200.0"/>
-                        <Label text="Default mark"/>
-                     </children>
+                      <children>
+                          <Label text="Category"/>
+                          <Label text="Question name"/>
+                          <Label layoutX="10.0" layoutY="52.0" text="Question text"/>
+                          <Region prefHeight="170.0" prefWidth="200.0"/>
+                          <Label text="Default mark"/>
+                      </children>
                      <padding>
-                        <Insets top="5.0"/>
+                         <Insets top="5.0"/>
                      </padding>
                   </VBox>
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
                   <VBox prefHeight="332.0" prefWidth="237.0" spacing="20.0">
-                     <children>
-                        <ComboBox prefHeight="26.0" prefWidth="205.0"/>
-                        <TextField layoutX="10.0" layoutY="10.0"/>
-                        <TextArea prefHeight="200.0" prefWidth="200.0"/>
-                        <HBox>
-                           <children>
-                              <TextField prefHeight="26.0" prefWidth="88.0"/>
-                           </children>
-                        </HBox>
-                     </children>
+                      <children>
+                          <ComboBox prefHeight="26.0" prefWidth="205.0"/>
+                          <TextField layoutX="10.0" layoutY="10.0"/>
+                          <TextArea prefHeight="200.0" prefWidth="200.0"/>
+                          <HBox>
+                              <children>
+                                  <TextField prefHeight="26.0" prefWidth="88.0"/>
+                              </children>
+                          </HBox>
+                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox>
                <children>
-                  <Region prefHeight="200.0" prefWidth="346.0" HBox.hgrow="ALWAYS"/>
+                   <Region prefHeight="200.0" prefWidth="346.0" HBox.hgrow="ALWAYS"/>
                   <VBox prefHeight="200.0" prefWidth="259.0" spacing="10.0">
-                     <children>
-                        <Button mnemonicParsing="false" styleClass="editionbutton" text="BLANKS FOR 3 MORE CHOICES"/>
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
-                                prefWidth="252.0" styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITTING">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" top="10.0"/>
-                           </VBox.margin>
-                        </Button>
-                        <HBox spacing="5.0">
-                           <children>
-                              <Button mnemonicParsing="false" style="-fx-background-color: #C02424;" text="SAVE CHANGES"
-                                      textFill="WHITE"/>
-                              <Button mnemonicParsing="false" styleClass="editionbutton" text="CANCEL"/>
-                           </children>
-                        </HBox>
+                      <children>
+                          <Button mnemonicParsing="false" styleClass="editionbutton" text="BLANKS FOR 3 MORE CHOICES"/>
+                          <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
+                                  prefWidth="252.0" styleClass="editionbutton"
+                                  text="SAVE CHANGES AND CONTINUE EDITTING">
+                              <VBox.margin>
+                                  <Insets bottom="5.0" left="5.0" top="10.0"/>
+                              </VBox.margin>
+                          </Button>
+                          <HBox spacing="5.0">
+                              <children>
+                                  <Button mnemonicParsing="false" style="-fx-background-color: #C02424;"
+                                          text="SAVE CHANGES" textFill="WHITE"/>
+                                  <Button mnemonicParsing="false" styleClass="editionbutton" text="CANCEL"/>
+                              </children>
+                          </HBox>
                      </children>
                   </VBox>
                </children>
             </HBox>
          </children>
-         <VBox.margin>
-            <Insets left="20.0" right="20.0" top="20.0"/>
-         </VBox.margin>
          <padding>
-            <Insets left="20.0" right="20.0" top="20.0"/>
+             <Insets left="20.0" right="20.0" top="20.0"/>
          </padding>
       </VBox>
    </children>

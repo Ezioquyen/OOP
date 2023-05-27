@@ -1,6 +1,9 @@
 module com.example.demo {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
+    requires mysql.connector.j;
+    requires ojdbc10;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

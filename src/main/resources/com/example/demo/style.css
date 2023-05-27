@@ -82,7 +82,6 @@ bread-crumb-bar {
 }
 
 .tab:selected {
-
     -fx-background-color: white;
     -fx-border-color: #C8CCE8 #C8CCE8 transparent #C8CCE8;
 }
@@ -120,6 +119,5 @@ bread-crumb-bar {
 }
 
 .check-box:selected .box {
-
     -fx-background-color: #28a3f4;
 }

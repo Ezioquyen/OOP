@@ -5,13 +5,10 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -20,7 +17,8 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="723.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.QuestionBankController">
     <children>
         <VBox prefHeight="625.0" prefWidth="762.0" style="-fx-border-color: #C8CCE8;" VBox.vgrow="ALWAYS">
             <children>
@@ -29,7 +27,7 @@
                         <Tab text="Questions">
                             <content>
 
-                                <VBox prefHeight="445.0" prefWidth="762.0" spacing="10.0" styleClass="tab-content-area">
+                                <VBox prefHeight="445.0" prefWidth="762.0" spacing="10.0">
 
                                     <Label prefHeight="46.0" prefWidth="238.0" text="Question Bank" textFill="#c02424">
                                         <font>
@@ -39,16 +37,7 @@
                                     <HBox prefHeight="31.0" prefWidth="600.0">
 
                                         <Label prefHeight="18.0" prefWidth="115.0" text="Select a category:"/>
-                                        <MenuButton mnemonicParsing="false" prefHeight="31.0" prefWidth="170.0"
-                                                    style="-fx-border-color: black;" text="Default">
-                                            <items>
-                                                <SeparatorMenuItem mnemonicParsing="false">
-                                                    <content>
-                                                        <TreeView prefHeight="200.0" prefWidth="200.0"/>
-                                                    </content>
-                                                </SeparatorMenuItem>
-                                            </items>
-                                        </MenuButton>
+                                        <ComboBox prefHeight="38.0" prefWidth="150.0"/>
 
                                     </HBox>
                                     <Label prefHeight="18.0" prefWidth="282.0"
@@ -57,8 +46,9 @@
                                               text="Also show questions from subcategories"/>
                                     <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="155.0"
                                               text="Also show old questions"/>
-                                    <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="178.0"
-                                            styleClass="editionbutton" text="CREATE A NEW QUESTION ...">
+                                    <Button mnemonicParsing="false" onAction="#btnAddQuestion" prefHeight="39.0"
+                                            prefWidth="178.0" styleClass="editionbutton"
+                                            text="CREATE A NEW QUESTION ...">
                                         <font>
                                             <Font name="System Bold" size="12.0"/>
                                         </font>
@@ -291,9 +281,6 @@
                     </VBox.margin>
                 </TabPane>
             </children>
-            <VBox.margin>
-                <Insets left="20.0" right="20.0" top="20.0"/>
-            </VBox.margin>
             <padding>
                 <Insets top="20.0"/>
             </padding>
