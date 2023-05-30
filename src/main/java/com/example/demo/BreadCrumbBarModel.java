@@ -1,12 +1,11 @@
 package com.example.demo;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -25,12 +24,10 @@ public class BreadCrumbBarModel {
         return instance;
     }
 
-    private final ObservableList<String> viewList = FXCollections.observableArrayList();
     private final ObjectProperty<String> currentView = new SimpleObjectProperty<>();
-    private final ObservableList<TreeItem<String>> treeList = FXCollections.observableArrayList();
     private final ObjectProperty<TreeItem<String>> currentTree = new SimpleObjectProperty<>();
-
-    private Map<String, TreeItem<String>> breadConnection = new HashMap<>();
+    private boolean tabcheck = false;
+    private BiMap<String, TreeItem<String>> breadConnection = HashBiMap.create();
 
     public TreeItem<String> getCurrentTree() {
         return currentTree.get();
@@ -56,20 +53,21 @@ public class BreadCrumbBarModel {
         this.currentView.set(view);
     }
 
-    public void setViewList(ObservableList<String> viewList) {
-        this.viewList.addAll(viewList);
-    }
 
-    public void setTreeList(ObservableList<TreeItem<String>> treeList) {
-        this.treeList.addAll(treeList);
-    }
-
-    public void setBreadConnection(Map<String, TreeItem<String>> breadConnection) {
+    public void setBreadConnection(BiMap<String, TreeItem<String>> breadConnection) {
         this.breadConnection = breadConnection;
     }
 
-    public Map<String, TreeItem<String>> getBreadConnection() {
+    public BiMap<String, TreeItem<String>> getBreadConnection() {
         return this.breadConnection;
+    }
+
+    public void setTabcheck(boolean tabcheck) {
+        this.tabcheck = tabcheck;
+    }
+
+    public boolean isTabcheck() {
+        return tabcheck;
     }
 
     public void process() {
@@ -79,16 +77,25 @@ public class BreadCrumbBarModel {
         TreeItem<String> questionBank = new TreeItem<>("Question Bank");
         TreeItem<String> question = new TreeItem<>("Questions ");
         TreeItem<String> addMTPCQ = new TreeItem<>("Editing a Multiple choice question");
+        TreeItem<String> addQuiz = new TreeItem<>("Add new quiz");
+        TreeItem<String> category = new TreeItem<>("Category");
+        TreeItem<String> importVar = new TreeItem<>("Import");
+        TreeItem<String> exportVar = new TreeItem<>("Export");
         home.getChildren().addAll(myCourse);
         myCourse.getChildren().addAll(thiCuoiKy);
         thiCuoiKy.getChildren().add(questionBank);
-        questionBank.getChildren().add(question);
+        myCourse.getChildren().add(addQuiz);
+        questionBank.getChildren().addAll(question, category, importVar, exportVar);
         question.getChildren().add(addMTPCQ);
         this.currentView.set("thi-cuoi-ky.fxml");
         this.currentTree.set(thiCuoiKy);
-        this.treeList.addAll(home, myCourse, thiCuoiKy, questionBank, question, addMTPCQ);
-        this.viewList.addAll("thi-cuoi-ky.fxml", "questionbank.fxml", "add-quiz.fxml", "add-MTPCQ.fxml");
+        this.breadConnection.put("check", questionBank);
+        this.breadConnection.put("thi-cuoi-ky.fxml", thiCuoiKy);
         this.breadConnection.put("add-MTPCQ.fxml", addMTPCQ);
-        this.breadConnection.put("questionbank.fxml", questionBank);
+        this.breadConnection.put("questionbank.fxml", question);
+        this.breadConnection.put("add-quiz.fxml", addQuiz);
+        this.breadConnection.put("1", category);
+        this.breadConnection.put("2", importVar);
+        this.breadConnection.put("3", exportVar);
     }
 }

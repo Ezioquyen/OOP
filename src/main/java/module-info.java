@@ -4,6 +4,7 @@ module com.example.demo {
     requires java.sql;
     requires mysql.connector.j;
     requires ojdbc10;
+    requires com.google.common;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

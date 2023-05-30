@@ -3,43 +3,56 @@ package com.example.demo;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TabPane;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import java.util.Objects;
 
 public class QuestionBankController {
-    @FXML
-    private VBox vBox;
-    @FXML
-    private TextField textField;
     private BreadCrumbBarModel breadCrumbBarModel;
+    @FXML
+    private TabPane tabPane;
 
     public void initModel(BreadCrumbBarModel breadCrumbBarModel) {
         if (this.breadCrumbBarModel != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.breadCrumbBarModel = breadCrumbBarModel;
+        tabPane.getSelectionModel().selectedItemProperty().addListener((observable, b, a) -> {
+            if (a != b) {
+                switch (tabPane.getSelectionModel().getSelectedIndex()) {
+                    case 1 -> {
+                        breadCrumbBarModel.setCurrentView("1");
+                        breadCrumbBarModel.setTabcheck(true);
+                    }
+                    case 2 -> {
+                        breadCrumbBarModel.setCurrentView("2");
+                        breadCrumbBarModel.setTabcheck(true);
+                    }
+                    case 3 -> {
+                        breadCrumbBarModel.setCurrentView("3");
+                        breadCrumbBarModel.setTabcheck(true);
+                    }
+                    default -> {
+                        breadCrumbBarModel.setCurrentView("questionbank.fxml");
+                        breadCrumbBarModel.setTabcheck(true);
+                    }
+                }
+
+            }
+        });
     }
 
     @FXML
     private void initialize() {
         initModel(BreadCrumbBarModel.getInstance());
+        if (Objects.equals(breadCrumbBarModel.getCurrentView(), "questionbank.fxml")) {
+            tabPane.getSelectionModel().select(0);
+        } else if (!Objects.equals(breadCrumbBarModel.getCurrentView(), "questionbank.fxml"))
+            tabPane.getSelectionModel().select(Integer.parseInt(breadCrumbBarModel.getCurrentView()));
     }
 
     @FXML
-    private void btnAddQuestion(ActionEvent event) throws IOException {
+    private void btnAddQuestion(ActionEvent event) {
         breadCrumbBarModel.setCurrentView("add-MTPCQ.fxml");
-
-        breadCrumbBarModel.setCurrentTree(breadCrumbBarModel.getBreadConnection().get("add-MTPCQ.fxml"));
-        VBox view = FXMLLoader.load(getClass().getResource("add-MTPCQ.fxml"));
-        view.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-
-        vBox.getChildren().setAll(view);
     }
 }

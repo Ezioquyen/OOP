@@ -84,9 +84,12 @@
 
                                             <Button mnemonicParsing="false" onAction="#btnQuestions"
                                                     styleClass="button-menu" text="Questions"/>
-                                            <Button mnemonicParsing="false" styleClass="button-menu" text="Categories"/>
-                                            <Button mnemonicParsing="false" styleClass="button-menu" text="Import"/>
-                                            <Button mnemonicParsing="false" styleClass="button-menu" text="Export"/>
+                                            <Button mnemonicParsing="false" onAction="#btnCategory"
+                                                    styleClass="button-menu" text="Categories"/>
+                                            <Button mnemonicParsing="false" onAction="#btnImport"
+                                                    styleClass="button-menu" text="Import"/>
+                                            <Button mnemonicParsing="false" onAction="#btnExport"
+                                                    styleClass="button-menu" text="Export"/>
                                             <padding>
                                                 <Insets left="20.0"/>
                                             </padding>
@@ -103,8 +106,7 @@
                         <Insets/>
                     </VBox.margin>
                 </HBox>
-                <BreadCrumbBar fx:id="bread" autoNavigationEnabled="false" prefHeight="70.0" prefWidth="906.0"
-                               styleClass="bread-crumb-bar"/>
+                <BreadCrumbBar fx:id="bread" prefHeight="70.0" prefWidth="906.0" styleClass="bread-crumb-bar"/>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
 
                     <Region prefHeight="73.0" prefWidth="749.0" HBox.hgrow="ALWAYS"/>

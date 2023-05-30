@@ -14,104 +14,99 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+
+<VBox spacing="20.0" style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19">
     <children>
-        <VBox prefHeight="686.0" prefWidth="600.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
-              VBox.vgrow="ALWAYS">
+        <Label text="Adding a Multiple choice question" textFill="#be151d">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <Label layoutX="10.0" layoutY="10.0" text="General" textFill="#be151d">
+            <graphic>
+                <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" wrappingWidth="7.999938011169434"/>
+            </graphic>
+        </Label>
+        <HBox prefHeight="58.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
             <children>
-                <Label text="Adding a Multiple choice question" textFill="#be151d">
-                    <font>
-                        <Font size="20.0"/>
-                    </font>
-                </Label>
-                <Label layoutX="10.0" layoutY="10.0" text="General" textFill="#be151d">
-                    <graphic>
-                        <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" wrappingWidth="7.999938011169434"/>
-                    </graphic>
-            </Label>
-            <HBox prefHeight="58.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox prefHeight="332.0" prefWidth="201.0" spacing="20.0">
-                      <children>
-                          <Label text="Category"/>
-                          <Label text="Question name"/>
-                          <Label layoutX="10.0" layoutY="52.0" text="Question text"/>
-                          <Region prefHeight="177.0" prefWidth="175.0"/>
-                          <Label text="Default mark"/>
-                          <Region prefHeight="2.0" prefWidth="175.0" VBox.vgrow="ALWAYS"/>
-                      </children>
-                     <padding>
-                         <Insets top="5.0"/>
-                     </padding>
-                  </VBox>
-                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                  <VBox prefHeight="332.0" prefWidth="237.0" spacing="20.0">
-                      <children>
-                          <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" mnemonicParsing="false"
-                                      prefHeight="31.0" prefWidth="140.0" styleClass="menubutton">
-                              <items>
-                                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
-                                      <content>
-                                          <TreeView prefHeight="200.0" prefWidth="200.0"/>
-                                      </content>
-                                  </CustomMenuItem>
-                              </items>
-                              <graphic>
-                                  <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="143.0">
-                                      <children>
-                                          <Label prefHeight="18.0" prefWidth="123.0" text="Default"/>
-                                          <FontIcon iconLiteral="fas-sort" iconSize="10" text=""
-                                                    wrappingWidth="6.600037336349487"/>
-                                      </children>
-                                  </HBox>
-                              </graphic>
-                          </MenuButton>
-                          <TextField layoutX="10.0" layoutY="10.0"/>
-                          <TextArea prefHeight="200.0" prefWidth="200.0"/>
-                          <HBox>
-                              <children>
-                                  <TextField prefHeight="26.0" prefWidth="88.0"/>
-                              </children>
-                          </HBox>
-                          <Region prefHeight="0.0" prefWidth="211.0" VBox.vgrow="ALWAYS"/>
-                      </children>
-                      <HBox.margin>
-                          <Insets/>
-                      </HBox.margin>
-                      <padding>
-                          <Insets top="5.0"/>
-                      </padding>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                   <Region prefHeight="200.0" prefWidth="346.0" HBox.hgrow="ALWAYS"/>
-                  <VBox prefHeight="200.0" prefWidth="259.0" spacing="10.0">
-                      <children>
-                          <Button mnemonicParsing="false" styleClass="editionbutton" text="BLANKS FOR 3 MORE CHOICES"/>
-                          <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
-                                  prefWidth="252.0" styleClass="editionbutton"
-                                  text="SAVE CHANGES AND CONTINUE EDITTING">
-                              <VBox.margin>
-                                  <Insets bottom="5.0" left="5.0" top="10.0"/>
-                              </VBox.margin>
-                          </Button>
-                          <HBox spacing="5.0">
-                              <children>
-                                  <Button mnemonicParsing="false" style="-fx-background-color: #C02424;"
-                                          text="SAVE CHANGES" textFill="WHITE"/>
-                                  <Button mnemonicParsing="false" styleClass="editionbutton" text="CANCEL"/>
-                              </children>
-                          </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-         <padding>
-             <Insets left="20.0" right="20.0" top="20.0"/>
-         </padding>
-      </VBox>
-   </children>
+                <VBox prefHeight="332.0" prefWidth="201.0" spacing="20.0">
+                    <children>
+                        <Label text="Category"/>
+                        <Label text="Question name"/>
+                        <Label layoutX="10.0" layoutY="52.0" text="Question text"/>
+                        <Region prefHeight="177.0" prefWidth="175.0"/>
+                        <Label text="Default mark"/>
+                        <Region prefHeight="2.0" prefWidth="175.0" VBox.vgrow="ALWAYS"/>
+                    </children>
+                    <padding>
+                        <Insets top="5.0"/>
+                    </padding>
+                </VBox>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                <VBox prefHeight="332.0" prefWidth="237.0" spacing="20.0">
+                    <children>
+                        <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" mnemonicParsing="false"
+                                    prefHeight="31.0" prefWidth="140.0" styleClass="menubutton">
+                            <items>
+                                <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
+                                    <content>
+                                        <TreeView prefHeight="200.0" prefWidth="200.0"/>
+                                    </content>
+                                </CustomMenuItem>
+                            </items>
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="143.0">
+                                    <children>
+                                        <Label prefHeight="18.0" prefWidth="123.0" text="Default"/>
+                                        <FontIcon iconLiteral="fas-sort" iconSize="10" text=""
+                                                  wrappingWidth="6.600037336349487"/>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </MenuButton>
+                        <TextField layoutX="10.0" layoutY="10.0"/>
+                        <TextArea prefHeight="200.0" prefWidth="200.0"/>
+                        <HBox>
+                            <children>
+                                <TextField prefHeight="26.0" prefWidth="88.0"/>
+                            </children>
+                        </HBox>
+                        <Region prefHeight="0.0" prefWidth="211.0" VBox.vgrow="ALWAYS"/>
+                    </children>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                    <padding>
+                        <Insets top="5.0"/>
+                    </padding>
+                </VBox>
+            </children>
+        </HBox>
+        <HBox>
+            <children>
+                <Region prefHeight="200.0" prefWidth="346.0" HBox.hgrow="ALWAYS"/>
+                <VBox prefHeight="200.0" prefWidth="259.0" spacing="10.0">
+                    <children>
+                        <Button mnemonicParsing="false" styleClass="editionbutton" text="BLANKS FOR 3 MORE CHOICES"/>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
+                                prefWidth="252.0" styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITTING">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" top="10.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <HBox spacing="5.0">
+                            <children>
+                                <Button mnemonicParsing="false" style="-fx-background-color: #C02424;"
+                                        text="SAVE CHANGES" textFill="WHITE"/>
+                                <Button mnemonicParsing="false" styleClass="editionbutton" text="CANCEL"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets left="20.0" right="20.0" top="20.0"/>
+    </padding>
 </VBox>
