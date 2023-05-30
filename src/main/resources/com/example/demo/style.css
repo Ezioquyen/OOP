@@ -35,26 +35,28 @@ bread-crumb-bar {
 }
 
 .bread-crumb-bar .button {
+
     -fx-text-fill: red;
+    -fx-font-size: 15;
     -fx-padding: 8 12 8 40;
     -fx-border-color: null;
-    -fx-border-insets: 0;
     -fx-content-display: left;
     -fx-background-position: left center;
     -fx-background-repeat: no-repeat;
-    -fx-background-image: url("/Image/slash.jpg");
+    -fx-background-image: url("/slash_forward_icon_246218.png");
     -fx-background-color: transparent;
-    /*-fx-border-color: transparent;*/
+    -fx-background-size: inherit;
     -fx-shape: null;
 }
 
 .bread-crumb-bar .first {
+    -fx-font-size: 15;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-font-size: 1.11em;
     -fx-background-image: null;
     -fx-shape: null;
     -fx-padding: 8 12 8 0;
+    -fx-background-size: 15%;
 }
 
 .crumb {
@@ -129,4 +131,42 @@ bread-crumb-bar {
 
 .check-box:selected .box {
     -fx-background-color: #28a3f4;
+}
+
+.menubutton {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-content-display: right;
+    -fx-arrows-visible: false;
+}
+
+.menubutton > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
+.menubutton > .arrow-button {
+    -fx-padding: 0;
+}
+
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-content-display: right;
+    -fx-arrows-visible: false;
+}
+
+.combo-box > .arrow-button > .arrow {
+    -fx-padding: 0;
+}
+
+.combo-box > .arrow-button {
+    -fx-background-image: url("/sort.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 50%;
+}
+
+.combo-box:disabled {
+    -fx-opacity: 0.5;
 }

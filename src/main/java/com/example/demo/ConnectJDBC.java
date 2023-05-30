@@ -9,7 +9,7 @@ public class ConnectJDBC {
         String databaseName = "OOP";
         String databaseUser = "root";
         String databasePassword = "adminADMIN@";
-        String url = "jdbc:mysql://" + hostname + "/" + databaseName + "?allowMultiQueries=true";
+        String url = "jdbc:mysql://" + hostname + "/" + databaseName;
         Connection conn = null;
 
         try {

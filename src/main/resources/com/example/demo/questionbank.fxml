@@ -40,9 +40,19 @@
                                     <HBox prefHeight="31.0" prefWidth="600.0">
 
                                         <Label prefHeight="18.0" prefWidth="115.0" text="Select a category:"/>
-                                        <MenuButton mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0"
-                                                    style="-fx-border-color: black;" text="MenuButton">
+                                        <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0"
+                                                    mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0"
+                                                    styleClass="menubutton">
                                             <items>
+                                                <!--<HBox>
+                                                   <children>
+                                                      <HBox>
+                                                         <children>
+                                                            <HBox />
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>-->
                                                 <CustomMenuItem hideOnClick="false" mnemonicParsing="false"
                                                                 text="Unspecified Action">
                                                     <content>
@@ -50,6 +60,15 @@
                                                     </content>
                                                 </CustomMenuItem>
                                             </items>
+                                            <graphic>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="143.0">
+                                                    <children>
+                                                        <Label prefHeight="18.0" prefWidth="123.0" text="Default"/>
+                                                        <FontIcon iconLiteral="fas-sort" iconSize="10" text=""
+                                                                  wrappingWidth="6.600037336349487"/>
+                                                    </children>
+                                                </HBox>
+                                            </graphic>
                                         </MenuButton>
 
                                     </HBox>
@@ -106,8 +125,8 @@
                                                             <children>
                                                                 <HBox>
                                                                     <children>
-                                                                        <TextField fx:id="textField" onAction="#txtf"
-                                                                                   prefHeight="26.0" prefWidth="229.0"
+                                                                        <TextField fx:id="textField" prefHeight="26.0"
+                                                                                   prefWidth="229.0"
                                                                                    HBox.hgrow="ALWAYS"/>
                                                                         <Region prefWidth="121.0" HBox.hgrow="ALWAYS"/>
                                                                     </children>
