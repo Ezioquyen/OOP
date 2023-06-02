@@ -1,3 +1,7 @@
+.root {
+    -fx-background-color: white;
+}
+
 .menu-button {
     -fx-background-color: transparent;
 }
@@ -50,13 +54,7 @@ bread-crumb-bar {
 }
 
 .bread-crumb-bar .first {
-    -fx-font-size: 15;
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-background-image: null;
-    -fx-shape: null;
-    -fx-padding: 8 12 8 0;
-    -fx-background-size: 15%;
+    -fx-text-fill: black;
 }
 
 .crumb {
@@ -72,18 +70,18 @@ bread-crumb-bar {
 .tabtab *.tab-header-background {
 
     -fx-padding: 20 20 20 20;
-    -fx-background-color: transparent;
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #C8CCE8 transparent;
 }
 
-.tabtab .tab.tab-content-area {
-    -fx-background-color: inherit;
+.tabtab .tab-content-area {
     -fx-border-color: inherit;
 }
 
 .tab {
     -fx-pref-height: 50px;
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
+    -fx-background-color: white;
+    -fx-border-color: white white #C8CCE8 white;
 }
 
 .tab .tab-label {
@@ -93,8 +91,7 @@ bread-crumb-bar {
 }
 
 .tab:selected {
-    -fx-background-color: white;
-    -fx-border-color: #C8CCE8 #C8CCE8 transparent #C8CCE8;
+    -fx-border-color: #C8CCE8 #C8CCE8 white #C8CCE8;
 }
 
 .tab:selected .tab-label {
@@ -103,11 +100,12 @@ bread-crumb-bar {
 }
 
 .tab:selected .focus-indicator {
-    -fx-focus-color: transparent;
+    -fx-focus-color: white;
+    -fx-border-color: white;
 }
 
 .tabtab .tab:focused {
-    -fx-focus-color: transparent;
+    -fx-focus-color: white;
 }
 
 .combo-box {
@@ -169,4 +167,12 @@ bread-crumb-bar {
 
 .combo-box:disabled {
     -fx-opacity: 0.5;
+}
+
+.tree-view {
+    -fx-border-color: white;
+}
+
+.tree-view:selected {
+    -fx-border-color: transparent;
 }

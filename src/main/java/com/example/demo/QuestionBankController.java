@@ -1,7 +1,4 @@
 package com.example.demo;
-
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 
@@ -21,20 +18,24 @@ public class QuestionBankController {
             if (a != b) {
                 switch (tabPane.getSelectionModel().getSelectedIndex()) {
                     case 1 -> {
-                        breadCrumbBarModel.setCurrentView("1");
                         breadCrumbBarModel.setTabcheck(true);
+                        breadCrumbBarModel.setCurrentView("1");
+
                     }
                     case 2 -> {
-                        breadCrumbBarModel.setCurrentView("2");
                         breadCrumbBarModel.setTabcheck(true);
+                        breadCrumbBarModel.setCurrentView("2");
+
                     }
                     case 3 -> {
-                        breadCrumbBarModel.setCurrentView("3");
                         breadCrumbBarModel.setTabcheck(true);
+                        breadCrumbBarModel.setCurrentView("3");
+
                     }
                     default -> {
-                        breadCrumbBarModel.setCurrentView("questionbank.fxml");
                         breadCrumbBarModel.setTabcheck(true);
+                        breadCrumbBarModel.setCurrentView("questionbank.fxml");
+
                     }
                 }
 
@@ -52,7 +53,7 @@ public class QuestionBankController {
     }
 
     @FXML
-    private void btnAddQuestion(ActionEvent event) {
+    private void btnAddQuestion() {
         breadCrumbBarModel.setCurrentView("add-MTPCQ.fxml");
     }
 }

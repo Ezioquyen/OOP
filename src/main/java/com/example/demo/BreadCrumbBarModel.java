@@ -6,7 +6,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TreeItem;
 
-import java.util.Map;
+
 
 
 public class BreadCrumbBarModel {
@@ -27,14 +27,10 @@ public class BreadCrumbBarModel {
     private final ObjectProperty<String> currentView = new SimpleObjectProperty<>();
     private final ObjectProperty<TreeItem<String>> currentTree = new SimpleObjectProperty<>();
     private boolean tabcheck = false;
-    private BiMap<String, TreeItem<String>> breadConnection = HashBiMap.create();
+    private final BiMap<String, TreeItem<String>> breadConnection = HashBiMap.create();
 
     public TreeItem<String> getCurrentTree() {
         return currentTree.get();
-    }
-
-    public ObjectProperty<TreeItem<String>> currentTreeProperty() {
-        return currentTree;
     }
 
     public void setCurrentTree(TreeItem<String> currentTree) {
@@ -53,11 +49,6 @@ public class BreadCrumbBarModel {
         this.currentView.set(view);
     }
 
-
-    public void setBreadConnection(BiMap<String, TreeItem<String>> breadConnection) {
-        this.breadConnection = breadConnection;
-    }
-
     public BiMap<String, TreeItem<String>> getBreadConnection() {
         return this.breadConnection;
     }
@@ -71,7 +62,6 @@ public class BreadCrumbBarModel {
     }
 
     public void process() {
-        TreeItem<String> home = new TreeItem<>("Home");
         TreeItem<String> myCourse = new TreeItem<>("My Course");
         TreeItem<String> thiCuoiKy = new TreeItem<>("THI CUỐI KỲ");
         TreeItem<String> questionBank = new TreeItem<>("Question Bank");
@@ -81,10 +71,9 @@ public class BreadCrumbBarModel {
         TreeItem<String> category = new TreeItem<>("Category");
         TreeItem<String> importVar = new TreeItem<>("Import");
         TreeItem<String> exportVar = new TreeItem<>("Export");
-        home.getChildren().addAll(myCourse);
-        myCourse.getChildren().addAll(thiCuoiKy);
+        myCourse.getChildren().add(thiCuoiKy);
         thiCuoiKy.getChildren().add(questionBank);
-        myCourse.getChildren().add(addQuiz);
+        thiCuoiKy.getChildren().add(addQuiz);
         questionBank.getChildren().addAll(question, category, importVar, exportVar);
         question.getChildren().add(addMTPCQ);
         this.currentView.set("thi-cuoi-ky.fxml");

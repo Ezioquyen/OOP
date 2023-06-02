@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
@@ -48,6 +49,7 @@
                         <Insets left="10.0"/>
                     </HBox.margin>
                 </VBox>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
                 <VBox alignment="TOP_RIGHT" prefHeight="211.0" prefWidth="43.0">
                     <children>
                         <FontIcon iconColor="#be151d" iconLiteral="fas-exclamation-circle"
@@ -63,11 +65,13 @@
                         <HBox>
                             <children>
                                 <TextField prefHeight="26.0" prefWidth="230.0"/>
+                                <Region prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
                         <HBox>
                             <children>
                                 <TextArea prefHeight="128.0" prefWidth="400.0"/>
+                                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
                             </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
@@ -103,6 +107,7 @@
                         <Insets left="10.0" top="8.0"/>
                     </HBox.margin>
                 </VBox>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
                 <VBox alignment="CENTER_RIGHT" prefHeight="162.0" prefWidth="43.0" spacing="25.0">
                     <children>
                         <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" text=""

@@ -14,8 +14,8 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
-<VBox spacing="20.0" style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19">
+<VBox prefHeight="668.0" prefWidth="647.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
+      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label text="Adding a Multiple choice question" textFill="#be151d">
             <font>
@@ -29,7 +29,7 @@
         </Label>
         <HBox prefHeight="58.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
             <children>
-                <VBox prefHeight="332.0" prefWidth="201.0" spacing="20.0">
+                <VBox spacing="20.0">
                     <children>
                         <Label text="Category"/>
                         <Label text="Question name"/>
@@ -43,7 +43,7 @@
                     </padding>
                 </VBox>
                 <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                <VBox prefHeight="332.0" prefWidth="237.0" spacing="20.0">
+                <VBox spacing="20.0">
                     <children>
                         <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" mnemonicParsing="false"
                                     prefHeight="31.0" prefWidth="140.0" styleClass="menubutton">
@@ -65,7 +65,7 @@
                             </graphic>
                         </MenuButton>
                         <TextField layoutX="10.0" layoutY="10.0"/>
-                        <TextArea prefHeight="200.0" prefWidth="200.0"/>
+                        <TextArea prefHeight="200.0" prefWidth="226.0"/>
                         <HBox>
                             <children>
                                 <TextField prefHeight="26.0" prefWidth="88.0"/>

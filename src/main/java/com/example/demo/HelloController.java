@@ -96,6 +96,7 @@ public class HelloController {
 
     @FXML
     private void btnTurnOnE() {
+        breadCrumbBarModel.setTabcheck(false);
         breadCrumbBarModel.setCurrentView("add-quiz.fxml");
     }
 
