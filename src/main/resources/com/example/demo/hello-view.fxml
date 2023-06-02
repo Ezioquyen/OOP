@@ -6,32 +6,63 @@
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.BreadCrumbBar?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="692.0"
-            prefWidth="726.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.demo.HelloController">
-    <center>
-        <VBox prefHeight="222.0" prefWidth="960.0" spacing="20.0">
+    <top>
+        <VBox prefHeight="222.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+
+            <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="900.0" style="-fx-background-color: #0073A5;">
+                <Button alignment="CENTER" contentDisplay="CENTER" minWidth="43.0" mnemonicParsing="false"
+                        prefHeight="52.0" prefWidth="48.0" style="-fx-background-color: tranparent;">
+                    <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fas-bars" iconSize="47" selectionStart="1" text=""
+                                  wrappingWidth="47.99997019767761"/>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                </Button>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                <MenuButton contentDisplay="RIGHT" mnemonicParsing="false" styleClass="menubutton" text="Nguyễn"
+                            textFill="WHITE">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Action 1"/>
+                        <MenuItem mnemonicParsing="false" text="Action 2"/>
+                    </items>
+                    <graphic>
+                        <Circle fx:id="circle_avatar" fill="WHITE" radius="20.0" stroke="WHITE" strokeType="INSIDE"
+                                styleClass="menubutton"/>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets right="20.0"/>
+                    </HBox.margin>
+                </MenuButton>
+            </HBox>
 
             <VBox alignment="TOP_CENTER" prefHeight="154.0" prefWidth="947.0" style="-fx-border-color: #C8CCE8;">
 
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
 
-                    <Label text="IT" textFill="#c02424">
+                    <Label prefHeight="30.0" prefWidth="34.0" text="IT" textFill="#c02424">
                         <font>
                             <Font name="Times New Roman" size="27.0"/>
                         </font>
                     </Label>
-                    <Region layoutX="106.0" layoutY="10.0" prefHeight="61.0" prefWidth="544.0" styleClass="avatar"
+                    <Region layoutX="106.0" layoutY="10.0" prefHeight="73.0" prefWidth="690.0" styleClass="avatar"
                             HBox.hgrow="ALWAYS"/>
                     <MenuButton mnemonicParsing="false" prefHeight="34.0" prefWidth="46.0">
                         <graphic>
@@ -76,14 +107,9 @@
                         <Insets/>
                     </VBox.margin>
                 </HBox>
-                <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
                     <children>
-                        <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-                                style="-fx-background-color: transparent;" text="Home" textFill="RED">
-                            <font>
-                                <Font size="15.0"/>
-                            </font>
-                        </Button>
+                        <Button mnemonicParsing="false" styleClass="home-button" text="Home"/>
                         <BreadCrumbBar fx:id="bread" styleClass="bread-crumb-bar"/>
                     </children>
                 </HBox>
@@ -103,52 +129,22 @@
                 </HBox>
 
                 <VBox.margin>
-                    <Insets/>
+                    <Insets left="20.0" right="20.0"/>
                 </VBox.margin>
                 <padding>
                     <Insets left="20.0" right="20.0"/>
                 </padding>
             </VBox>
-            <VBox fx:id="pane" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS"/>
+            <BorderPane.margin>
+                <Insets/>
+            </BorderPane.margin>
+        </VBox>
+    </top>
+    <center>
+        <VBox fx:id="pane" prefHeight="456.0" prefWidth="927.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </BorderPane.margin>
         </VBox>
     </center>
-    <left>
-        <Region prefHeight="470.0" prefWidth="20.0" BorderPane.alignment="CENTER"/>
-    </left>
-    <right>
-        <Region prefHeight="470.0" prefWidth="18.0" BorderPane.alignment="CENTER"/>
-    </right>
-    <top>
-
-        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="947.0" style="-fx-background-color: #0073A5;"
-              BorderPane.alignment="CENTER">
-            <Button alignment="CENTER" contentDisplay="CENTER" minWidth="43.0" mnemonicParsing="false" prefHeight="52.0"
-                    prefWidth="48.0" style="-fx-background-color: tranparent;">
-                <graphic>
-                    <FontIcon iconColor="WHITE" iconLiteral="fas-bars" iconSize="47" selectionStart="1" text=""
-                              wrappingWidth="47.99997019767761"/>
-                </graphic>
-                <HBox.margin>
-                    <Insets left="20.0"/>
-                </HBox.margin>
-                <cursor>
-                    <Cursor fx:constant="DEFAULT"/>
-                </cursor>
-            </Button>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0"
-                    style="-fx-background-color: transparent;" text="Đăng nhập" textFill="WHITE">
-                <HBox.margin>
-                    <Insets right="15.0"/>
-                </HBox.margin>
-                <graphic>
-                    <ImageView fitHeight="47.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../../../Image/avatar.jpg"/>
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
-        </HBox>
-    </top>
 </BorderPane>

@@ -40,7 +40,8 @@
 
                                 <Label prefHeight="18.0" prefWidth="115.0" text="Select a category:"/>
                                 <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" mnemonicParsing="false"
-                                            prefHeight="31.0" prefWidth="140.0" styleClass="menubutton">
+                                            prefHeight="31.0" prefWidth="140.0" style="-fx-border-color: black;"
+                                            styleClass="menubutton">
                                     <items>
                                         <!--<HBox>
                                            <children>

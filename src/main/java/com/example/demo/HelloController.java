@@ -4,7 +4,6 @@ package com.example.demo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -66,7 +65,7 @@ public class HelloController {
         initModel(BreadCrumbBarModel.getInstance());
         bread.selectedCrumbProperty().set(breadCrumbBarModel.getCurrentTree());
         //tạo avatar
-        Image img=new Image("C:\\Users\\ADMIN\\IdeaProjects\\OOP\\src\\main\\resources\\com\\example\\demo\\hello.jfif");
+        Image img = new Image(Objects.requireNonNull(getClass().getResource("/Image/hello.jfif")).toExternalForm());
         circle_avatar.setFill(new ImagePattern(img));
     }
 

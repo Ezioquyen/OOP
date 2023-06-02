@@ -34,6 +34,12 @@
     -fx-text-fill: white;
 }
 
+.home-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+    -fx-font-size: 15;
+}
+
 bread-crumb-bar {
     -fx-background-color: transparent;
 }
@@ -133,13 +139,12 @@ bread-crumb-bar {
 
 .menubutton {
     -fx-background-color: transparent;
-    -fx-border-color: black;
-    -fx-content-display: right;
     -fx-arrows-visible: false;
 }
 
 .menubutton > .arrow-button > .arrow {
     -fx-padding: 0;
+    -fx-background-color: transparent;
 }
 
 .menubutton > .arrow-button {
