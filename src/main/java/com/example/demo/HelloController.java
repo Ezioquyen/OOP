@@ -1,9 +1,13 @@
 package com.example.demo;
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.MenuButton;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -21,7 +25,12 @@ public class HelloController {
     private BreadCrumbBarModel breadCrumbBarModel;
     @FXML
     private Circle circle_avatar;
-
+    @FXML
+    private AnchorPane editingquiz_scene;
+    @FXML
+    private AnchorPane thigk2CN_scene;
+    @FXML
+    private MenuButton editingquiz;
 
     @FXML
     public void initModel(BreadCrumbBarModel breadCrumbBarModel) {
@@ -67,6 +76,10 @@ public class HelloController {
         //tạo avatar
         Image img = new Image(Objects.requireNonNull(getClass().getResource("/Image/hello.jfif")).toExternalForm());
         circle_avatar.setFill(new ImagePattern(img));
+        editingquiz.setOnMouseClicked(mouseEvent -> {
+            thigk2CN_scene.setVisible(false);
+            editingquiz_scene.setVisible(true);
+        });
     }
 
     @FXML

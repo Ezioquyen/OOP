@@ -181,3 +181,20 @@ bread-crumb-bar {
 .tree-view:selected {
     -fx-border-color: transparent;
 }
+
+.add-Btn {
+    -fx-background-color: transparent;
+}
+
+.add-Btn:hover {
+    -fx-background-color: #009FE5;
+    -fx-text-fill:white;
+}
+.add-Btn .icon {
+    -fx-fill: #009FE5;
+}
+
+.add-Btn:hover .icon {
+    -fx-fill: white;
+}
+
