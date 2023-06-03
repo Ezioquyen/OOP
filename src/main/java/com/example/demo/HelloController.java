@@ -4,10 +4,12 @@ package com.example.demo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -31,6 +33,16 @@ public class HelloController {
     private AnchorPane thigk2CN_scene;
     @FXML
     private MenuButton editingquiz;
+    @FXML
+    private BorderPane home_scene;
+    @FXML
+    private AnchorPane thigk2CN_Stage;
+    @FXML
+    private Button gk2cn_btn;
+
+    @FXML
+    private VBox thicuoiky_scene;
+
 
     @FXML
     public void initModel(BreadCrumbBarModel breadCrumbBarModel) {

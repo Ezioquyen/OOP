@@ -23,7 +23,7 @@
 
 <StackPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.HelloController">
    <children>
-      <BorderPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: 009FE5;" visible="false">
+      <BorderPane fx:id="home_scene" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: 009FE5;">
          <top>
             <VBox prefHeight="222.0" prefWidth="960.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
@@ -138,14 +138,14 @@
             </VBox>
          </top>
          <center>
-            <VBox fx:id="pane" prefHeight="456.0" prefWidth="927.0" BorderPane.alignment="CENTER">
+            <VBox fx:id="pane" prefHeight="550.0" prefWidth="927.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>
             </VBox>
          </center>
       </BorderPane>
-      <AnchorPane prefHeight="700.0" prefWidth="900.0">
+      <AnchorPane fx:id="thigk2CN_Stage" prefHeight="700.0" prefWidth="900.0" visible="false">
          <children>
             <AnchorPane layoutX="14.0" prefHeight="55.0" prefWidth="900.0" style="-fx-background-color: #009FE5;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <VBox alignment="TOP_CENTER" prefHeight="154.0" prefWidth="947.0" style="-fx-border-color: #C8CCE8; -fx-border-width: .5;" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="70.0">
@@ -243,7 +243,7 @@
                         <Font name="Arial" size="17.0" />
                      </font>
                   </Button>
-                  <ComboBox layoutX="395.0" layoutY="407.0" prefHeight="40.0" prefWidth="150.0" promptText="Jump to..." AnchorPane.rightAnchor="270.0" AnchorPane.topAnchor="400.0" />
+                  <ComboBox layoutX="395.0" layoutY="407.0" maxHeight="40.0" maxWidth="400.0" prefHeight="40.0" prefWidth="300.0" promptText="Jump to..." AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="400.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="editingquiz_scene" layoutX="34.0" layoutY="370.0" prefHeight="700.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="240.0">
@@ -308,7 +308,14 @@
                                     <Font name="Arial" size="14.0" />
                                  </font>
                               </CheckBox>
-                              <FontIcon wrappingWidth="18.399964332580566" />
+                              <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle">
+                                 <HBox.margin>
+                                    <Insets top="3.5" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </FontIcon>
                            </children>
                         </HBox>
                         <MenuButton layoutX="697.0" layoutY="35.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Add" textFill="#73b4e8" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="38.0">
@@ -316,13 +323,65 @@
                               <Font name="Arial" size="14.0" />
                            </font>
                            <items>
-                              <CustomMenuItem mnemonicParsing="false" />
+                              <CustomMenuItem mnemonicParsing="false">
+                                 <content>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="180.0" style="-fx-background-color: #F7F7F7;">
+                                       <children>
+                                          <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" styleClass="add-Btn" stylesheets="@style.css" text="a new question">
+                                             <font>
+                                                <Font name="Arial" size="14.0" />
+                                             </font>
+                                             <graphic>
+                                                <FontIcon iconLiteral="fas-plus" styleClass="icon">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </FontIcon>
+                                             </graphic>
+                                          </Button>
+                                          <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="179.0" styleClass="add-Btn" stylesheets="@style.css" text="from question bank">
+                                             <font>
+                                                <Font name="Arial" size="14.0" />
+                                             </font>
+                                             <graphic>
+                                                <FontIcon iconLiteral="fas-plus" styleClass="icon">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </FontIcon>
+                                             </graphic>
+                                          </Button>
+                                          <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="36.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="179.0" styleClass="add-Btn" stylesheets="@style.css" text="a random question">
+                                             <font>
+                                                <Font name="Arial" size="14.0" />
+                                             </font>
+                                             <graphic>
+                                                <FontIcon iconLiteral="fas-plus" styleClass="icon">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </FontIcon>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </VBox>
+                                 </content></CustomMenuItem>
                            </items>
                         </MenuButton>
+                        <FontIcon iconColor="#009ee5" iconLiteral="fas-pencil-alt" layoutX="59.0" layoutY="31.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="20.0">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </FontIcon>
 
                      </children>
                   </AnchorPane>
                   <ComboBox layoutX="337.0" layoutY="389.0" prefHeight="30.0" prefWidth="300.0" promptText="Jump to...." AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="500.0" />
+                  <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" layoutX="433.0" layoutY="37.0" AnchorPane.topAnchor="25.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </FontIcon>
                </children>
             </AnchorPane>
          </children>

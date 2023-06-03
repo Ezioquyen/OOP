@@ -1,26 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
-<VBox spacing="20.0" style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19"
-      xmlns:fx="http://javafx.com/fxml/1">
-
-    <CheckBox alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="53.0" prefWidth="190.0"
-              text="Kiểm tra cuối kỳ môn IT4895Q">
-        <VBox.margin>
-            <Insets top="20.0"/>
-        </VBox.margin>
-    </CheckBox>
-    <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="204.0" text="Thi thử KTLT"/>
-    <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="176.0" text="Thi GK2 Tin học 7"/>
-    <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="171.0" text="Thi GK2 Sử Địa 7"/>
-    <CheckBox mnemonicParsing="false" prefHeight="18.0" prefWidth="194.0" text="Thi giữa kỳ 2 môn Công Nghệ"/>
-    <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
-    <padding>
-        <Insets left="30.0" top="10.0"/>
-    </padding>
+<VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="500.0" spacing="20.0" style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="50.0" prefWidth="500.0">
+         <children>
+            <Button alignment="BASELINE_LEFT" layoutX="96.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: transparent;" text="Kiểm tra nhập môn IT4895Q" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Button>
+            <FontIcon iconColor="#96bdf3" iconLiteral="far-file" layoutX="10.0" layoutY="40.0">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </FontIcon>
+            <FontIcon iconColor="#c32f24" iconLiteral="fas-check" layoutX="13.0" layoutY="34.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="18.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </FontIcon>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="11.0" layoutY="11.0" prefHeight="50.0" prefWidth="500.0">
+         <children>
+            <Button alignment="BASELINE_LEFT" layoutX="96.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: transparent;" text="Thi thử KTLT" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Button>
+            <FontIcon iconColor="#96bdf3" iconLiteral="far-file" layoutX="10.0" layoutY="40.0">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </FontIcon>
+            <FontIcon iconColor="#c32f24" iconLiteral="fas-check" layoutX="13.0" layoutY="34.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="18.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </FontIcon>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="11.0" layoutY="81.0" prefHeight="50.0" prefWidth="500.0">
+         <children>
+            <Button alignment="BASELINE_LEFT" layoutX="96.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: transparent;" text="Thi GK2 Tin học 7" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Button>
+            <FontIcon iconColor="#96bdf3" iconLiteral="far-file" layoutX="10.0" layoutY="40.0">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </FontIcon>
+            <FontIcon iconColor="#c32f24" iconLiteral="fas-check" layoutX="13.0" layoutY="34.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="18.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </FontIcon>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="11.0" layoutY="152.0" prefHeight="50.0" prefWidth="500.0">
+         <children>
+            <Button alignment="BASELINE_LEFT" layoutX="96.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: transparent;" text="Thi GK2 Sử Địa 7" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Button>
+            <FontIcon iconColor="#96bdf3" iconLiteral="far-file" layoutX="10.0" layoutY="40.0">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </FontIcon>
+            <FontIcon iconColor="#c32f24" iconLiteral="fas-check" layoutX="13.0" layoutY="34.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="18.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </FontIcon>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="11.0" layoutY="222.0" prefHeight="50.0" prefWidth="500.0">
+         <children>
+            <Button alignment="BASELINE_LEFT" layoutX="96.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: transparent;" text="Thi Giữa kỳ 2 môn Công nghệ" AnchorPane.leftAnchor="52.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Button>
+            <FontIcon iconColor="#96bdf3" iconLiteral="far-file" layoutX="10.0" layoutY="40.0">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </FontIcon>
+            <FontIcon iconColor="#c32f24" iconLiteral="fas-check" layoutX="13.0" layoutY="34.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="18.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </FontIcon>
+         </children>
+      </AnchorPane>
+   </children>
+   <padding>
+      <Insets left="20.0" top="10.0" />
+   </padding>
 </VBox>
