@@ -190,6 +190,7 @@ bread-crumb-bar {
     -fx-background-color: #009FE5;
     -fx-text-fill:white;
 }
+
 .add-Btn .icon {
     -fx-fill: #009FE5;
 }
@@ -198,3 +199,38 @@ bread-crumb-bar {
     -fx-fill: white;
 }
 
+
+.checkbox {
+    -fx-opacity: 0.75;
+}
+
+.checkbox:selected {
+    -fx-opacity: 1;
+}
+
+.checkbox > .box {
+    -fx-opacity: 0.75;
+    -fx-pref-width: 30;
+    -fx-pref-height: 3;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-image: url("/quiz.png");
+    -fx-content-display: left;
+    -fx-background-position: left;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100%;
+}
+
+.checkbox:selected > .box {
+    -fx-opacity: 1;
+    -fx-background-color: transparent;
+}
+
+.checkbox:selected > .box > .mark {
+    -fx-background-color: transparent;
+}
+
+.checkboxbutton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
