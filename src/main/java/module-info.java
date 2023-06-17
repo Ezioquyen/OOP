@@ -5,6 +5,9 @@ module com.example.demo {
     requires mysql.connector.j;
     requires ojdbc10;
     requires com.google.common;
+    requires org.apache.poi.poi;
+    requires org.apache.logging.log4j;
+    requires org.apache.poi.ooxml;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

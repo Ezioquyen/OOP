@@ -41,7 +41,6 @@
 }
 
 bread-crumb-bar {
-    -fx-background-color: transparent;
 }
 
 .bread-crumb-bar .button {
@@ -182,7 +181,7 @@ bread-crumb-bar {
     -fx-border-color: transparent;
 }
 
-.add-Btn {
+/*.add-Btn {
     -fx-background-color: transparent;
 }
 
@@ -197,7 +196,7 @@ bread-crumb-bar {
 
 .add-Btn:hover .icon {
     -fx-fill: white;
-}
+}*/
 
 
 .checkbox {
@@ -211,7 +210,7 @@ bread-crumb-bar {
 .checkbox > .box {
     -fx-opacity: 0.75;
     -fx-pref-width: 30;
-    -fx-pref-height: 3;
+    -fx-pref-height: 30;
     -fx-border-color: transparent;
     -fx-background-color: transparent;
     -fx-background-image: url("/quiz.png");
@@ -233,4 +232,12 @@ bread-crumb-bar {
 .checkboxbutton {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+}
+
+.checkBox-MenuButton {
+    -fx-background-color: transparent;
+}
+
+.checkBox-MenuButton .arrow {
+    -fx-background-color: #00ACEA;
 }

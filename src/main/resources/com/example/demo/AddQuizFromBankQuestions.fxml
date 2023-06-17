@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="718.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0">
+         <children>
+            <Label contentDisplay="RIGHT" text="Add from question bank at the end" textFill="#bc0404">
+               <font>
+                  <Font size="21.0"/>
+               </font>
+            </Label>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+            <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" style="-fx-background-color: transparent;"
+                    text="Button">
+               <graphic>
+                  <FontIcon iconColor="#b7b2b2" iconLiteral="fas-times" iconSize="20" wrappingWidth="7.199951171875"/>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+      <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <VBox prefHeight="198.0" prefWidth="900.0" spacing="5.0">
+               <children>
+                  <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="122.0" prefWidth="600.0">
+                     <children>
+                        <Label prefHeight="31.0" prefWidth="115.0" text="Select a category:"/>
+                        <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" mnemonicParsing="false"
+                                    prefHeight="31.0" prefWidth="140.0" style="-fx-border-color: black;"
+                                    styleClass="menubutton">
+                           <items>
+                              <CustomMenuItem hideOnClick="false" mnemonicParsing="false" styleClass="menu-item"
+                                              text="Unspecified Action">
+                                 <content>
+                                    <TreeView prefHeight="200.0" prefWidth="200.0"/>
+                                 </content>
+                              </CustomMenuItem>
+                           </items>
+                           <graphic>
+                              <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="143.0">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="123.0" text="Default"/>
+                                    <FontIcon iconLiteral="fas-sort" iconSize="10" text=""
+                                              wrappingWidth="6.600037336349487"/>
+                                 </children>
+                              </HBox>
+                           </graphic>
+                        </MenuButton>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label contentDisplay="RIGHT" prefHeight="19.0" prefWidth="91.0" text="Search options"
+                               textFill="#009ee5">
+                           <font>
+                              <Font size="13.0"/>
+                           </font>
+                        </Label>
+                        <FontIcon iconColor="#009ee5" iconLiteral="fas-sort-down" iconSize="15"
+                                  wrappingWidth="14.600036144256592"/>
+                     </children>
+                  </HBox>
+                  <CheckBox minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="19.0"
+                            prefWidth="248.0" text="Also show questions from subcategories"/>
+                  <CheckBox minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="18.0"
+                            prefWidth="155.0" text="Also show old questions"/>
+                  <VBox prefHeight="32.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="18.0" prefWidth="5.0" text="T" textFill="#00aeca"/>
+                              <FontIcon iconColor="#00acea" iconLiteral="fas-sort-up" iconSize="10" text=""
+                                        wrappingWidth="8.799927473068237"/>
+                              <Label text="Question">
+                                 <HBox.margin>
+                                    <Insets left="5.0"/>
+                                 </HBox.margin>
+                              </Label>
+                              <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                              <Label text="Actions"/>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0"/>
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <CheckBox mnemonicParsing="false"/>
+                              <Label text="Question name" textFill="#00aeca">
+                                 <HBox.margin>
+                                    <Insets left="15.0"/>
+                                 </HBox.margin>
+                              </Label>
+                              <Label text=" / "/>
+                              <Label text="ID number" textFill="#00aeca"/>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0"/>
+               </children>
+               <padding>
+                  <Insets left="10.0" top="10.0"/>
+               </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+   <padding>
+      <Insets left="20.0" right="20.0" top="20.0"/>
+   </padding>
+</VBox>

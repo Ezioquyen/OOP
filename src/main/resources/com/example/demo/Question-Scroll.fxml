@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+
+<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ScrollPane hbarPolicy="ALWAYS" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+            <content>
+                <VBox prefHeight="1500.0" prefWidth="1500.0">
+                    <children>
+                        <VBox prefHeight="32.0" prefWidth="1482.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="18.0" prefWidth="5.0" text="T" textFill="#00aeca"/>
+                                        <FontIcon iconColor="#00acea" iconLiteral="fas-sort-up" iconSize="10" text=""
+                                                  wrappingWidth="8.799927473068237"/>
+                                        <Label text="Question">
+                                            <HBox.margin>
+                                                <Insets left="5.0"/>
+                                            </HBox.margin>
+                                        </Label>
+                                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                                        <Label text="Actions"/>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets left="10.0"/>
+                                    </VBox.margin>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <CheckBox mnemonicParsing="false"/>
+                                        <Label text="Question name" textFill="#00aeca">
+                                            <HBox.margin>
+                                                <Insets left="15.0"/>
+                                            </HBox.margin>
+                                        </Label>
+                                        <Label text=" / "/>
+                                        <Label text="ID number" textFill="#00aeca"/>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS"/>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</VBox>

@@ -1,15 +1,12 @@
 package com.example.demo;
 
 
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
+
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
+
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -25,24 +22,18 @@ public class HelloController {
     @FXML
     private BreadCrumbBar<String> bread;
     private BreadCrumbBarModel breadCrumbBarModel;
+    private DataModel dataModel;
     @FXML
     private Circle circle_avatar;
-    @FXML
-    private AnchorPane editingquiz_scene;
-    @FXML
-    private AnchorPane thigk2CN_scene;
-    @FXML
-    private MenuButton editingquiz;
-    @FXML
-    private BorderPane home_scene;
-    @FXML
-    private AnchorPane thigk2CN_Stage;
-    @FXML
-    private Button gk2cn_btn;
+    private VBox tmp;
+    private int toggle = 0;
 
-    @FXML
-    private VBox thicuoiky_scene;
-
+    public void initDataModel(DataModel dataModel) {
+        if (this.dataModel != null) {
+            throw new IllegalStateException("Model can only be initialized once");
+        }
+        this.dataModel = dataModel;
+    }
 
     @FXML
     public void initModel(BreadCrumbBarModel breadCrumbBarModel) {
@@ -51,29 +42,66 @@ public class HelloController {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.breadCrumbBarModel = breadCrumbBarModel;
+
         breadCrumbBarModel.currentViewProperty().addListener((obs, oldView, newView) -> {
-            if (!Objects.equals(newView, oldView) && newView != null) {
-                this.breadCrumbBarModel.setCurrentTree(this.breadCrumbBarModel.getBreadConnection().get(this.breadCrumbBarModel.getCurrentView()));
-                bread.selectedCrumbProperty().set(this.breadCrumbBarModel.getCurrentTree());
-            }
+            if (toggle != 1) {
+                toggle = 2;
+                if (!Objects.equals(newView, oldView) && newView != null) {
+                    this.breadCrumbBarModel.setCurrentTree(this.breadCrumbBarModel.getBreadConnection().get(this.breadCrumbBarModel.getCurrentView()));
+                    bread.selectedCrumbProperty().set(this.breadCrumbBarModel.getCurrentTree());
+                    try {
+                        VBox view = null;
+                        if (Objects.equals(breadCrumbBarModel.getBreadConnection().get(newView).getParent().getValue(), "Question Bank")) {
+                            if (!breadCrumbBarModel.isTabCheck()) {
+                                view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("questionbank.fxml")));
+                                pane.getChildren().setAll(view);
+                            } else breadCrumbBarModel.setTabCheck(false);
+                        } else {
+                            view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(newView)));
+                            pane.getChildren().setAll(view);
+                        }
+
+
+                    } catch (IOException | NullPointerException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+
+            } else toggle = 0;
+
         });
         bread.selectedCrumbProperty().addListener((obs, a, b) -> {
+            if (toggle != 2) {
+                if (Objects.equals(breadCrumbBarModel.getBreadConnection().inverse().get(b), null)) {
 
-            try {
-                if (!breadCrumbBarModel.isTabcheck()) {
-                    if (breadCrumbBarModel.getBreadConnection().inverse().get(bread.getSelectedCrumb()) != null
-                            && !Objects.equals(breadCrumbBarModel.getBreadConnection().inverse().get(bread.getSelectedCrumb().getParent()), "check")) {
-                        VBox view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(breadCrumbBarModel.getBreadConnection().inverse().get(bread.getSelectedCrumb()))));
-                        pane.getChildren().setAll(view);
-                    } else if (Objects.equals(breadCrumbBarModel.getBreadConnection().inverse().get(bread.getSelectedCrumb().getParent()), "check")) {
-                        VBox view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("questionbank.fxml")));
-                        pane.getChildren().setAll(view);
+                    toggle = 2;
+                    bread.selectedCrumbProperty().set(a);
+                    toggle = 0;
+                } else {
+
+                    try {
+                        VBox view = null;
+                        if (Objects.equals(b.getParent().getValue(), "Question Bank")) {
+                            if (!breadCrumbBarModel.isTabCheck()) {
+                                view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("questionbank.fxml")));
+                                pane.getChildren().setAll(view);
+                            } else breadCrumbBarModel.setTabCheck(false);
+                        } else {
+                            view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(breadCrumbBarModel.getBreadConnection().inverse().get(b))));
+                            pane.getChildren().setAll(view);
+                        }
+
+
+                    } catch (IOException | NullPointerException e) {
+                        throw new RuntimeException(e);
                     }
-                } else breadCrumbBarModel.setTabcheck(false);
-            } catch (IOException e) {
-                System.out.println("haha");
-            }
+
+                }
+            } else toggle = 0;
+
         });
+
     }
 
     @FXML
@@ -83,44 +111,37 @@ public class HelloController {
         if (this.breadCrumbBarModel != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
+        initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
         bread.selectedCrumbProperty().set(breadCrumbBarModel.getCurrentTree());
         //tạo avatar
-        Image img = new Image(Objects.requireNonNull(getClass().getResource("/Image/hello.jfif")).toExternalForm());
+        Image img = new Image(Objects.requireNonNull(getClass().getResource("/hello.jfif")).toExternalForm());
         circle_avatar.setFill(new ImagePattern(img));
-        editingquiz.setOnMouseClicked(mouseEvent -> {
-            thigk2CN_scene.setVisible(false);
-            editingquiz_scene.setVisible(true);
-        });
+        toggle = 0;
     }
 
     @FXML
     private void btnQuestions() {
-        breadCrumbBarModel.setTabcheck(false);
         breadCrumbBarModel.setCurrentView("questionbank.fxml");
     }
 
     @FXML
     private void btnCategory() {
-        breadCrumbBarModel.setTabcheck(false);
         breadCrumbBarModel.setCurrentView("1");
     }
 
     @FXML
     private void btnImport() {
-        breadCrumbBarModel.setTabcheck(false);
         breadCrumbBarModel.setCurrentView("2");
     }
 
     @FXML
     private void btnExport() {
-        breadCrumbBarModel.setTabcheck(false);
         breadCrumbBarModel.setCurrentView("3");
     }
 
     @FXML
     private void btnTurnOnE() {
-        breadCrumbBarModel.setTabcheck(false);
         breadCrumbBarModel.setCurrentView("add-quiz.fxml");
     }
 

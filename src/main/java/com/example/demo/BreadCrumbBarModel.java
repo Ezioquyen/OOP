@@ -26,7 +26,6 @@ public class BreadCrumbBarModel {
 
     private final ObjectProperty<String> currentView = new SimpleObjectProperty<>();
     private final ObjectProperty<TreeItem<String>> currentTree = new SimpleObjectProperty<>();
-    private boolean tabcheck = false;
     private final BiMap<String, TreeItem<String>> breadConnection = HashBiMap.create();
 
     public TreeItem<String> getCurrentTree() {
@@ -53,19 +52,27 @@ public class BreadCrumbBarModel {
         return this.breadConnection;
     }
 
-    public void setTabcheck(boolean tabcheck) {
-        this.tabcheck = tabcheck;
+    private boolean tabCheck = false;
+
+    public boolean isTabCheck() {
+        return tabCheck;
     }
 
-    public boolean isTabcheck() {
-        return tabcheck;
+    public void setTabCheck(boolean tabCheck) {
+        this.tabCheck = tabCheck;
     }
 
-    public void process() {
+    private final TreeItem<String> thiCuoiKy = new TreeItem<>("THI CUỐI KỲ");
+
+    public TreeItem<String> getThiCuoiKy() {
+        return thiCuoiKy;
+    }
+
+    private void process() {
         TreeItem<String> myCourse = new TreeItem<>("My Course");
-        TreeItem<String> thiCuoiKy = new TreeItem<>("THI CUỐI KỲ");
+
         TreeItem<String> questionBank = new TreeItem<>("Question Bank");
-        TreeItem<String> question = new TreeItem<>("Questions ");
+        TreeItem<String> question = new TreeItem<>("Questions");
         TreeItem<String> addMTPCQ = new TreeItem<>("Editing a Multiple choice question");
         TreeItem<String> addQuiz = new TreeItem<>("Add new quiz");
         TreeItem<String> category = new TreeItem<>("Category");
@@ -78,7 +85,6 @@ public class BreadCrumbBarModel {
         question.getChildren().add(addMTPCQ);
         this.currentView.set("thi-cuoi-ky.fxml");
         this.currentTree.set(thiCuoiKy);
-        this.breadConnection.put("check", questionBank);
         this.breadConnection.put("thi-cuoi-ky.fxml", thiCuoiKy);
         this.breadConnection.put("add-MTPCQ.fxml", addMTPCQ);
         this.breadConnection.put("questionbank.fxml", question);

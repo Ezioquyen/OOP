@@ -1,60 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER_LEFT" prefHeight="350.0" prefWidth="500.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
-      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <CheckBox mnemonicParsing="false" styleClass="checkbox">
-            <graphic>
-                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" styleClass="checkboxbutton"
-                        text="Kiểm tra nhập môn IT4895Q"/>
-            </graphic>
-            <padding>
-                <Insets top="2.0"/>
-            </padding>
-        </CheckBox>
-        <CheckBox layoutX="138.0" layoutY="21.0" mnemonicParsing="false" styleClass="checkbox">
-            <graphic>
-                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" styleClass="checkboxbutton"
-                        text="Thi thử KTLT"/>
-            </graphic>
-            <padding>
-                <Insets top="2.0"/>
-            </padding>
-        </CheckBox>
-        <CheckBox layoutX="138.0" layoutY="421.0" mnemonicParsing="false" styleClass="checkbox">
-            <graphic>
-                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" styleClass="checkboxbutton"
-                        text="Thi GK2 Tin học 7"/>
-            </graphic>
-            <padding>
-                <Insets top="2.0"/>
-            </padding>
-        </CheckBox>
-        <CheckBox layoutX="138.0" layoutY="469.0" mnemonicParsing="false" styleClass="checkbox">
-            <graphic>
-                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" styleClass="checkboxbutton"
-                        text="Thi GK2 Sử Địa 7"/>
-            </graphic>
-            <padding>
-                <Insets top="2.0"/>
-            </padding>
-        </CheckBox>
-        <CheckBox layoutX="138.0" layoutY="517.0" mnemonicParsing="false" styleClass="checkbox">
-            <graphic>
-                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" styleClass="checkboxbutton"
-                        text="Thi Giữa kỳ 2 môn Công nghệ"/>
-            </graphic>
-            <padding>
-                <Insets top="2.0"/>
-            </padding>
-        </CheckBox>
-    </children>
+<VBox fx:id="contentArea" prefHeight="350.0" prefWidth="500.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
+      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.thiCuoiKyController">
     <padding>
-        <Insets left="20.0"/>
+        <Insets left="20.0" top="20.0"/>
     </padding>
 </VBox>

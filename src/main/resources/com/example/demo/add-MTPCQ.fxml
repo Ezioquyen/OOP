@@ -14,8 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="668.0" prefWidth="647.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
-      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="668.0" prefWidth="743.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
+      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.AddMTPCQController">
     <children>
         <Label text="Adding a Multiple choice question" textFill="#be151d">
             <font>
@@ -27,14 +28,14 @@
                 <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" wrappingWidth="7.999938011169434"/>
             </graphic>
         </Label>
-        <HBox prefHeight="58.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+        <HBox prefHeight="398.0" prefWidth="702.0" VBox.vgrow="ALWAYS">
             <children>
                 <VBox spacing="20.0">
                     <children>
                         <Label text="Category"/>
                         <Label text="Question name"/>
                         <Label layoutX="10.0" layoutY="52.0" text="Question text"/>
-                        <Region prefHeight="177.0" prefWidth="175.0"/>
+                        <Region prefHeight="184.0" prefWidth="149.0"/>
                         <Label text="Default mark"/>
                         <Region prefHeight="2.0" prefWidth="175.0" VBox.vgrow="ALWAYS"/>
                     </children>
@@ -42,11 +43,12 @@
                         <Insets top="5.0"/>
                     </padding>
                 </VBox>
-                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                <VBox spacing="20.0">
+                <Region prefHeight="369.0" prefWidth="0.0" HBox.hgrow="ALWAYS"/>
+                <VBox prefHeight="369.0" prefWidth="226.0" spacing="20.0">
                     <children>
-                        <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" mnemonicParsing="false"
-                                    prefHeight="31.0" prefWidth="140.0" styleClass="menubutton">
+                        <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" minHeight="-Infinity"
+                                    minWidth="-Infinity" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0"
+                                    style="-fx-border-color: black;" styleClass="menubutton">
                             <items>
                                 <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
                                     <content>
@@ -64,11 +66,12 @@
                                 </HBox>
                             </graphic>
                         </MenuButton>
-                        <TextField layoutX="10.0" layoutY="10.0"/>
-                        <TextArea prefHeight="200.0" prefWidth="226.0"/>
+                        <TextField layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity"/>
+                        <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="226.0"/>
                         <HBox>
                             <children>
-                                <TextField prefHeight="26.0" prefWidth="88.0"/>
+                                <TextField minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0"
+                                           prefWidth="88.0"/>
                             </children>
                         </HBox>
                         <Region prefHeight="0.0" prefWidth="211.0" VBox.vgrow="ALWAYS"/>
@@ -80,18 +83,25 @@
                         <Insets top="5.0"/>
                     </padding>
                 </VBox>
+                <Region prefHeight="383.0" prefWidth="122.0"/>
             </children>
         </HBox>
         <HBox>
             <children>
-                <Region prefHeight="200.0" prefWidth="346.0" HBox.hgrow="ALWAYS"/>
-                <VBox prefHeight="200.0" prefWidth="259.0" spacing="10.0">
+                <Region prefHeight="170.0" prefWidth="0.0" HBox.hgrow="ALWAYS"/>
+                <VBox prefHeight="157.0" prefWidth="444.0" spacing="10.0">
                     <children>
-                        <Button mnemonicParsing="false" styleClass="editionbutton" text="BLANKS FOR 3 MORE CHOICES"/>
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
-                                prefWidth="252.0" styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITTING">
+                        <VBox fx:id="showChoices" alignment="TOP_CENTER" prefHeight="0.0" prefWidth="383.0"/>
+                        <Button mnemonicParsing="false" onAction="#btnAddThreeMoreChoices" styleClass="editionbutton"
+                                text="BLANKS FOR 3 MORE CHOICES">
                             <VBox.margin>
-                                <Insets bottom="5.0" left="5.0" top="10.0"/>
+                                <Insets left="80.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
+                                prefWidth="252.0" styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITING">
+                            <VBox.margin>
+                                <Insets left="85.0"/>
                             </VBox.margin>
                         </Button>
                         <HBox spacing="5.0">
@@ -100,6 +110,9 @@
                                         text="SAVE CHANGES" textFill="WHITE"/>
                                 <Button mnemonicParsing="false" styleClass="editionbutton" text="CANCEL"/>
                             </children>
+                            <VBox.margin>
+                                <Insets left="80.0"/>
+                            </VBox.margin>
                         </HBox>
                     </children>
                 </VBox>
