@@ -63,14 +63,17 @@ public class QuestionBankController {
     private void initialize() {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
+        showInfor.setVisible(dataModel.getShowQues());
+        showQuesFromCate.setSelected(dataModel.getShowQues());
         showQuesFromCate.selectedProperty().addListener(e -> {
             if (showQuesFromCate.isSelected()) {
                 showInfor.setVisible(true);
+                dataModel.setShowQues(true);
                 showQuestion();
             } else {
+                dataModel.setShowQues(false);
                 showQuestion.getChildren().clear();
                 showInfor.setVisible(false);
-
             }
         });
         root.setRoot(dataModel.getRoot());
@@ -79,7 +82,7 @@ public class QuestionBankController {
                 showQuestion.getChildren().clear();
                 showQuestion();
             }
-            label.setText(root.getSelectionModel().getSelectedItem().getValue());
+            updateCategorySelection();
         });
         root1.setRoot(dataModel.getRoot());
         root1.getSelectionModel().selectedItemProperty().addListener(e -> {
@@ -118,8 +121,6 @@ public class QuestionBankController {
         });
         dropZone.setOnDragOver(event -> {
             if (event.getGestureSource() != dropZone && event.getDragboard().hasFiles()) {
-                // Kiểm tra tất cả các file được kéo qua
-
                 event.acceptTransferModes(TransferMode.COPY);
                 event.consume();
             }
@@ -149,6 +150,11 @@ public class QuestionBankController {
         String fileName = file.getName();
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
         return fileExtension.equalsIgnoreCase("txt") || fileExtension.equalsIgnoreCase("doc") || fileExtension.equalsIgnoreCase("docx");
+    }
+
+    private void updateCategorySelection() {
+        dataModel.setCurrentCategory(root.getSelectionModel().getSelectedItem());
+        label.setText(root.getSelectionModel().getSelectedItem().getValue());
     }
 
     @FXML
@@ -193,17 +199,17 @@ public class QuestionBankController {
                         System.out.println("Error 1 at line: " + countLine);
                         return null;
                     }
-                    if (hasContent && text.matches("[A-Z]\\.\\s.*[^.]$")) {
+                    if (hasContent && text.matches("^[A-Z]\\.\\s.*[^.]$")) {
                         if (!text.startsWith(String.valueOf((char) (countOption + 65)))) {
                             System.out.println("Error 2 at line: " + countLine);
                             return null;
                         }
-                        question.addOption(text);
+                        question.addOption(text.substring("A. ".length()).trim());
                         countOption++;
-                    } else if (hasContent && countOption >= 2 && text.matches("ANSWER:\\s[A-Z]")) {
+                    } else if (hasContent && countOption >= 2 && text.matches("^ANSWER:\\s[A-Z]")) {
                         question.setAnswer(text.substring("ANSWER:".length()).trim());
                         hasAnswer = true;
-                    } else if (hasContent && countOption < 2 && text.matches("ANSWER:\\s[A-Z]")) {
+                    } else if (hasContent && countOption < 2 && text.matches("^ANSWER:\\s[A-Z]")) {
                         System.out.println("Error 3 at line: " + countLine);
                         return null;
                     } else if (hasContent && countOption > 0) {
@@ -243,17 +249,18 @@ public class QuestionBankController {
                         System.out.println("Error 1 at line: " + countLine);
                         return null;
                     }
-                    if (hasContent && text.matches("[A-Z]\\.\\s.*[^.]$")) {
+                    if (hasContent && text.matches("^[A-Z]\\.\\s.*[^.]$")) {
                         if (!text.startsWith(String.valueOf((char) (countOption + 65)))) {
+                            System.out.println(countOption + 65);
                             System.out.println("Error 2 at line: " + countLine);
                             return null;
                         }
-                        question.addOption(text);
+                        question.addOption(text.substring("A. ".length()).trim());
                         countOption++;
-                    } else if (hasContent && countOption >= 2 && text.matches("ANSWER:\\s[A-Z]")) {
+                    } else if (hasContent && countOption >= 2 && text.matches("^ANSWER:\\s[A-Z]")) {
                         question.setAnswer(text.substring("ANSWER:".length()).trim());
                         hasAnswer = true;
-                    } else if (hasContent && countOption < 2 && text.matches("ANSWER:\\s[A-Z]")) {
+                    } else if (hasContent && countOption < 2 && text.matches("^ANSWER:\\s[A-Z]")) {
                         System.out.println("Error 3 at line: " + countLine);
                         return null;
                     } else if (hasContent && countOption > 0) {
@@ -309,8 +316,11 @@ public class QuestionBankController {
 
                 }
                 for (File file : files) {
+                    int j = 1;
                     for (AikenQuestion question : readAikenQuestions(file)) {
                         dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question);
+                        dataModel.insertAnswers(j, question);
+                        j++;
                         count++;
                     }
                 }
@@ -360,15 +370,16 @@ public class QuestionBankController {
     private void showQuestion() {
 
         int i = 0;
-        for (String title : dataModel.getQuestionTitle(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
+        if (root.getSelectionModel().getSelectedItem() != null) {
+            for (String title : dataModel.getQuestionTitle(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
 
-            CustomCheckBox customCheckBox = new CustomCheckBox(title);
-            if (i % 2 == 0) {
-                customCheckBox.setStyle("-fx-background-color: white");
-            } else customCheckBox.setStyle("-fx-background-color: lightgray");
-            showQuestion.getChildren().add(customCheckBox);
-            i++;
-
+                CustomCheckBox customCheckBox = new CustomCheckBox(title);
+                if (i % 2 == 0) {
+                    customCheckBox.setStyle("-fx-background-color: white");
+                } else customCheckBox.setStyle("-fx-background-color: lightgray");
+                showQuestion.getChildren().add(customCheckBox);
+                i++;
+            }
         }
     }
 }

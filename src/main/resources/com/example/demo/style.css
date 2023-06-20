@@ -241,3 +241,7 @@ bread-crumb-bar {
 .checkBox-MenuButton .arrow {
     -fx-background-color: #00ACEA;
 }
+
+.scroll-pane > .viewport {
+    -fx-background-color: white;
+}

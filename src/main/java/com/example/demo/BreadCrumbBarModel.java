@@ -5,8 +5,7 @@ import com.google.common.collect.HashBiMap;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.TreeItem;
-
-
+import org.controlsfx.control.BreadCrumbBar;
 
 
 public class BreadCrumbBarModel {
@@ -19,7 +18,7 @@ public class BreadCrumbBarModel {
     public static BreadCrumbBarModel getInstance() {
         if (instance == null) {
             instance = new BreadCrumbBarModel();
-            instance.process();
+            instance.init();
         }
         return instance;
     }
@@ -53,6 +52,8 @@ public class BreadCrumbBarModel {
     }
 
     private boolean tabCheck = false;
+    private BreadCrumbBar<String> breadCrumbBar;
+
 
     public boolean isTabCheck() {
         return tabCheck;
@@ -68,9 +69,22 @@ public class BreadCrumbBarModel {
         return thiCuoiKy;
     }
 
-    private void process() {
-        TreeItem<String> myCourse = new TreeItem<>("My Course");
+    public void insertQuizView(String view) {
+        TreeItem<String> mainView = new TreeItem<>(view);
+        TreeItem<String> edit = new TreeItem<>("Edit quiz");
+        getThiCuoiKy().getChildren().add(mainView);
+        mainView.getChildren().add(edit);
+        getBreadConnection().put("quiz.fxml", mainView);
+        getBreadConnection().put("EditQuiz.fxml", edit);
+    }
 
+    public void removeQuizView() {
+        getThiCuoiKy().getChildren().remove(getBreadConnection().get("quiz.fxml"));
+        getBreadConnection().remove("quiz.fxml", getBreadConnection().get("quiz.fxml"));
+    }
+
+    private void init() {
+        TreeItem<String> myCourse = new TreeItem<>("My Course");
         TreeItem<String> questionBank = new TreeItem<>("Question Bank");
         TreeItem<String> question = new TreeItem<>("Questions");
         TreeItem<String> addMTPCQ = new TreeItem<>("Editing a Multiple choice question");
@@ -85,6 +99,7 @@ public class BreadCrumbBarModel {
         question.getChildren().add(addMTPCQ);
         this.currentView.set("thi-cuoi-ky.fxml");
         this.currentTree.set(thiCuoiKy);
+        breadCrumbBar.selectedCrumbProperty().set(thiCuoiKy);
         this.breadConnection.put("thi-cuoi-ky.fxml", thiCuoiKy);
         this.breadConnection.put("add-MTPCQ.fxml", addMTPCQ);
         this.breadConnection.put("questionbank.fxml", question);

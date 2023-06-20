@@ -1,19 +1,14 @@
 package com.example.demo;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
-public class AddQuizController {
+public class ThiCuoiKyController {
     @FXML
-    private TextField textField;
-    @FXML
-    private TextField name;
-    @FXML
-    private CheckBox checkBox;
-    private float time = 0;
+    private VBox contentArea;
     DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
+
 
     public void initModel(BreadCrumbBarModel breadCrumbBarModel) {
         if (this.breadCrumbBarModel != null) {
@@ -33,15 +28,15 @@ public class AddQuizController {
     private void initialize() {
         initModel(BreadCrumbBarModel.getInstance());
         initDataModel(DataModel.getInstance());
-        checkBox.selectedProperty().addListener(e -> {
-            if (checkBox.isSelected()) {
-                if (textField.getText() != null) time = Float.parseFloat(textField.getText());
-            } else time = 0;
-        });
-    }
-
-    @FXML
-    private void btnCreate() {
-        dataModel.insertQuiz(name.getText(), time);
+        for (String title : dataModel.getQuizTitle()) {
+            QuizCheckBox quizCheckBox = new QuizCheckBox(title);
+            quizCheckBox.getButton().setOnAction(e -> {
+                breadCrumbBarModel.removeQuizView();
+                dataModel.setCurrentQuizName(quizCheckBox.getChildText());
+                breadCrumbBarModel.insertQuizView(quizCheckBox.getChildText());
+                breadCrumbBarModel.setCurrentView("quiz.fxml");
+            });
+            contentArea.getChildren().add(quizCheckBox);
+        }
     }
 }

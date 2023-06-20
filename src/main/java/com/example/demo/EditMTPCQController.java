@@ -3,19 +3,15 @@ package com.example.demo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class AddMTPCQController {
+public class EditMTPCQController {
     @FXML
     private VBox showChoices;
     private int currentChoice = 0;
-
     private DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
 
@@ -35,9 +31,6 @@ public class AddMTPCQController {
 
     @FXML
     private void initialize() {
-        initDataModel(DataModel.getInstance());
-        initModel(BreadCrumbBarModel.getInstance());
-
 
     }
 
@@ -55,17 +48,14 @@ public class AddMTPCQController {
         showChoices.getChildren().addAll(views);
     }
 
-    @FXML
     private void btnSaveAndContinueEditing() {
 
     }
 
-    @FXML
     private void btnSaveChanges() {
 
     }
 
-    @FXML
     private void btnCancel() {
 
     }

@@ -16,9 +16,9 @@
 
 <VBox prefHeight="668.0" prefWidth="743.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
       xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.demo.AddMTPCQController">
+      fx:controller="com.example.demo.EditMTPCQController">
     <children>
-        <Label text="Adding a Multiple choice question" textFill="#be151d">
+        <Label text="Editing a Multiple choice question" textFill="#be151d">
             <font>
                 <Font size="20.0"/>
             </font>
@@ -98,19 +98,17 @@
                                 <Insets left="80.0"/>
                             </VBox.margin>
                         </Button>
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
-                                onAction="#btnSaveAndContinueEditing" prefHeight="26.0" prefWidth="252.0"
-                                styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITING">
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
+                                prefWidth="252.0" styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITING">
                             <VBox.margin>
                                 <Insets left="85.0"/>
                             </VBox.margin>
                         </Button>
                         <HBox spacing="5.0">
                             <children>
-                                <Button mnemonicParsing="false" onAction="#btnSaveChanges"
-                                        style="-fx-background-color: #C02424;" text="SAVE CHANGES" textFill="WHITE"/>
-                                <Button mnemonicParsing="false" onAction="#btnCancel" styleClass="editionbutton"
-                                        text="CANCEL"/>
+                                <Button mnemonicParsing="false" style="-fx-background-color: #C02424;"
+                                        text="SAVE CHANGES" textFill="WHITE"/>
+                                <Button mnemonicParsing="false" styleClass="editionbutton" text="CANCEL"/>
                             </children>
                             <VBox.margin>
                                 <Insets left="80.0"/>

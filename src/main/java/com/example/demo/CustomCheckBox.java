@@ -28,7 +28,6 @@ public class CustomCheckBox extends HBox {
         label.setWrapText(true);
         label.setTextOverrun(OverrunStyle.ELLIPSIS);
 
-        /*Objects.requireNonNull(getStyle().getClass().getResource("style.css")).toExternalForm();*/
         menuButton.setTextFill(Color.valueOf("#00ACEA"));
         menuButton.getStyleClass().add("checkBox-MenuButton");
         Region region = new Region();

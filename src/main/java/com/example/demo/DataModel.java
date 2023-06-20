@@ -32,6 +32,9 @@ public class DataModel {
     private Integer count = 0;
     private final Map<Integer, Integer> numberOfQuestion = new HashMap<>();
     private final Map<TreeItem<String>, String> mapName = new HashMap<>();
+    private String currentQuizName;
+    private TreeItem<String> CurrentCategory;
+    private Boolean isShowQues = false;
 
     private void Initialize() {
         //
@@ -98,23 +101,40 @@ public class DataModel {
 
     public void insertQuestion(TreeItem<String> parent, AikenQuestion question) {
         try {
-            String sql = "INSERT INTO QUESTIONS (Content, Answers, CorrectAnswer,CategoryID) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO QUESTIONS (Content,typeOfQuestion,CategoryID) VALUES ( ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             StringBuilder content = new StringBuilder();
-            StringBuilder answers = new StringBuilder();
             for (String title : question.getTitle()) {
                 content.append(title);
                 content.append(" ");
             }
-            for (String ans : question.getOptions()) {
-                answers.append(ans);
-                answers.append(" ");
-            }
             statement.setString(1, content.toString());
-            statement.setString(2, answers.toString());
-            statement.setString(3, question.getAnswer());
-            statement.setInt(4, categoryMap.get(parent));
+            statement.setInt(2, 1);
+            statement.setInt(3, categoryMap.get(parent));
             statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertAnswers(int id, AikenQuestion question) {
+        try {
+            String sql = "INSERT INTO ANSWER (questionID, choice, percent) VALUES ( ?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            int correctAns = question.getAnswer().charAt(0) - 65;
+            int index = 0;
+
+            for (String option : question.getOptions()) {
+                statement.setInt(1, id);
+                statement.setString(2, option);
+                if (correctAns == index) {
+                    statement.setFloat(3, 100);
+                } else statement.setFloat(3, 0);
+                statement.executeUpdate();
+                index++;
+            }
             statement.close();
 
         } catch (SQLException e) {
@@ -199,5 +219,29 @@ public class DataModel {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setCurrentQuizName(String currentQuizName) {
+        this.currentQuizName = currentQuizName;
+    }
+
+    public String getCurrentQuizName() {
+        return currentQuizName;
+    }
+
+    public TreeItem<String> getCurrentCategory() {
+        return CurrentCategory;
+    }
+
+    public void setCurrentCategory(TreeItem<String> currentCategory) {
+        CurrentCategory = currentCategory;
+    }
+
+    public Boolean getShowQues() {
+        return isShowQues;
+    }
+
+    public void setShowQues(Boolean showQues) {
+        isShowQues = showQues;
     }
 }

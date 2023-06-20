@@ -69,7 +69,6 @@ public class HelloController {
                 }
 
             } else toggle = 0;
-
         });
         bread.selectedCrumbProperty().addListener((obs, a, b) -> {
             if (toggle != 2) {
@@ -78,6 +77,7 @@ public class HelloController {
                     toggle = 2;
                     bread.selectedCrumbProperty().set(a);
                     toggle = 0;
+
                 } else {
 
                     try {
@@ -90,9 +90,9 @@ public class HelloController {
                         } else {
                             view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(breadCrumbBarModel.getBreadConnection().inverse().get(b))));
                             pane.getChildren().setAll(view);
+                            toggle = 1;
+                            breadCrumbBarModel.setCurrentView(breadCrumbBarModel.getBreadConnection().inverse().get(b));
                         }
-
-
                     } catch (IOException | NullPointerException e) {
                         throw new RuntimeException(e);
                     }
