@@ -32,6 +32,6 @@ public class QuizController {
 
     @FXML
     private void btnQuizEditing() {
-        breadCrumbBarModel.setCurrentView("EditQuiz.fxml");
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("EditQuiz.fxml"));
     }
 }

@@ -7,6 +7,7 @@ import javafx.scene.control.TreeItem;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataModel {
@@ -15,7 +16,6 @@ public class DataModel {
     private DataModel() {
 
     }
-
     public static DataModel getInstance() {
         if (instance == null) {
             instance = new DataModel();
@@ -35,6 +35,10 @@ public class DataModel {
     private String currentQuizName;
     private TreeItem<String> CurrentCategory;
     private Boolean isShowQues = false;
+    private Question currentQuestion;
+
+    private int totalQuestion;
+
 
     private void Initialize() {
         //
@@ -74,6 +78,17 @@ public class DataModel {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        //
+        query = "SELECT COUNT(QuestionID) FROM QUESTIONS";
+        try {
+            stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                totalQuestion = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public TreeItem<String> getRoot() {
@@ -99,41 +114,40 @@ public class DataModel {
 
     }
 
-    public void insertQuestion(TreeItem<String> parent, AikenQuestion question) {
+    public void insertQuestion(TreeItem<String> parent, String title, int type, Double mark) {
         try {
-            String sql = "INSERT INTO QUESTIONS (Content,typeOfQuestion,CategoryID) VALUES ( ?, ?, ?)";
+            String sql = "INSERT INTO QUESTIONS (Content,typeOfQuestion,CategoryID,mark) VALUES ( ?, ?, ?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            StringBuilder content = new StringBuilder();
-            for (String title : question.getTitle()) {
-                content.append(title);
-                content.append(" ");
-            }
-            statement.setString(1, content.toString());
-            statement.setInt(2, 1);
+            statement.setString(1, title);
+            statement.setInt(2, type);
             statement.setInt(3, categoryMap.get(parent));
+            statement.setDouble(4, mark);
             statement.executeUpdate();
             statement.close();
+            totalQuestion += 1;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void insertAnswers(int id, AikenQuestion question) {
+    public void insertAnswers(List<String> options, List<Double> percent, int id) {
         try {
             String sql = "INSERT INTO ANSWER (questionID, choice, percent) VALUES ( ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
-            int correctAns = question.getAnswer().charAt(0) - 65;
-            int index = 0;
 
-            for (String option : question.getOptions()) {
-                statement.setInt(1, id);
+            int i = 0;
+            for (String option : options) {
+                if (id == 0) {
+                    statement.setInt(1, totalQuestion);
+                } else statement.setInt(1, id);
+
                 statement.setString(2, option);
-                if (correctAns == index) {
-                    statement.setFloat(3, 100);
-                } else statement.setFloat(3, 0);
+
+                statement.setDouble(3, percent.get(i));
+
                 statement.executeUpdate();
-                index++;
+                i++;
             }
             statement.close();
 
@@ -160,6 +174,14 @@ public class DataModel {
         parent.setValue(mapName.get(parent) + " (" + this.numberOfQuestion.get(categoryMap.get(parent)) + ")");
     }
 
+    public int getTotalQuestion() {
+        return totalQuestion;
+    }
+
+    public void setTotalQuestion(int totalQuestion) {
+        this.totalQuestion = totalQuestion;
+    }
+
     public Integer getLastNode_id() {
         return lastNode_id;
     }
@@ -168,24 +190,46 @@ public class DataModel {
         return categoryMap;
     }
 
-    public ArrayList<String> getQuestionTitle(Integer id) {
-        ArrayList<String> questionTitle = new ArrayList<>();
+    public ArrayList<Question> getQuestion(Integer id) {
+        ArrayList<Question> questions = new ArrayList<>();
         try {
-            String sql = "SELECT Content FROM QUESTIONS WHERE CategoryID = ?";
+            String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
+
             while (rs.next()) {
-                questionTitle.add(rs.getString("Content"));
+                Question question = new Question();
+                question.setCategoryID(id);
+                question.setId(rs.getInt("QuestionID"));
+                question.addTitle(rs.getString("Content"));
+                question.setMark(rs.getDouble("mark"));
+                questions.add(question);
             }
             rs.close();
-
             statement.close();
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Question question : questions) {
+                String sql = "SELECT answerID, choice, percent FROM ANSWER WHERE questionID = ?";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, question.getId());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    question.getAnsID().add(rs.getInt("answerID"));
+                    question.getOptions().add(rs.getString("choice"));
+                    question.getPercent().add(rs.getDouble("percent"));
+                }
+                rs.close();
+                statement.close();
+            }
 
         } catch (SQLException | NullPointerException e) {
             e.printStackTrace();
         }
-        return questionTitle;
+        return questions;
     }
 
     public ArrayList<String> getQuizTitle() {
@@ -221,6 +265,33 @@ public class DataModel {
         }
     }
 
+    public void deleteAns(Question question, int currentAns) {
+        int j = 0;
+        for (int ignore : question.getAnsID()) {
+            if (j >= currentAns) question.getAnsID().remove(j);
+        }
+        try {
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.append("DELETE FROM ANSWER WHERE answerID NOT IN (");
+            for (int i = 0; i < currentAns; i++) {
+                sqlBuilder.append("?");
+                if (i < currentAns - 1) {
+                    sqlBuilder.append(",");
+                }
+            }
+            sqlBuilder.append(")");
+            sqlBuilder.append("AND questionID = ?");
+            PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString());
+            for (int i = 0; i < currentAns; i++) {
+                statement.setInt(i + 1, question.getAnsID().get(i));
+            }
+            statement.setInt(currentAns + 1, question.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setCurrentQuizName(String currentQuizName) {
         this.currentQuizName = currentQuizName;
     }
@@ -244,4 +315,37 @@ public class DataModel {
     public void setShowQues(Boolean showQues) {
         isShowQues = showQues;
     }
+
+    public Question getCurrentQuestion() {
+        return currentQuestion;
+    }
+
+    public void updateQuestion(Question question) {
+        try {
+            String sql = "UPDATE QUESTIONS SET Content = ?, typeOfQuestion = ?, mark = ? WHERE QuestionID = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, question.getTitle());
+            statement.setInt(2, question.isType());
+            statement.setDouble(3, question.getMark());
+            statement.setInt(4, question.getId());
+            statement.executeUpdate();
+            int index = 0;
+            for (Integer id : question.getAnsID()) {
+                sql = "UPDATE ANSWER SET choice = ?,percent =? WHERE answerID = ? ";
+                statement = conn.prepareStatement(sql);
+                statement.setString(1, question.getOptions().get(index));
+                statement.setDouble(2, question.getPercent().get(index));
+                statement.setInt(3, id);
+                statement.executeUpdate();
+                index++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setCurrentQuestion(Question currentQuestion) {
+        this.currentQuestion = currentQuestion;
+    }
+
 }

@@ -46,31 +46,32 @@
                 <Region prefHeight="369.0" prefWidth="0.0" HBox.hgrow="ALWAYS"/>
                 <VBox prefHeight="369.0" prefWidth="226.0" spacing="20.0">
                     <children>
-                        <MenuButton alignment="CENTER_RIGHT" graphicTextGap="0.0" minHeight="-Infinity"
+                        <MenuButton fx:id="category" alignment="CENTER_RIGHT" graphicTextGap="0.0" minHeight="-Infinity"
                                     minWidth="-Infinity" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0"
                                     style="-fx-border-color: black;" styleClass="menubutton">
                             <items>
                                 <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
                                     <content>
-                                        <TreeView prefHeight="200.0" prefWidth="200.0"/>
+                                        <TreeView fx:id="root" prefHeight="200.0" prefWidth="200.0"/>
                                     </content>
                                 </CustomMenuItem>
                             </items>
                             <graphic>
                                 <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="143.0">
                                     <children>
-                                        <Label prefHeight="18.0" prefWidth="123.0" text="Default"/>
+                                        <Label fx:id="label" prefHeight="18.0" prefWidth="123.0" text="Default"/>
                                         <FontIcon iconLiteral="fas-sort" iconSize="10" text=""
                                                   wrappingWidth="6.600037336349487"/>
                                     </children>
                                 </HBox>
                             </graphic>
                         </MenuButton>
-                        <TextField layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity"/>
+                        <TextField fx:id="quesName" layoutX="10.0" layoutY="10.0" minHeight="-Infinity"
+                                   minWidth="-Infinity"/>
                         <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="226.0"/>
                         <HBox>
                             <children>
-                                <TextField minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0"
+                                <TextField fx:id="mark" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0"
                                            prefWidth="88.0"/>
                             </children>
                         </HBox>
@@ -98,17 +99,19 @@
                                 <Insets left="80.0"/>
                             </VBox.margin>
                         </Button>
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0"
-                                prefWidth="252.0" styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITING">
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+                                onAction="#btnSaveAndContinueEditing" prefHeight="26.0" prefWidth="252.0"
+                                styleClass="editionbutton" text="SAVE CHANGES AND CONTINUE EDITING">
                             <VBox.margin>
                                 <Insets left="85.0"/>
                             </VBox.margin>
                         </Button>
                         <HBox spacing="5.0">
                             <children>
-                                <Button mnemonicParsing="false" style="-fx-background-color: #C02424;"
-                                        text="SAVE CHANGES" textFill="WHITE"/>
-                                <Button mnemonicParsing="false" styleClass="editionbutton" text="CANCEL"/>
+                                <Button mnemonicParsing="false" onAction="#btnSaveChanges"
+                                        style="-fx-background-color: #C02424;" text="SAVE CHANGES" textFill="WHITE"/>
+                                <Button mnemonicParsing="false" onAction="#btnCancel" styleClass="editionbutton"
+                                        text="CANCEL"/>
                             </children>
                             <VBox.margin>
                                 <Insets left="80.0"/>

@@ -150,6 +150,10 @@ bread-crumb-bar {
     -fx-padding: 0;
 }
 
+.menubutton:disabled {
+    -fx-opacity: 80%;
+}
+
 .combo-box {
     -fx-background-color: transparent;
     -fx-border-color: black;

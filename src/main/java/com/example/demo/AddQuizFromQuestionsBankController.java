@@ -61,9 +61,9 @@ public class AddQuizFromQuestionsBankController {
 
         int i = 0;
         if (root.getSelectionModel().getSelectedItem() != null) {
-            for (String title : dataModel.getQuestionTitle(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
+            for (Question question : dataModel.getQuestion(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
 
-                CustomCheckBox customCheckBox = new CustomCheckBox(title);
+                CustomCheckBox customCheckBox = new CustomCheckBox(question);
                 if (i % 2 == 0) {
                     customCheckBox.setStyle("-fx-background-color: white");
                 } else customCheckBox.setStyle("-fx-background-color: lightgray");

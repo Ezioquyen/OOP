@@ -34,7 +34,7 @@ public class ThiCuoiKyController {
                 breadCrumbBarModel.removeQuizView();
                 dataModel.setCurrentQuizName(quizCheckBox.getChildText());
                 breadCrumbBarModel.insertQuizView(quizCheckBox.getChildText());
-                breadCrumbBarModel.setCurrentView("quiz.fxml");
+                breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("quiz.fxml"));
             });
             contentArea.getChildren().add(quizCheckBox);
         }

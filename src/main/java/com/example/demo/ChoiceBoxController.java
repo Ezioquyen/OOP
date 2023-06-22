@@ -22,13 +22,8 @@ public class ChoiceBoxController {
     private Label choice;
     @FXML
     private TextArea textArea;
-
     @FXML
     private void initialize() {
-        List<? extends Number> options = Arrays.asList(0, 100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40, 33.33333,
-                30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5,
-                -5, -10, -11.11111, -12.5, -14.28571, -16.66667, -20, -25,
-                -30, -33.33333, -40, -50, -60, -66.66667, -70, -75, -80, -83.33333);
         List<String> options_String = Arrays.asList("None", "100%", "90%", "83.33333%", "80%", "75%", "70%", "66.66667%", "60%",
                 "50%", "40%", "33.33333%", "30%", "25%", "20%", "16.66667%", "14.28571%",
                 "12.5%", "11.11111%", "10%", "5%", "-5%", "-10%", "-11.11111%", "-12.5%",
@@ -41,4 +36,15 @@ public class ChoiceBoxController {
         this.choice.setText(text);
     }
 
+    public TextArea getTextArea() {
+        return textArea;
+    }
+
+    public void setTextArea(TextArea textArea) {
+        this.textArea = textArea;
+    }
+
+    public ComboBox<String> getComboBox() {
+        return comboBox;
+    }
 }

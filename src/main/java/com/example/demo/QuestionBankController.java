@@ -6,10 +6,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.util.IOUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFPictureData;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -77,6 +75,11 @@ public class QuestionBankController {
             }
         });
         root.setRoot(dataModel.getRoot());
+        if (dataModel.getCurrentCategory() != null) {
+            root.getSelectionModel().select(dataModel.getCurrentCategory());
+            label.setText(root.getSelectionModel().getSelectedItem().getValue());
+            showQuestion();
+        }
         root.getSelectionModel().selectedItemProperty().addListener(e -> {
             if (showQuesFromCate.isSelected()) {
                 showQuestion.getChildren().clear();
@@ -95,24 +98,21 @@ public class QuestionBankController {
             tabPane.getSelectionModel().select(Integer.parseInt(breadCrumbBarModel.getCurrentView()));
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, b, a) -> {
             if (a != b) {
+                breadCrumbBarModel.setToggle(true);
                 switch (tabPane.getSelectionModel().getSelectedIndex()) {
                     case 1 -> {
-                        breadCrumbBarModel.setTabCheck(true);
-                        breadCrumbBarModel.setCurrentView("1");
+                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("1"));
                     }
                     case 2 -> {
-                        breadCrumbBarModel.setTabCheck(true);
-                        breadCrumbBarModel.setCurrentView("2");
+                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("2"));
 
                     }
                     case 3 -> {
-                        breadCrumbBarModel.setTabCheck(true);
-                        breadCrumbBarModel.setCurrentView("3");
+                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("3"));
 
                     }
                     default -> {
-                        breadCrumbBarModel.setTabCheck(true);
-                        breadCrumbBarModel.setCurrentView("questionbank.fxml");
+                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
 
                     }
                 }
@@ -159,7 +159,7 @@ public class QuestionBankController {
 
     @FXML
     private void btnAddQuestion() {
-        breadCrumbBarModel.setCurrentView("add-MTPCQ.fxml");
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("add-MTPCQ.fxml"));
     }
 
     @FXML
@@ -167,15 +167,15 @@ public class QuestionBankController {
         dataModel.insertCategory(root1.getSelectionModel().getSelectedItem(), catogeryName.getText());
     }
 
-    public List<AikenQuestion> readAikenQuestions(File file) {
-        List<AikenQuestion> questions = new ArrayList<>();
+    public List<Question> readAikenQuestions(File file) {
+        List<Question> questions = new ArrayList<>();
         boolean start = false;
         boolean hasContent = false;
         boolean hasAnswer = false;
         int countLine = 0;
         int contentLine = 0;
         int countOption = 0;
-        AikenQuestion question = new AikenQuestion();
+        Question question = new Question();
         if (file.getName().substring(file.getName().lastIndexOf(".") + 1).equalsIgnoreCase("docx")) {
             try (FileInputStream fis = new FileInputStream(file);
                  XWPFDocument document = new XWPFDocument(fis)) {
@@ -207,7 +207,14 @@ public class QuestionBankController {
                         question.addOption(text.substring("A. ".length()).trim());
                         countOption++;
                     } else if (hasContent && countOption >= 2 && text.matches("^ANSWER:\\s[A-Z]")) {
-                        question.setAnswer(text.substring("ANSWER:".length()).trim());
+                        int i = 0;
+                        for (String option : question.getOptions()) {
+                            if (i == (int) text.substring("ANSWER:".length()).trim().charAt(0) - 65) {
+                                question.getPercent().add(100.0);
+                            } else question.getPercent().add((double) 0);
+                            i++;
+                        }
+                        question.typeDetect();
                         hasAnswer = true;
                     } else if (hasContent && countOption < 2 && text.matches("^ANSWER:\\s[A-Z]")) {
                         System.out.println("Error 3 at line: " + countLine);
@@ -218,7 +225,7 @@ public class QuestionBankController {
                     }
                     if (hasAnswer) {
                         questions.add(question);
-                        question = new AikenQuestion();
+                        question = new Question();
                         countOption = 0;
                         start = false;
                         hasContent = false;
@@ -258,7 +265,14 @@ public class QuestionBankController {
                         question.addOption(text.substring("A. ".length()).trim());
                         countOption++;
                     } else if (hasContent && countOption >= 2 && text.matches("^ANSWER:\\s[A-Z]")) {
-                        question.setAnswer(text.substring("ANSWER:".length()).trim());
+                        int i = 0;
+                        for (String ignored : question.getOptions()) {
+                            if (i == text.substring("ANSWER:".length()).trim().charAt(0) - 65) {
+                                question.getPercent().add(100.0);
+                            } else question.getPercent().add((double) 0);
+                            i++;
+                        }
+                        question.typeDetect();
                         hasAnswer = true;
                     } else if (hasContent && countOption < 2 && text.matches("^ANSWER:\\s[A-Z]")) {
                         System.out.println("Error 3 at line: " + countLine);
@@ -269,7 +283,7 @@ public class QuestionBankController {
                     }
                     if (hasAnswer) {
                         questions.add(question);
-                        question = new AikenQuestion();
+                        question = new Question();
                         countOption = 0;
                         start = false;
                         hasContent = false;
@@ -316,11 +330,9 @@ public class QuestionBankController {
 
                 }
                 for (File file : files) {
-                    int j = 1;
-                    for (AikenQuestion question : readAikenQuestions(file)) {
-                        dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question);
-                        dataModel.insertAnswers(j, question);
-                        j++;
+                    for (Question question : readAikenQuestions(file)) {
+                        dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0);
+                        dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0);
                         count++;
                     }
                 }
@@ -371,9 +383,13 @@ public class QuestionBankController {
 
         int i = 0;
         if (root.getSelectionModel().getSelectedItem() != null) {
-            for (String title : dataModel.getQuestionTitle(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
+            for (Question question : dataModel.getQuestion(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
 
-                CustomCheckBox customCheckBox = new CustomCheckBox(title);
+                CustomCheckBox customCheckBox = new CustomCheckBox(question);
+                customCheckBox.getButton().setOnAction(event -> {
+                    dataModel.setCurrentQuestion(customCheckBox.getQuestion());
+                    breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("edit-MTPCQ.fxml"));
+                });
                 if (i % 2 == 0) {
                     customCheckBox.setStyle("-fx-background-color: white");
                 } else customCheckBox.setStyle("-fx-background-color: lightgray");

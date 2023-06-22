@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 
 import javafx.scene.image.Image;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
@@ -20,12 +21,12 @@ public class HelloController {
     @FXML
     private VBox pane;
     @FXML
-    private BreadCrumbBar<String> bread;
+    private HBox bar;
     private BreadCrumbBarModel breadCrumbBarModel;
     private DataModel dataModel;
     @FXML
     private Circle circle_avatar;
-    private VBox tmp;
+    /*private VBox tmp;*/
     private int toggle = 0;
 
     public void initDataModel(DataModel dataModel) {
@@ -42,66 +43,6 @@ public class HelloController {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.breadCrumbBarModel = breadCrumbBarModel;
-
-        breadCrumbBarModel.currentViewProperty().addListener((obs, oldView, newView) -> {
-            if (toggle != 1) {
-                toggle = 2;
-                if (!Objects.equals(newView, oldView) && newView != null) {
-                    this.breadCrumbBarModel.setCurrentTree(this.breadCrumbBarModel.getBreadConnection().get(this.breadCrumbBarModel.getCurrentView()));
-                    bread.selectedCrumbProperty().set(this.breadCrumbBarModel.getCurrentTree());
-                    try {
-                        VBox view = null;
-                        if (Objects.equals(breadCrumbBarModel.getBreadConnection().get(newView).getParent().getValue(), "Question Bank")) {
-                            if (!breadCrumbBarModel.isTabCheck()) {
-                                view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("questionbank.fxml")));
-                                pane.getChildren().setAll(view);
-                            } else breadCrumbBarModel.setTabCheck(false);
-                        } else {
-                            view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(newView)));
-                            pane.getChildren().setAll(view);
-                        }
-
-
-                    } catch (IOException | NullPointerException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-
-            } else toggle = 0;
-        });
-        bread.selectedCrumbProperty().addListener((obs, a, b) -> {
-            if (toggle != 2) {
-                if (Objects.equals(breadCrumbBarModel.getBreadConnection().inverse().get(b), null)) {
-
-                    toggle = 2;
-                    bread.selectedCrumbProperty().set(a);
-                    toggle = 0;
-
-                } else {
-
-                    try {
-                        VBox view = null;
-                        if (Objects.equals(b.getParent().getValue(), "Question Bank")) {
-                            if (!breadCrumbBarModel.isTabCheck()) {
-                                view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("questionbank.fxml")));
-                                pane.getChildren().setAll(view);
-                            } else breadCrumbBarModel.setTabCheck(false);
-                        } else {
-                            view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(breadCrumbBarModel.getBreadConnection().inverse().get(b))));
-                            pane.getChildren().setAll(view);
-                            toggle = 1;
-                            breadCrumbBarModel.setCurrentView(breadCrumbBarModel.getBreadConnection().inverse().get(b));
-                        }
-                    } catch (IOException | NullPointerException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            } else toggle = 0;
-
-        });
-
     }
 
     @FXML
@@ -113,36 +54,64 @@ public class HelloController {
         }
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
-        bread.selectedCrumbProperty().set(breadCrumbBarModel.getCurrentTree());
+        bar.getChildren().add(breadCrumbBarModel.getBreadCrumbBar());
+        //Listener
+        breadCrumbBarModel.getBreadCrumbBar().selectedCrumbProperty().addListener((obs, oldVal, newVal) -> {
+            if (!breadCrumbBarModel.isToggle()) {
+                if (breadCrumbBarModel.getBreadConnection().inverse().get(newVal) == null) {
+                    breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(oldVal);
+                } else {
+                    if (Objects.equals(newVal.getParent().getValue(), "Question Bank")) {
+                        try {
+                            breadCrumbBarModel.setCurrentView(breadCrumbBarModel.getBreadConnection().inverse().get(newVal));
+                            VBox vBox = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("questionbank.fxml")));
+                            pane.getChildren().setAll(vBox);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        VBox vBox = null;
+                        try {
+                            vBox = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(breadCrumbBarModel.getBreadConnection().inverse().get(newVal))));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        pane.getChildren().setAll(vBox);
+                    }
+                }
+            }
+            breadCrumbBarModel.setToggle(false);
+
+        });
         //tạo avatar
         Image img = new Image(Objects.requireNonNull(getClass().getResource("/hello.jfif")).toExternalForm());
         circle_avatar.setFill(new ImagePattern(img));
-        toggle = 0;
     }
 
     @FXML
     private void btnQuestions() {
-        breadCrumbBarModel.setCurrentView("questionbank.fxml");
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
     }
 
     @FXML
     private void btnCategory() {
-        breadCrumbBarModel.setCurrentView("1");
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("1"));
     }
 
     @FXML
     private void btnImport() {
-        breadCrumbBarModel.setCurrentView("2");
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("2"));
+        ;
     }
 
     @FXML
     private void btnExport() {
-        breadCrumbBarModel.setCurrentView("3");
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("3"));
     }
 
     @FXML
     private void btnTurnOnE() {
-        breadCrumbBarModel.setCurrentView("add-quiz.fxml");
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("add-quiz.fxml"));
     }
 
 }

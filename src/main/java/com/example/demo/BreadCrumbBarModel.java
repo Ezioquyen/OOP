@@ -24,20 +24,7 @@ public class BreadCrumbBarModel {
     }
 
     private final ObjectProperty<String> currentView = new SimpleObjectProperty<>();
-    private final ObjectProperty<TreeItem<String>> currentTree = new SimpleObjectProperty<>();
     private final BiMap<String, TreeItem<String>> breadConnection = HashBiMap.create();
-
-    public TreeItem<String> getCurrentTree() {
-        return currentTree.get();
-    }
-
-    public void setCurrentTree(TreeItem<String> currentTree) {
-        this.currentTree.set(currentTree);
-    }
-
-    public ObjectProperty<String> currentViewProperty() {
-        return currentView;
-    }
 
     public final String getCurrentView() {
         return currentView.get();
@@ -51,19 +38,24 @@ public class BreadCrumbBarModel {
         return this.breadConnection;
     }
 
-    private boolean tabCheck = false;
-    private BreadCrumbBar<String> breadCrumbBar;
+    private final BreadCrumbBar<String> breadCrumbBar = new BreadCrumbBar<>();
 
-
-    public boolean isTabCheck() {
-        return tabCheck;
+    public BreadCrumbBar<String> getBreadCrumbBar() {
+        return breadCrumbBar;
     }
 
-    public void setTabCheck(boolean tabCheck) {
-        this.tabCheck = tabCheck;
+    private boolean toggle = false;
+
+    public boolean isToggle() {
+        return toggle;
+    }
+
+    public void setToggle(boolean toggle) {
+        this.toggle = toggle;
     }
 
     private final TreeItem<String> thiCuoiKy = new TreeItem<>("THI CUỐI KỲ");
+
 
     public TreeItem<String> getThiCuoiKy() {
         return thiCuoiKy;
@@ -78,11 +70,11 @@ public class BreadCrumbBarModel {
         getBreadConnection().put("EditQuiz.fxml", edit);
     }
 
+
     public void removeQuizView() {
         getThiCuoiKy().getChildren().remove(getBreadConnection().get("quiz.fxml"));
         getBreadConnection().remove("quiz.fxml", getBreadConnection().get("quiz.fxml"));
     }
-
     private void init() {
         TreeItem<String> myCourse = new TreeItem<>("My Course");
         TreeItem<String> questionBank = new TreeItem<>("Question Bank");
@@ -92,20 +84,21 @@ public class BreadCrumbBarModel {
         TreeItem<String> category = new TreeItem<>("Category");
         TreeItem<String> importVar = new TreeItem<>("Import");
         TreeItem<String> exportVar = new TreeItem<>("Export");
+        TreeItem<String> editMultipleChoiceQuestion = new TreeItem<>("Edit multiple choice question");
         myCourse.getChildren().add(thiCuoiKy);
         thiCuoiKy.getChildren().add(questionBank);
         thiCuoiKy.getChildren().add(addQuiz);
         questionBank.getChildren().addAll(question, category, importVar, exportVar);
-        question.getChildren().add(addMTPCQ);
-        this.currentView.set("thi-cuoi-ky.fxml");
-        this.currentTree.set(thiCuoiKy);
+        question.getChildren().addAll(addMTPCQ, editMultipleChoiceQuestion);
         breadCrumbBar.selectedCrumbProperty().set(thiCuoiKy);
         this.breadConnection.put("thi-cuoi-ky.fxml", thiCuoiKy);
         this.breadConnection.put("add-MTPCQ.fxml", addMTPCQ);
+        this.breadConnection.put("edit-MTPCQ.fxml", editMultipleChoiceQuestion);
         this.breadConnection.put("questionbank.fxml", question);
         this.breadConnection.put("add-quiz.fxml", addQuiz);
         this.breadConnection.put("1", category);
         this.breadConnection.put("2", importVar);
         this.breadConnection.put("3", exportVar);
+
     }
 }
