@@ -4,10 +4,12 @@ import javafx.scene.control.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.controlsfx.control.CheckListView;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -59,7 +61,7 @@ public class QuestionBankController {
 
     @FXML
     private void initialize() {
-        initDataModel(DataModel.getInstance());
+        initDataModel(DataModel.getInstance());// design partten single ton
         initModel(BreadCrumbBarModel.getInstance());
         showInfor.setVisible(dataModel.getShowQues());
         showQuesFromCate.setSelected(dataModel.getShowQues());
@@ -380,8 +382,7 @@ public class QuestionBankController {
     }
 
     private void showQuestion() {
-
-        int i = 0;
+        ListView<CustomCheckBox> list = new ListView<>();
         if (root.getSelectionModel().getSelectedItem() != null) {
             for (Question question : dataModel.getQuestion(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
 
@@ -390,12 +391,13 @@ public class QuestionBankController {
                     dataModel.setCurrentQuestion(customCheckBox.getQuestion());
                     breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("edit-MTPCQ.fxml"));
                 });
-                if (i % 2 == 0) {
-                    customCheckBox.setStyle("-fx-background-color: white");
-                } else customCheckBox.setStyle("-fx-background-color: lightgray");
-                showQuestion.getChildren().add(customCheckBox);
-                i++;
+
+                list.getItems().add(customCheckBox);
             }
+            list.getSelectionModel().selectedItemProperty().addListener(observable -> {
+                list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(!list.getSelectionModel().getSelectedItem().getCheckBox().isSelected());
+            });
+            showQuestion.getChildren().add(list);
         }
     }
 }

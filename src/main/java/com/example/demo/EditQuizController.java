@@ -36,7 +36,7 @@ public class EditQuizController {
         stage.initStyle(StageStyle.UNDECORATED);
         FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("AddQuesFromBankQuestions.fxml")));
         Parent root = fxmlLoader.load();
-        AddQuizFromQuestionsBankController controller = fxmlLoader.getController();
+        AddQuesFromQuestionsBankController controller = fxmlLoader.getController();
         controller.getButton().setOnAction(e -> {
             stage.close();
         });

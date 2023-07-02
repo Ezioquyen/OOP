@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-      prefWidth="718.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AddQuizFromQuestionsBankController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0"
+      prefWidth="718.0" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.AddQuesFromQuestionsBankController">
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0">
             <children>
@@ -35,10 +35,9 @@
                 </Button>
             </children>
       </HBox>
-        <ScrollPane fitToWidth="true" prefHeight="312.0" prefWidth="678.0" style="-fx-background-color: white;"
-                    VBox.vgrow="ALWAYS">
+        <ScrollPane fitToWidth="true" prefHeight="312.0" prefWidth="678.0" VBox.vgrow="ALWAYS">
             <content>
-                <VBox prefHeight="550.0" prefWidth="663.0" spacing="5.0" style="-fx-background-color: white;">
+                <VBox prefHeight="1000.0" prefWidth="663.0" spacing="5.0">
                     <children>
                         <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="122.0" prefWidth="600.0">
                             <children>
@@ -117,8 +116,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                        <VBox fx:id="showQuestion" prefHeight="200.0" prefWidth="100.0"
-                              style="-fx-background-color: white;"/>
+                        <VBox fx:id="showQuestion" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS"/>
                </children>
                <padding>
                    <Insets left="10.0" top="10.0"/>
@@ -126,8 +124,10 @@
             </VBox>
          </content>
       </ScrollPane>
+        <Button mnemonicParsing="false" prefHeight="57.0" prefWidth="231.0" styleClass="editionbutton"
+                text="ADD SELECTED QUESTION TO THE QUIZ"/>
    </children>
    <padding>
-       <Insets left="20.0" right="20.0" top="20.0"/>
+       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
    </padding>
 </VBox>

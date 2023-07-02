@@ -246,6 +246,25 @@ bread-crumb-bar {
     -fx-background-color: #00ACEA;
 }
 
+.scroll-pane {
+    -fx-background-insets: 0;
+}
+
 .scroll-pane > .viewport {
     -fx-background-color: white;
+}
+
+.list-view {
+    -fx-background-insets: 0;
+    -fx-border-color: white;
+}
+
+.text-area {
+    -fx-background-color: white;
+    -fx-border-color: black;
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: black;
 }

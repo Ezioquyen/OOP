@@ -7,23 +7,29 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.scene.control.Button;
 
-public class CustomCheckBox extends HBox {
+public class CustomCheckBox extends StackPane {
     private final CheckBox checkBox = new CheckBox("");
     private final Button button = new Button("Edit");
     private final Label label = new Label();
     private Question question;
-
+    private HBox box = new HBox();
 
     public CustomCheckBox(Question question) {
+        setAlignment(Pos.CENTER_RIGHT);
+        setPrefWidth(Region.USE_COMPUTED_SIZE);
+        setPrefHeight(Region.USE_COMPUTED_SIZE);
+        setPadding(new Insets(0, 5, 0, 0));
         this.question = question;
-        setPrefHeight(30);
-        setAlignment(Pos.CENTER_LEFT);
-        setPadding(new Insets(0, 0, 0, 5));
-        setSpacing(5);
+
+        box.setPrefHeight(30);
+        box.setAlignment(Pos.CENTER_LEFT);
+        box.setPadding(new Insets(0, 0, 0, 5));
+        box.setSpacing(5);
 
         label.setText(question.getTitle());
         label.setMaxWidth(1000);
@@ -38,8 +44,10 @@ public class CustomCheckBox extends HBox {
         FontIcon fontIcon1 = new FontIcon("fas-caret-down");
         fontIcon1.setIconColor(Color.valueOf("#00ACEA"));
         button.setGraphic(fontIcon1);
-        getChildren().addAll(checkBox, fontIcon, label, region, button);
-        setHgrow(region, Priority.ALWAYS);
+
+        box.getChildren().addAll(checkBox, fontIcon, label, region, button);
+        HBox.setHgrow(region, Priority.ALWAYS);
+        getChildren().add(box);
     }
 
     public Button getButton() {
@@ -64,5 +72,9 @@ public class CustomCheckBox extends HBox {
 
     public void setLabel(String text) {
         this.label.setText(text);
+    }
+
+    public HBox getBox() {
+        return box;
     }
 }

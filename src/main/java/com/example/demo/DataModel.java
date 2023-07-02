@@ -41,7 +41,6 @@ public class DataModel {
 
 
     private void Initialize() {
-        //
 
         String query = "SELECT COUNT(CategoryID) AS quantity, CategoryID FROM QUESTIONS GROUP BY CategoryID";
         Statement stm;
@@ -56,7 +55,7 @@ public class DataModel {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //
+
         query = "SELECT * FROM CATEGORIES";
         try {
             stm = conn.createStatement();
