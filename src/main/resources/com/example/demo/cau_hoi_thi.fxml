@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="255.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Cau_hoi_thiController">
+   <children>
+      <VBox layoutX="20.0" layoutY="10.0" prefHeight="161.0" prefWidth="118.0" AnchorPane.bottomAnchor="78.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <Label fx:id="question_number" text="Question" textFill="#c32f24">
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Not yet answered " wrappingWidth="64.30975341796875">
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+            </Text>
+            <Text layoutX="10.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Marked of out  " wrappingWidth="107.01091766357422">
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+            </Text>
+            <Label fx:id="markofquestion" layoutX="20.0" layoutY="20.0" text="1.00">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label layoutX="20.0" layoutY="20.0" text="Flag question">
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <VBox fx:id="layout_option" layoutX="199.0" layoutY="33.0" prefHeight="200.0" prefWidth="715.0" style="-fx-background-color: #E7F3F5;" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <Text fx:id="question" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="700.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="15.0" top="5.0" />
+               </VBox.margin>
+            </Text>
+            <RadioButton fx:id="option1" mnemonicParsing="false" text="a.   ">
+               <VBox.margin>
+                  <Insets left="30.0" top="25.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="option2" layoutX="10.0" layoutY="30.0" mnemonicParsing="false" text="b.   ">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="option3" layoutX="40.0" layoutY="88.0" mnemonicParsing="false" text="c.   ">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="option4" layoutX="10.0" layoutY="105.0" mnemonicParsing="false" text="d.   ">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="option5" layoutX="40.0" layoutY="144.0" mnemonicParsing="false" text="e.   ">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+            </RadioButton>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
