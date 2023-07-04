@@ -268,3 +268,72 @@ bread-crumb-bar {
     -fx-background-color: white;
     -fx-border-color: black;
 }
+
+.list-view {
+    -fx-selection-bar: white;
+    -fx-selection-bar-non-focused: white;
+    -fx-background-color: white;
+}
+
+/* Remove spacing */
+.pagination > .pagination-control > .control-box {
+    -fx-spacing: 0;
+}
+
+/* You can control the actual button sizes here */
+.pagination > .pagination-control > .control-box > .number-button,
+.pagination > .pagination-control > .control-box > .bullet-button,
+.pagination > .pagination-control > .control-box > .left-arrow-button,
+.pagination > .pagination-control > .control-box > .right-arrow-button {
+    -fx-background-insets: 0, 1;
+    -fx-background-color: lightgray, #FAFAFA;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+}
+
+/* Colors on hover */
+.pagination > .pagination-control > .control-box > .number-button:hover,
+.pagination > .pagination-control > .control-box > .bullet-button:hover,
+.pagination > .pagination-control > .control-box > .left-arrow-button:hover,
+.pagination > .pagination-control > .control-box > .right-arrow-button:hover {
+    -fx-background-insets: 0;
+    -fx-background-color: #009FE5;
+}
+
+/* Selected toggle color */
+.pagination > .pagination-control > .control-box > .number-button:selected,
+.pagination > .pagination-control > .control-box > .bullet-button:selected {
+    -fx-background-insets: 0;
+    -fx-background-color: #009FE5;
+    -fx-text-fill: white;
+}
+
+.pagination {
+    -fx-page-information-visible: false;
+}
+
+.pagination > .arrow {
+    -fx-background-color: #009FE5;
+}
+
+.pagination > .pagination-control > .control-box {
+    -fx-spacing: 0;
+    -fx-font-size: 12;
+}
+
+.pagination {
+    -fx-rotate: 180;
+}
+
+.pagination .pagination-control {
+    -fx-rotate: 180;
+}
+
+.pagination .page {
+    -fx-rotate: 180;
+}
+
+/*
+.pagination.pagination-control{
+    -fx-translate-x: -100px;
+}*/

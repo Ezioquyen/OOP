@@ -27,7 +27,7 @@ public class QuizController {
     private void initialize() {
         initModel(BreadCrumbBarModel.getInstance());
         initDataModel(DataModel.getInstance());
-        quizName.setText(dataModel.getCurrentQuizName());
+        quizName.setText(dataModel.getCurrentQuiz().getName());
     }
 
     @FXML

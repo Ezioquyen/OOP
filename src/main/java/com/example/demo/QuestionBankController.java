@@ -40,6 +40,8 @@ public class QuestionBankController {
     @FXML
     private VBox showInfor;
     @FXML
+    private ListView<CustomCheckBox> list;
+    @FXML
     private VBox showQuestion;
     private DataModel dataModel;
     private List<File> files;
@@ -63,28 +65,20 @@ public class QuestionBankController {
     private void initialize() {
         initDataModel(DataModel.getInstance());// design partten single ton
         initModel(BreadCrumbBarModel.getInstance());
-        showInfor.setVisible(dataModel.getShowQues());
-        showQuesFromCate.setSelected(dataModel.getShowQues());
+        showInfor.setVisible(false);
         showQuesFromCate.selectedProperty().addListener(e -> {
             if (showQuesFromCate.isSelected()) {
                 showInfor.setVisible(true);
-                dataModel.setShowQues(true);
                 showQuestion();
             } else {
-                dataModel.setShowQues(false);
-                showQuestion.getChildren().clear();
+                list.getItems().clear();
                 showInfor.setVisible(false);
             }
         });
         root.setRoot(dataModel.getRoot());
-        if (dataModel.getCurrentCategory() != null) {
-            root.getSelectionModel().select(dataModel.getCurrentCategory());
-            label.setText(root.getSelectionModel().getSelectedItem().getValue());
-            showQuestion();
-        }
         root.getSelectionModel().selectedItemProperty().addListener(e -> {
             if (showQuesFromCate.isSelected()) {
-                showQuestion.getChildren().clear();
+                list.getItems().clear();
                 showQuestion();
             }
             updateCategorySelection();
@@ -382,7 +376,7 @@ public class QuestionBankController {
     }
 
     private void showQuestion() {
-        ListView<CustomCheckBox> list = new ListView<>();
+
         if (root.getSelectionModel().getSelectedItem() != null) {
             for (Question question : dataModel.getQuestion(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
 
@@ -395,9 +389,10 @@ public class QuestionBankController {
                 list.getItems().add(customCheckBox);
             }
             list.getSelectionModel().selectedItemProperty().addListener(observable -> {
-                list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(!list.getSelectionModel().getSelectedItem().getCheckBox().isSelected());
+                if (list.getSelectionModel().getSelectedItem() != null) {
+                    list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(!list.getSelectionModel().getSelectedItem().getCheckBox().isSelected());
+                }
             });
-            showQuestion.getChildren().add(list);
         }
     }
 }

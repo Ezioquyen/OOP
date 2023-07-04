@@ -11,9 +11,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddQuesFromQuestionsBankController {
     @FXML
     private Button button;
+
     @FXML
     private TreeView<String> root;
     @FXML
@@ -24,7 +28,13 @@ public class AddQuesFromQuestionsBankController {
     private VBox showQuestion;
     @FXML
     private Label label;
+    @FXML
+    private Button btnADD;
     private DataModel dataModel;
+    private final ListView<CustomCheckBox> list = new ListView<>();
+
+
+    private final List<CustomCheckBox> questions = new ArrayList<>();
 
     private void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -37,24 +47,26 @@ public class AddQuesFromQuestionsBankController {
     private void initialize() {
         initDataModel(DataModel.getInstance());
         showInfor.setVisible(false);
+        list.setOnMouseClicked(null);
         showQuesFromCate.selectedProperty().addListener(e -> {
             if (showQuesFromCate.isSelected()) {
                 showInfor.setVisible(true);
                 showQuestion();
             } else {
-                showQuestion.getChildren().clear();
+                list.getItems().clear();
                 showInfor.setVisible(false);
-
             }
         });
         root.setRoot(dataModel.getRoot());
         root.getSelectionModel().selectedItemProperty().addListener(e -> {
             if (showQuesFromCate.isSelected()) {
-                showQuestion.getChildren().clear();
+                list.getItems().clear();
                 showQuestion();
             }
             label.setText(root.getSelectionModel().getSelectedItem().getValue());
         });
+        showQuestion.getChildren().add(list);
+        VBox.setVgrow(list, Priority.ALWAYS);
     }
 
     public Button getButton() {
@@ -62,9 +74,9 @@ public class AddQuesFromQuestionsBankController {
     }
 
     private void showQuestion() {
-        ListView<CustomCheckBox> list = new ListView<>();
+
         if (root.getSelectionModel().getSelectedItem() != null) {
-            for (Question question : dataModel.getQuestion(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()))) {
+            for (Question question : dataModel.getQuestionExcept(dataModel.getCategoryMap().get(root.getSelectionModel().getSelectedItem()), dataModel.getCurrentQuiz().getQuizID())) {
                 CustomCheckBox customCheckBox = new CustomCheckBox(question);
                 customCheckBox.getBox().getChildren().remove(customCheckBox.getButton());
                 FontIcon icon = new FontIcon("fas-plus");
@@ -74,12 +86,37 @@ public class AddQuesFromQuestionsBankController {
                 customCheckBox.getBox().getChildren().add(0, icon);
                 customCheckBox.getChildren().add(icon2);
                 list.getItems().add(customCheckBox);
+                customCheckBox.getCheckBox().selectedProperty().addListener(e -> {
+                    if (customCheckBox.getCheckBox().isSelected()) {
+                        questions.add(customCheckBox);
+                    } else questions.remove(customCheckBox);
+                });
             }
-            list.getSelectionModel().selectedItemProperty().addListener(observable -> {
-                list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(!list.getSelectionModel().getSelectedItem().getCheckBox().isSelected());
-            });
-            showQuestion.getChildren().add(list);
-            VBox.setVgrow(list, Priority.ALWAYS);
+            /*list.getSelectionModel().selectedItemProperty().addListener(e -> {
+                list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(true);
+            });*/
         }
+    }
+
+    public ListView<CustomCheckBox> getList() {
+        return list;
+    }
+
+    public List<CustomCheckBox> getQuestions() {
+        return questions;
+    }
+
+    public Button getBtnADD() {
+        return btnADD;
+    }
+
+    @FXML
+    private void btnAdd() {
+        for (CustomCheckBox question : questions) {
+            dataModel.insertQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
+            list.getItems().remove(question);
+        }
+        list.getSelectionModel().clearSelection();
+        questions.clear();
     }
 }

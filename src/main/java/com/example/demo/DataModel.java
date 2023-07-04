@@ -32,9 +32,8 @@ public class DataModel {
     private Integer count = 0;
     private final Map<Integer, Integer> numberOfQuestion = new HashMap<>();
     private final Map<TreeItem<String>, String> mapName = new HashMap<>();
-    private String currentQuizName;
+    private Quiz currentQuiz;
     private TreeItem<String> CurrentCategory;
-    private Boolean isShowQues = false;
     private Question currentQuestion;
 
     private int totalQuestion;
@@ -231,14 +230,18 @@ public class DataModel {
         return questions;
     }
 
-    public ArrayList<String> getQuizTitle() {
-        ArrayList<String> quizTitle = new ArrayList<>();
+    public ArrayList<Quiz> getQuiz() {
+        ArrayList<Quiz> quizs = new ArrayList<>();
         try {
-            String sql = "SELECT name FROM QUIZ";
+            String sql = "SELECT name,time,quizID FROM QUIZ";
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                quizTitle.add(rs.getString("name"));
+                Quiz quiz = new Quiz();
+                quiz.setName(rs.getString("name"));
+                quiz.setQuizID(rs.getInt("quizID"));
+                quiz.setTime(rs.getDouble("time"));
+                quizs.add(quiz);
             }
             rs.close();
 
@@ -247,7 +250,7 @@ public class DataModel {
         } catch (SQLException | NullPointerException e) {
             e.printStackTrace();
         }
-        return quizTitle;
+        return quizs;
     }
 
     public void insertQuiz(String name, float time) {
@@ -291,12 +294,8 @@ public class DataModel {
         }
     }
 
-    public void setCurrentQuizName(String currentQuizName) {
-        this.currentQuizName = currentQuizName;
-    }
-
-    public String getCurrentQuizName() {
-        return currentQuizName;
+    public Quiz getCurrentQuiz() {
+        return currentQuiz;
     }
 
     public TreeItem<String> getCurrentCategory() {
@@ -307,13 +306,6 @@ public class DataModel {
         CurrentCategory = currentCategory;
     }
 
-    public Boolean getShowQues() {
-        return isShowQues;
-    }
-
-    public void setShowQues(Boolean showQues) {
-        isShowQues = showQues;
-    }
 
     public Question getCurrentQuestion() {
         return currentQuestion;
@@ -345,6 +337,123 @@ public class DataModel {
 
     public void setCurrentQuestion(Question currentQuestion) {
         this.currentQuestion = currentQuestion;
+    }
+
+    public void insertQuestionToQuiz(int questionID, int quizID) {
+        try {
+            String sql = "INSERT INTO QUIZ_QUESTIONS (quizID, QuestionID) value (?,?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, quizID);
+            statement.setInt(2, questionID);
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void removeQuestionToQuiz(int questionID, int quizID) {
+        try {
+            String sql = "DELETE FROM QUIZ_QUESTIONS WHERE quizID = ? AND QuestionID = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, quizID);
+            statement.setInt(2, questionID);
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Question> getQuestionToQuiz(int quizID) {
+        List<Question> questions = new ArrayList<>();
+        try {
+            String sql = "SELECT q.QuestionID,q.CategoryID, q.Content, q.mark FROM QUESTIONS q JOIN QUIZ_QUESTIONS QQ on q.QuestionID = QQ.QuestionID WHERE QQ.quizID = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, quizID);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Question question = new Question();
+                question.setId(rs.getInt("QuestionID"));
+                question.setCategoryID(rs.getInt("CategoryID"));
+                question.addTitle(rs.getString("Content"));
+                question.setMark(rs.getDouble("mark"));
+                questions.add(question);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Question question : questions) {
+                String sql = "SELECT answerID, choice, percent FROM ANSWER WHERE questionID = ?";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, question.getId());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    question.getAnsID().add(rs.getInt("answerID"));
+                    question.getOptions().add(rs.getString("choice"));
+                    question.getPercent().add(rs.getDouble("percent"));
+                }
+                rs.close();
+                statement.close();
+            }
+
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return questions;
+    }
+
+    public void setCurrentQuiz(Quiz quiz) {
+        this.currentQuiz = quiz;
+    }
+
+    public ArrayList<Question> getQuestionExcept(Integer id, int quizID) {
+        ArrayList<Question> questions = new ArrayList<>();
+        try {
+            String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ? AND QuestionID NOT IN(SELECT QuestionID FROM QUIZ_QUESTIONS WHERE quizID = ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.setInt(2, quizID);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Question question = new Question();
+                question.setCategoryID(id);
+                question.setId(rs.getInt("QuestionID"));
+                question.addTitle(rs.getString("Content"));
+                question.setMark(rs.getDouble("mark"));
+                questions.add(question);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Question question : questions) {
+                String sql = "SELECT answerID, choice, percent FROM ANSWER WHERE questionID = ?";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, question.getId());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    question.getAnsID().add(rs.getInt("answerID"));
+                    question.getOptions().add(rs.getString("choice"));
+                    question.getPercent().add(rs.getDouble("percent"));
+                }
+                rs.close();
+                statement.close();
+            }
+
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return questions;
     }
 
 }

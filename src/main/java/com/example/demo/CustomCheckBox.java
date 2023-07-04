@@ -17,7 +17,7 @@ public class CustomCheckBox extends StackPane {
     private final Button button = new Button("Edit");
     private final Label label = new Label();
     private Question question;
-    private HBox box = new HBox();
+    private final HBox box = new HBox();
 
     public CustomCheckBox(Question question) {
         setAlignment(Pos.CENTER_RIGHT);
@@ -33,6 +33,7 @@ public class CustomCheckBox extends StackPane {
 
         label.setText(question.getTitle());
         label.setMaxWidth(1000);
+        label.setStyle("-fx-text-fill: black");
         label.setWrapText(true);
         label.setTextOverrun(OverrunStyle.ELLIPSIS);
 

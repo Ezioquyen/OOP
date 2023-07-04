@@ -124,7 +124,7 @@
             </VBox>
          </content>
       </ScrollPane>
-        <Button mnemonicParsing="false" prefHeight="57.0" prefWidth="231.0" styleClass="editionbutton"
+        <Button fx:id="btnADD" mnemonicParsing="false" prefHeight="57.0" prefWidth="231.0" styleClass="editionbutton"
                 text="ADD SELECTED QUESTION TO THE QUIZ"/>
    </children>
    <padding>

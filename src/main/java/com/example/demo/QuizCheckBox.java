@@ -6,8 +6,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
 public class QuizCheckBox extends CheckBox {
-    private Button button;
-    private String text;
+    private final Button button;
+    private final String text;
 
     QuizCheckBox(String text) {
         this.text = text;

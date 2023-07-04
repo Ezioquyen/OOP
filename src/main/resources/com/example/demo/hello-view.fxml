@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -141,11 +142,16 @@
                 </VBox>
             </top>
             <center>
-                <VBox fx:id="pane" prefHeight="1000.0" prefWidth="1000.0">
+                <StackPane>
                     <BorderPane.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
                     </BorderPane.margin>
-                </VBox>
+                    <children>
+                        <VBox fx:id="pane" prefHeight="1000.0" prefWidth="1000.0"/>
+                        <VBox fx:id="pane1" layoutX="10.0" layoutY="10.0" prefHeight="1000.0" prefWidth="1000.0"
+                              visible="false"/>
+                    </children>
+                </StackPane>
             </center>
         </BorderPane>
     </content>

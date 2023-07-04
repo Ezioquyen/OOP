@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="548.0"
+      prefWidth="718.0" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.AddRandomQuestion">
+    <children>
+        <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0">
+            <children>
+                <Label contentDisplay="RIGHT" text="Add from question bank at the end" textFill="#bc0404">
+                    <font>
+                        <Font size="21.0"/>
+                    </font>
+                </Label>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="closeButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                        style="-fx-background-color: transparent;" text="Button">
+                    <graphic>
+                        <FontIcon iconColor="#b7b2b2" iconLiteral="fas-times" iconSize="20"
+                                  wrappingWidth="7.199951171875"/>
+                    </graphic>
+                </Button>
+            </children>
+        </HBox>
+        <ScrollPane fitToWidth="true" prefHeight="312.0" prefWidth="678.0" VBox.vgrow="ALWAYS">
+            <content>
+                <TabPane styleClass="tabtab">
+                    <tabs>
+                        <Tab closable="false" text="Existing Category">
+                            <content>
+                                <VBox prefHeight="1000.0" prefWidth="663.0" spacing="5.0">
+                                    <children>
+                                        <HBox>
+                                            <VBox.margin>
+                                                <Insets left="100.0"/>
+                                            </VBox.margin>
+                                            <children>
+                                                <GridPane prefHeight="138.0" prefWidth="554.0">
+                                                    <columnConstraints>
+                                                        <ColumnConstraints hgrow="SOMETIMES"
+                                                                           maxWidth="276.6000122070312" minWidth="10.0"
+                                                                           prefWidth="56.799961471557616"/>
+                                                        <ColumnConstraints hgrow="SOMETIMES"
+                                                                           maxWidth="603.8000160217285" minWidth="10.0"
+                                                                           prefWidth="497.40003852844234"/>
+                                                    </columnConstraints>
+                                                    <rowConstraints>
+                                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                                        <RowConstraints maxHeight="41.59998168945312"
+                                                                        minHeight="7.199983978271476"
+                                                                        prefHeight="19.99997558593749"
+                                                                        vgrow="SOMETIMES"/>
+                                                        <RowConstraints maxHeight="85.60001602172852" minHeight="10.0"
+                                                                        prefHeight="72.8000244140625"
+                                                                        vgrow="SOMETIMES"/>
+                                                    </rowConstraints>
+                                                    <children>
+                                                        <Label prefHeight="18.0" prefWidth="66.0" text="Category:"/>
+                                                        <MenuButton fx:id="categories" alignment="CENTER_RIGHT"
+                                                                    graphicTextGap="0.0" mnemonicParsing="false"
+                                                                    prefHeight="31.0" prefWidth="140.0"
+                                                                    style="-fx-border-color: black;"
+                                                                    styleClass="menubutton" GridPane.columnIndex="1">
+                                                            <items>
+                                                                <CustomMenuItem hideOnClick="false"
+                                                                                mnemonicParsing="false"
+                                                                                styleClass="menu-item"
+                                                                                text="Unspecified Action">
+                                                                    <content>
+                                                                        <TreeView fx:id="root" prefHeight="200.0"
+                                                                                  prefWidth="200.0"/>
+                                                                    </content>
+                                                                </CustomMenuItem>
+                                                            </items>
+                                                            <graphic>
+                                                                <HBox alignment="CENTER_LEFT" prefHeight="22.0"
+                                                                      prefWidth="143.0">
+                                                                    <children>
+                                                                        <Label fx:id="label" prefHeight="18.0"
+                                                                               prefWidth="123.0" text="Default"/>
+                                                                        <FontIcon iconLiteral="fas-sort" iconSize="10"
+                                                                                  text=""
+                                                                                  wrappingWidth="6.600037336349487"/>
+                                                                    </children>
+                                                                </HBox>
+                                                            </graphic>
+                                                        </MenuButton>
+                                                        <CheckBox fx:id="getQuesFromSubCategory" mnemonicParsing="false"
+                                                                  text="Include questions from subcategories too"
+                                                                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                                    </children>
+                                                </GridPane>
+                                                <Region HBox.hgrow="ALWAYS"/>
+                                            </children>
+                                        </HBox>
+                                        <VBox prefHeight="42.0" prefWidth="654.0">
+                                            <children>
+                                                <HBox prefHeight="68.0" prefWidth="654.0">
+                                                    <children>
+                                                        <Label prefHeight="34.0" prefWidth="115.0"
+                                                               text="Number of random questions" wrapText="true"/>
+                                                        <ComboBox fx:id="numberOfQuestion" prefHeight="27.0"
+                                                                  prefWidth="56.0" promptText="1"/>
+                                                        <Region prefHeight="100.0" prefWidth="465.0"/>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                        <HBox>
+                                            <children>
+                                                <VBox prefHeight="49.0" prefWidth="314.0">
+                                                    <children>
+                                                        <Label text="Questions match this filter"/>
+                                                        <Pagination fx:id="pagination" maxPageIndicatorCount="1"
+                                                                    pageCount="1"/>
+                                                    </children>
+                                                </VBox>
+                                                <Region prefHeight="72.0" prefWidth="198.0" HBox.hgrow="ALWAYS"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                    <padding>
+                                        <Insets left="10.0" top="10.0"/>
+                                    </padding>
+                                </VBox>
+                            </content>
+                        </Tab>
+                        <Tab closable="false" text="New Category"/>
+                    </tabs>
+                </TabPane>
+            </content>
+        </ScrollPane>
+        <Button fx:id="btnAddQues" mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0"
+                styleClass="editionbutton" text="ADD QUESTIONS TO QUIZ"/>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+</VBox>

@@ -28,12 +28,12 @@ public class ThiCuoiKyController {
     private void initialize() {
         initModel(BreadCrumbBarModel.getInstance());
         initDataModel(DataModel.getInstance());
-        for (String title : dataModel.getQuizTitle()) {
-            QuizCheckBox quizCheckBox = new QuizCheckBox(title);
+        for (Quiz quiz : dataModel.getQuiz()) {
+            QuizCheckBox quizCheckBox = new QuizCheckBox(quiz.getName());
             quizCheckBox.getButton().setOnAction(e -> {
                 breadCrumbBarModel.removeQuizView();
-                dataModel.setCurrentQuizName(quizCheckBox.getChildText());
-                breadCrumbBarModel.insertQuizView(quizCheckBox.getChildText());
+                dataModel.setCurrentQuiz(quiz);
+                breadCrumbBarModel.insertQuizView(quiz.getName());
                 breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("quiz.fxml"));
             });
             contentArea.getChildren().add(quizCheckBox);
