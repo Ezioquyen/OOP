@@ -46,7 +46,7 @@
                         <Button layoutX="532.0" layoutY="22.0" mnemonicParsing="false" styleClass="editionbutton"
                                 text="SELECT MULTIPLE ITEMS"/>
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                        <Label text="Total of marks: 0.00"/>
+                        <Label fx:id="totalMark" text="Total of marks: 0.00"/>
                     </children>
                 </HBox>
                 <VBox style="-fx-background-color: #F1F1F1;" VBox.vgrow="ALWAYS">
@@ -59,7 +59,7 @@
                                     </HBox.margin>
                                 </FontIcon>
                                 <Region prefHeight="34.0" prefWidth="542.0" HBox.hgrow="ALWAYS"/>
-                                <CheckBox mnemonicParsing="false" text="Shuffle"/>
+                                <CheckBox fx:id="shuffle" mnemonicParsing="false" text="Shuffle"/>
                                 <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" iconSize="15"
                                           wrappingWidth="16.799988269805908"/>
                             </children>

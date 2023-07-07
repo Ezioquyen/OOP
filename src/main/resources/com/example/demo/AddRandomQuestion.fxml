@@ -138,6 +138,7 @@
                                                 <Region prefHeight="72.0" prefWidth="198.0" HBox.hgrow="ALWAYS"/>
                                             </children>
                                         </HBox>
+                                        <VBox fx:id="page"/>
                                     </children>
                                     <padding>
                                         <Insets left="10.0" top="10.0"/>

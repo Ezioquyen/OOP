@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TreeView?>
@@ -114,10 +115,18 @@
                                 <Label text="ID number" textFill="#00aeca"/>
                             </children>
                         </HBox>
-                     </children>
-                  </VBox>
-                        <VBox fx:id="showQuestion" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS"/>
-               </children>
+                            </children>
+                        </VBox>
+                        <VBox fx:id="showQuestion" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <ListView id="one" fx:id="list" VBox.vgrow="ALWAYS">
+                                    <VBox.margin>
+                                        <Insets/>
+                                    </VBox.margin>
+                                </ListView>
+                            </children>
+                        </VBox>
+                    </children>
                <padding>
                    <Insets left="10.0" top="10.0"/>
                </padding>

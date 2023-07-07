@@ -1,7 +1,17 @@
 package com.example.demo;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class QuizController {
     @FXML
@@ -33,5 +43,28 @@ public class QuizController {
     @FXML
     private void btnQuizEditing() {
         breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("EditQuiz.fxml"));
+    }
+
+    @FXML
+    private void openPopup() throws IOException {
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("Noti.fxml")));
+        Parent root = fxmlLoader.load();
+        NotiController controller = fxmlLoader.getController();
+        controller.getCloseButton().setOnAction(e -> {
+            stage.close();
+        });
+        controller.getStartAttempt().setOnAction(e -> {
+            breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("AttemptQuiz.fxml"));
+            stage.close();
+        });
+        Scene scene = new Scene(root, 600, 275);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+        stage.setScene(scene);
+        stage.initModality(Modality.WINDOW_MODAL);
+        Window owner = Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null);
+        stage.initOwner(owner);
+        stage.show();
     }
 }

@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.ListView;
@@ -27,6 +28,11 @@ public class EditQuizController {
     private Label quizTitle;
     private DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
+    private double totalMarkValue = 0;
+    @FXML
+    private Label totalMark;
+    @FXML
+    private CheckBox shuffle;
 
     public void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -49,7 +55,9 @@ public class EditQuizController {
         List<EditQuesFromQuiz> list1 = new ArrayList<>();
         ObservableList<EditQuesFromQuiz> tempList = FXCollections.observableList(list1);
         quizTitle.setText("Editing quiz: " + dataModel.getCurrentQuiz().getName());
+        shuffle.setSelected(dataModel.getCurrentQuiz().getShuffle());
         for (Question question : dataModel.getQuestionToQuiz(dataModel.getCurrentQuiz().getQuizID())) {
+            totalMarkValue += question.getMark();
             EditQuesFromQuiz ques = new EditQuesFromQuiz(question);
             ques.getButton().setOnAction(e -> {
                 dataModel.removeQuestionToQuiz(question.getId(), dataModel.getCurrentQuiz().getQuizID());
@@ -58,9 +66,14 @@ public class EditQuizController {
             list1.add(ques);
             ques.setIndex("" + (1 + list1.indexOf(ques)));
         }
+        dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
+        totalMark.setText("Total mark: " + String.format("%,.2f", totalMarkValue));
         list.setItems(tempList);
         tempList.addListener((ListChangeListener<? super EditQuesFromQuiz>) change -> {
             for (EditQuesFromQuiz ques : list.getItems()) ques.setIndex("" + (1 + list.getItems().indexOf(ques)));
+        });
+        shuffle.selectedProperty().addListener(event -> {
+            dataModel.getCurrentQuiz().setShuffle(shuffle.isSelected());
         });
     }
 
@@ -76,17 +89,23 @@ public class EditQuizController {
         });
         controller.getBtnADD().setOnAction(e -> {
             for (CustomCheckBox question : controller.getQuestions()) {
+                totalMarkValue += question.getQuestion().getMark();
                 dataModel.insertQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
                 controller.getList().getItems().remove(question);
                 EditQuesFromQuiz ques = new EditQuesFromQuiz(question.getQuestion());
                 ques.getButton().setOnAction(p -> {
+                    totalMarkValue -= question.getQuestion().getMark();
                     dataModel.removeQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
                     list.getItems().remove(ques);
+                    dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
+                    totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
                 });
                 list.getItems().add(ques);
             }
             controller.getList().getSelectionModel().clearSelection();
             controller.getQuestions().clear();
+            dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
+            totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
         });
         Scene scene = new Scene(root, 1000, 800);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
@@ -109,18 +128,25 @@ public class EditQuizController {
         });
         controller.getBtnAddQues().setOnAction(e -> {
             for (QuestionsView question : controller.getRandomSelection()) {
+                totalMarkValue += question.getQuestion().getMark();
                 dataModel.insertQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
                 controller.getList().remove(question);
                 EditQuesFromQuiz ques = new EditQuesFromQuiz(question.getQuestion());
                 ques.getButton().setOnAction(p -> {
+                    totalMarkValue -= question.getQuestion().getMark();
                     dataModel.removeQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
                     list.getItems().remove(ques);
+                    dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
+                    totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
                 });
                 list.getItems().add(ques);
+
             }
             controller.setPagination();
             controller.totalQuestionProperty(controller.getTotalQuestion() - controller.getRandomSelection().size());
             controller.getRandomSelection().clear();
+            dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
+            totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
         });
         Scene scene = new Scene(root, 1000, 800);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());

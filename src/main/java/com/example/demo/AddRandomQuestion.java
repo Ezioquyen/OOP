@@ -29,7 +29,7 @@ public class AddRandomQuestion {
     private Label label;
     @FXML
     private Button closeButton;
-
+    @FXML
     private VBox page;
     private final SimpleIntegerProperty totalQuestion = new SimpleIntegerProperty(0);
     private DataModel dataModel;
@@ -58,26 +58,24 @@ public class AddRandomQuestion {
             totalQuestion.set(list.size());
             pagination.setMaxPageIndicatorCount(Math.min((list.size() / 10) + 1, 8));
             pagination.setPageCount(list.size() / 10 + 1);
-            pagination.setPageFactory(this::createPage);
+            pagination.setCurrentPageIndex(0);
+            createPage();
         });
-
         getQuesFromSubCategory.selectedProperty().addListener(e -> {
             if (getQuesFromSubCategory.isSelected()) {
                 traverseTreeView(root.getSelectionModel().getSelectedItem());
                 list.addAll(quesFromSubcategories);
-                page.getChildren().addAll(quesFromSubcategories);
             } else {
-                page.getChildren().removeAll(quesFromSubcategories);
                 list.removeAll(quesFromSubcategories);
                 quesFromSubcategories.clear();
             }
             totalQuestion.set(list.size());
             pagination.setMaxPageIndicatorCount(Math.min((list.size() / 10) + 1, 8));
             pagination.setPageCount(list.size() / 10 + 1);
-            pagination.setPageFactory(this::createPage);
         });
+        page.setMinSize(800, Region.USE_COMPUTED_SIZE);
+        page.setPadding(new Insets(10));
         pagination.setMaxPageIndicatorCount(Math.min((list.size() / 10) + 1, 8));
-        pagination.setPageFactory(this::createPage);
         totalQuestion.addListener(e -> {
             numberOfQuestion.getItems().clear();
             for (int i = 1; i <= totalQuestion.getValue(); i++) {
@@ -86,8 +84,13 @@ public class AddRandomQuestion {
         });
 
         numberOfQuestion.getSelectionModel().selectedItemProperty().addListener(e -> {
-            randomSelection = selectRandomElements(list, numberOfQuestion.getSelectionModel().getSelectedItem());
+            if (numberOfQuestion.getSelectionModel().getSelectedItem() != null)
+                randomSelection = selectRandomElements(list, numberOfQuestion.getSelectionModel().getSelectedItem());
         });
+        pagination.currentPageIndexProperty().addListener(e -> {
+            createPage();
+        });
+
 
     }
 
@@ -108,9 +111,6 @@ public class AddRandomQuestion {
             traverseTreeView(root.getSelectionModel().getSelectedItem());
             list.addAll(quesFromSubcategories);
         }
-        for (int i = pagination.getCurrentPageIndex() * 10; i < list.size() && i < 10; i++) {
-            page.getChildren().add(list.get(i));
-        }
     }
 
     private void traverseTreeView(TreeItem<String> root) {
@@ -125,14 +125,11 @@ public class AddRandomQuestion {
         }
     }
 
-    private VBox createPage(int pageIndex) {
-        page = new VBox();
-        page.setMinSize(800, Region.USE_COMPUTED_SIZE);
-        page.setPadding(new Insets(10));
+    private void createPage() {
+        page.getChildren().clear();
         for (int i = pagination.getCurrentPageIndex() * 10; i < list.size() && i < (pagination.getCurrentPageIndex() * 10 + 10); i++) {
             page.getChildren().add(list.get(i));
         }
-        return page;
     }
 
     private <T> List<T> selectRandomElements(List<T> list, int k) {
@@ -160,7 +157,7 @@ public class AddRandomQuestion {
     }
 
     public void setPagination() {
-        pagination.setPageFactory(this::createPage);
+        createPage();
     }
 
     public int getTotalQuestion() {

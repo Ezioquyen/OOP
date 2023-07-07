@@ -1,7 +1,6 @@
 package com.example.demo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Question {
     private int categoryID;
@@ -24,11 +23,26 @@ public class Question {
 
     private List<Double> percent;
     /*private String imageFilePath;*/
+    private final Map<String, Double> matchAns = new HashMap<>();
 
     public Question() {
         this.options = new ArrayList<>();
         this.percent = new ArrayList<>();
         this.ansID = new ArrayList<>();
+    }
+
+    public void match() {
+        for (String op : options) {
+            matchAns.put(op, percent.get(options.indexOf(op)));
+        }
+    }
+
+    public void shuffle() {
+        Collections.shuffle(options);
+    }
+
+    public Double getPercentFromAns(String a) {
+        return matchAns.get(a);
     }
 
     public String getTitle() {

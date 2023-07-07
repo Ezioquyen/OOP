@@ -31,7 +31,8 @@ public class AddQuesFromQuestionsBankController {
     @FXML
     private Button btnADD;
     private DataModel dataModel;
-    private final ListView<CustomCheckBox> list = new ListView<>();
+    @FXML
+    private ListView<CustomCheckBox> list;
 
 
     private final List<CustomCheckBox> questions = new ArrayList<>();
@@ -65,8 +66,6 @@ public class AddQuesFromQuestionsBankController {
             }
             label.setText(root.getSelectionModel().getSelectedItem().getValue());
         });
-        showQuestion.getChildren().add(list);
-        VBox.setVgrow(list, Priority.ALWAYS);
     }
 
     public Button getButton() {

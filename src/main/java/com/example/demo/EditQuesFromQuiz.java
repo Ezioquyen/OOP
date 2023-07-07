@@ -62,7 +62,7 @@ public class EditQuesFromQuiz extends HBox {
         button.setStyle("-fx-background-color: transparent");
         FontIcon pen = new FontIcon("fas-pen");
         pen.setIconColor(Color.valueOf("#029fe5"));
-        point = new Label("" + question.getMark());
+        point = new Label("" + String.format("%,.2f", question.getMark()));
         point.setAlignment(Pos.CENTER);
         point.setContentDisplay(ContentDisplay.RIGHT);
         point.setGraphic(pen);

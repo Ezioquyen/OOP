@@ -20,9 +20,8 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="1000.0" prefWidth="748.0" style="-fx-border-color: #C8CCE8; -fx-background-color: white;"
-      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.demo.QuestionBankController">
+<VBox style="-fx-border-color: #C8CCE8; -fx-background-color: white;" xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.QuestionBankController">
     <children>
         <TabPane fx:id="tabPane" prefHeight="630.0" prefWidth="495.0" styleClass="tabtab" tabClosingPolicy="UNAVAILABLE"
                  VBox.vgrow="ALWAYS">
@@ -117,7 +116,7 @@
                                     </VBox>
                                     <VBox fx:id="showQuestion" prefHeight="188.0" prefWidth="718.0" VBox.vgrow="ALWAYS">
                                         <children>
-                                            <ListView fx:id="list" prefHeight="200.0" prefWidth="200.0"
+                                            <ListView id="one" fx:id="list" prefHeight="200.0" prefWidth="200.0"
                                                       VBox.vgrow="ALWAYS"/>
                                         </children>
                                     </VBox>

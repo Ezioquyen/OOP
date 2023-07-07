@@ -12,7 +12,7 @@ public class AddQuizController {
     @FXML
     private CheckBox checkBox;
     private float time = 0;
-    DataModel dataModel;
+    private DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
 
     public void initModel(BreadCrumbBarModel breadCrumbBarModel) {

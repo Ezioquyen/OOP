@@ -391,6 +391,7 @@ public class QuestionBankController {
             list.getSelectionModel().selectedItemProperty().addListener(observable -> {
                 if (list.getSelectionModel().getSelectedItem() != null) {
                     list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(!list.getSelectionModel().getSelectedItem().getCheckBox().isSelected());
+
                 }
             });
         }

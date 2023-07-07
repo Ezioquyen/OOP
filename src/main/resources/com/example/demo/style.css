@@ -2,6 +2,10 @@
     -fx-background-color: white;
 }
 
+.button {
+    -fx-background-radius: inherit;
+}
+
 .menu-button {
     -fx-background-color: transparent;
 }
@@ -259,6 +263,10 @@ bread-crumb-bar {
     -fx-border-color: white;
 }
 
+.list-view:disabled {
+    -fx-opacity: 1;
+}
+
 .text-area {
     -fx-background-color: white;
     -fx-border-color: black;
@@ -269,10 +277,24 @@ bread-crumb-bar {
     -fx-border-color: black;
 }
 
-.list-view {
-    -fx-selection-bar: white;
-    -fx-selection-bar-non-focused: white;
+
+#one .list-cell:filled:selected:focused {
     -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+#one .list-cell:filled:selected {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+#one .list-cell:odd {
+    -fx-background-color: white;
+}
+
+#one .list-cell:filled:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
 }
 
 /* Remove spacing */
@@ -321,19 +343,7 @@ bread-crumb-bar {
     -fx-font-size: 12;
 }
 
-.pagination {
-    -fx-rotate: 180;
+#box :disabled {
+    -fx-opacity: 1;
 }
 
-.pagination .pagination-control {
-    -fx-rotate: 180;
-}
-
-.pagination .page {
-    -fx-rotate: 180;
-}
-
-/*
-.pagination.pagination-control{
-    -fx-translate-x: -100px;
-}*/

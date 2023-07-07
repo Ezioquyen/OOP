@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="182.0" prefWidth="1100.0"
+      style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.demo.ResultController">
+   <children>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #F0F0F0;"
+                   text="Started on" textFill="#c02424">
+               <font>
+                  <Font name="System Bold" size="15.0"/>
+               </font>
+               <padding>
+                  <Insets right="2.0"/>
+               </padding>
+            </Label>
+            <Label fx:id="startTime" text="Tuesday, 21 March 2023, 8:33 PM" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets left="2.0"/>
+               </padding>
+               <font>
+                  <Font size="14.0"/>
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="11.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" text="State" textFill="#c02424">
+               <font>
+                  <Font name="System Bold" size="15.0"/>
+               </font>
+               <padding>
+                  <Insets right="2.0"/>
+               </padding>
+            </Label>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #F0F0F0;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Finished">
+                     <padding>
+                        <Insets left="2.0"/>
+                     </padding>
+                     <font>
+                        <Font size="13.0"/>
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #F0F0F0;"
+                   text="Completed on" textFill="#c02424">
+               <font>
+                  <Font name="System Bold" size="15.0"/>
+               </font>
+               <padding>
+                  <Insets right="2.0"/>
+               </padding>
+            </Label>
+            <Label fx:id="endTime" text="Tuesday, 21 March 2023, 8:34 PM" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets left="2.0"/>
+               </padding>
+               <font>
+                  <Font size="14.0"/>
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="40.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" text="Time taken" textFill="#c02424">
+               <font>
+                  <Font name="System Bold" size="15.0"/>
+               </font>
+               <padding>
+                  <Insets right="2.0"/>
+               </padding>
+            </Label>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #F0F0F0;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="timeTaken" text="1 min 27 secs">
+                     <padding>
+                        <Insets left="2.0"/>
+                     </padding>
+                     <font>
+                        <Font size="13.0"/>
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="71.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #F0F0F0;"
+                   text="Marks" textFill="#c02424">
+               <font>
+                  <Font name="System Bold" size="15.0"/>
+               </font>
+               <padding>
+                  <Insets right="2.0"/>
+               </padding>
+            </Label>
+            <Label fx:id="marks" text="0.00/67.00" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets left="2.0"/>
+               </padding>
+               <font>
+                  <Font size="14.0"/>
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="132.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="150.0" text="Grade" textFill="#c02424">
+               <font>
+                  <Font name="System Bold" size="15.0"/>
+               </font>
+               <padding>
+                  <Insets right="2.0"/>
+               </padding>
+            </Label>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #F0F0F0;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="marks1" text="0.00">
+                     <padding>
+                        <Insets left="2.0"/>
+                     </padding>
+                     <font>
+                        <Font name="System Bold" size="14.0"/>
+                     </font>
+                  </Label>
+                  <Label text="out of 100% (">
+                     <padding>
+                        <Insets left="2.0"/>
+                     </padding>
+                     <font>
+                        <Font size="14.0"/>
+                     </font>
+                  </Label>
+                  <Label fx:id="marks2" text="0">
+                     <font>
+                        <Font name="System Bold" size="14.0"/>
+                     </font>
+                  </Label>
+                  <Label text="\%)">
+                     <font>
+                        <Font size="14.0"/>
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

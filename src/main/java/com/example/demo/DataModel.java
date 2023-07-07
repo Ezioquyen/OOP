@@ -233,7 +233,7 @@ public class DataModel {
     public ArrayList<Quiz> getQuiz() {
         ArrayList<Quiz> quizs = new ArrayList<>();
         try {
-            String sql = "SELECT name,time,quizID FROM QUIZ";
+            String sql = "SELECT name,time,quizID,totalMark,shuffle FROM QUIZ";
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -241,6 +241,8 @@ public class DataModel {
                 quiz.setName(rs.getString("name"));
                 quiz.setQuizID(rs.getInt("quizID"));
                 quiz.setTime(rs.getDouble("time"));
+                quiz.setShuffle(rs.getBoolean("shuffle"));
+                quiz.setTotalMarks(rs.getDouble("totalMark"));
                 quizs.add(quiz);
             }
             rs.close();
@@ -255,10 +257,12 @@ public class DataModel {
 
     public void insertQuiz(String name, float time) {
         try {
-            String sql = "INSERT INTO QUIZ (name, time) value (?,?)";
+            String sql = "INSERT INTO QUIZ (name, time,totalMark,shuffle) value (?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, name);
             if (time != 0) statement.setFloat(2, time);
+            statement.setDouble(3, 0.00);
+            statement.setBoolean(4, false);
             statement.executeUpdate();
             statement.close();
 
@@ -341,7 +345,7 @@ public class DataModel {
 
     public void insertQuestionToQuiz(int questionID, int quizID) {
         try {
-            String sql = "INSERT INTO QUIZ_QUESTIONS (quizID, QuestionID) value (?,?)";
+            String sql = "INSERT INTO QUIZ_QUESTION (quizID, QuestionID) value (?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, quizID);
             statement.setInt(2, questionID);
@@ -356,7 +360,7 @@ public class DataModel {
 
     public void removeQuestionToQuiz(int questionID, int quizID) {
         try {
-            String sql = "DELETE FROM QUIZ_QUESTIONS WHERE quizID = ? AND QuestionID = ?";
+            String sql = "DELETE FROM QUIZ_QUESTION WHERE quizID = ? AND QuestionID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, quizID);
             statement.setInt(2, questionID);
@@ -371,7 +375,7 @@ public class DataModel {
     public List<Question> getQuestionToQuiz(int quizID) {
         List<Question> questions = new ArrayList<>();
         try {
-            String sql = "SELECT q.QuestionID,q.CategoryID, q.Content, q.mark FROM QUESTIONS q JOIN QUIZ_QUESTIONS QQ on q.QuestionID = QQ.QuestionID WHERE QQ.quizID = ?";
+            String sql = "SELECT q.QuestionID,q.CategoryID, q.Content, q.mark FROM QUESTIONS q JOIN QUIZ_QUESTION QQ on q.QuestionID = QQ.QuestionID WHERE QQ.quizID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, quizID);
             ResultSet rs = statement.executeQuery();
@@ -416,7 +420,7 @@ public class DataModel {
     public ArrayList<Question> getQuestionExcept(Integer id, int quizID) {
         ArrayList<Question> questions = new ArrayList<>();
         try {
-            String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ? AND QuestionID NOT IN(SELECT QuestionID FROM QUIZ_QUESTIONS WHERE quizID = ?)";
+            String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ? AND QuestionID NOT IN(SELECT QuestionID FROM QUIZ_QUESTION WHERE quizID = ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             statement.setInt(2, quizID);
@@ -454,6 +458,19 @@ public class DataModel {
             e.printStackTrace();
         }
         return questions;
+    }
+
+    public void updateQuiz(Quiz quiz) {
+        try {
+            String sql = "UPDATE QUIZ SET  shuffle = ?, totalMark = ? WHERE quizID = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setBoolean(1, quiz.getShuffle());
+            statement.setDouble(2, quiz.getTotalMarks());
+            statement.setDouble(3, quiz.getQuizID());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

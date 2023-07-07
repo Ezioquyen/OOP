@@ -64,9 +64,12 @@ public class BreadCrumbBarModel {
     public void insertQuizView(String view) {
         TreeItem<String> mainView = new TreeItem<>(view);
         TreeItem<String> edit = new TreeItem<>("Edit quiz");
+        TreeItem<String> preview = new TreeItem<>("Preview");
         getThiCuoiKy().getChildren().add(mainView);
         mainView.getChildren().add(edit);
+        mainView.getChildren().add(preview);
         getBreadConnection().put("quiz.fxml", mainView);
+        getBreadConnection().put("AttemptQuiz.fxml", preview);
         getBreadConnection().put("EditQuiz.fxml", edit);
     }
 
