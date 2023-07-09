@@ -297,6 +297,21 @@ bread-crumb-bar {
     -fx-text-fill: black;
 }
 
+#two .list-cell:filled:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+#two .list-cell:filled:selected {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+#two .list-cell:filled:selected:focused {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
 /* Remove spacing */
 .pagination > .pagination-control > .control-box {
     -fx-spacing: 0;

@@ -2,6 +2,7 @@ package com.example.demo;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class AddQuizController {
@@ -11,6 +12,8 @@ public class AddQuizController {
     private TextField name;
     @FXML
     private CheckBox checkBox;
+    @FXML
+    private ComboBox<String> minutes;
     private float time = 0;
     private DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
@@ -34,9 +37,13 @@ public class AddQuizController {
         initModel(BreadCrumbBarModel.getInstance());
         initDataModel(DataModel.getInstance());
         checkBox.selectedProperty().addListener(e -> {
-            if (checkBox.isSelected()) {
-                if (textField.getText() != null) time = Float.parseFloat(textField.getText());
-            } else time = 0;
+            if (checkBox.isSelected() && !textField.getText().isEmpty()) {
+                time = Float.parseFloat(textField.getText());
+                minutes.setDisable(false);
+            } else {
+                time = 0;
+                minutes.setDisable(true);
+            }
         });
     }
 

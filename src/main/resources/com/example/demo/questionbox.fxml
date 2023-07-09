@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -59,12 +60,12 @@
         </VBox>
         <VBox spacing="15.0" HBox.hgrow="ALWAYS">
             <children>
-                <VBox minHeight="-Infinity" prefHeight="225.0" prefWidth="592.0" spacing="5.0"
-                      style="-fx-background-color: #E7F3F5;">
+                <VBox minHeight="-Infinity" prefWidth="592.0" spacing="5.0" style="-fx-background-color: #E7F3F5;">
                     <children>
                         <HBox minHeight="-Infinity" minWidth="-Infinity">
                             <children>
-                                <Label prefWidth="720.0" style="-fx-text-fill: black;" text="Question"
+                                <Label prefWidth="720.0" style="-fx-text-fill: black;"
+                                       text="QuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestionQuestion"
                                        textOverrun="CLIP" wrapText="true" HBox.hgrow="ALWAYS">
                                     <font>
                                         <Font size="15.0"/>
@@ -72,6 +73,7 @@
                                 </Label>
                             </children>
                         </HBox>
+                        <ImageView fitHeight="357.0" fitWidth="489.0" pickOnBounds="true" preserveRatio="true"/>
                         <VBox spacing="15.0">
                             <padding>
                                 <Insets left="15.0"/>

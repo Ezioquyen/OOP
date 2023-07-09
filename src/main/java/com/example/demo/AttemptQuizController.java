@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
@@ -16,13 +17,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.time.Instant;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -34,15 +33,20 @@ public class AttemptQuizController {
     @FXML
     private Label timerLabel;
     @FXML
+    private HBox container;
+    @FXML
     private FlowPane navigationContainer;
     private DataModel dataModel;
     private double totalMark = 0.0;
     @FXML
     private HBox timerContainer;
     @FXML
+    private Button export;
+    @FXML
+    private Button finish;
+    @FXML
     private StackPane stackPane;
     private LocalTime startTime;
-    private LocalTime endTime;
 
     private void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -55,23 +59,24 @@ public class AttemptQuizController {
     private ListView<QuestionBox> listQuestion;
     private Timeline timeline;
     private String start;
-    private String end;
-    private Map<QuestionBox, QuestionNavigation> map = new HashMap<>();
+    private final Map<QuestionBox, QuestionNavigation> map = new HashMap<>();
 
     @FXML
     private void initialize() {
         initDataModel(DataModel.getInstance());
-        dataModel.updateQuiz(dataModel.getCurrentQuiz());
         Boolean shuffle = dataModel.getCurrentQuiz().getShuffle();
+        dataModel.updateQuiz(dataModel.getCurrentQuiz());
         start = getDate();
-        convertMinutesToHoursMinutesSeconds(dataModel.getCurrentQuiz().getTime());
-        timerLabel.setText(formatTime(hour, minute, second));
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            this.updateTimer();
+        if (dataModel.getCurrentQuiz().getTime() != 0) {
+            convertMinutesToHoursMinutesSeconds(dataModel.getCurrentQuiz().getTime());
             timerLabel.setText(formatTime(hour, minute, second));
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+            timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                this.updateTimer();
+                timerLabel.setText(formatTime(hour, minute, second));
+            }));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }
         startTime = LocalTime.now();
         for (Question question : dataModel.getQuestionToQuiz(dataModel.getCurrentQuiz().getQuizID())) {
             question.typeDetect();
@@ -82,9 +87,7 @@ public class AttemptQuizController {
             QuestionNavigation questionNavigation = new QuestionNavigation();
             map.put(questionBox, questionNavigation);
             navigationContainer.getChildren().add(questionNavigation);
-            questionNavigation.setOnMouseClicked(e -> {
-                listQuestion.scrollTo(listQuestion.getItems().indexOf(questionBox));
-            });
+            questionNavigation.setOnMouseClicked(e -> listQuestion.scrollTo(listQuestion.getItems().indexOf(questionBox)));
             questionBox.getFlag().setOnAction(event -> {
                 if (questionBox.isTriggered()) questionNavigation.getFlag().setFill(Color.valueOf("transparent"));
                 else questionNavigation.getFlag().setFill(Color.RED);
@@ -132,8 +135,8 @@ public class AttemptQuizController {
 
     @FXML
     private void btnFinish() throws IOException {
-        timeline.stop();
-        endTime = LocalTime.now();
+        if (dataModel.getCurrentQuiz().getTime() != 0) timeline.stop();
+        LocalTime endTime = LocalTime.now();
         int totalSeconds = (endTime.toSecondOfDay() - startTime.toSecondOfDay());
         int min = totalSeconds / 60;
         int sec = totalSeconds % 60;
@@ -148,15 +151,19 @@ public class AttemptQuizController {
         for (QuestionBox q : listQuestion.getItems()) {
             q.showAns();
             StringBuilder correctAns = new StringBuilder();
-            for (String correctOps : q.getQuestion().getOptions())
-                if (q.getQuestion().getPercentFromAns(correctOps) > 0) {
-                    correctAns.append(" ").append(correctOps).append(",");
+            int i = 0;
+            for (OptionsPacket pack : q.getQuestion().getPackets()) {
+                if (pack.getPercent() > 0) {
+                    if (!pack.getOption().isEmpty() && pack.getOption() != null)
+                        correctAns.append(" ").append(pack.getOption()).append(",");
+                    else correctAns.append(" ").append((char) (65 + i++)).append(",");
                 }
+            }
             q.getLabel().setText("Correct answer: " + correctAns.substring(0, correctAns.length() - 1) + ".");
             double mark = 0;
-            for (String op : q.getSelectedOps()) {
-                totalMark += q.getQuestion().getPercentFromAns(op) * q.getQuestion().getMark() / (100);
-                mark += q.getQuestion().getPercentFromAns(op) * q.getQuestion().getMark() / (100);
+            for (OptionsPacket op : q.getSelectedOps()) {
+                totalMark += op.getPercent() * q.getQuestion().getMark() / (100);
+                mark += op.getPercent() * q.getQuestion().getMark() / (100);
             }
             if ((q.getQuestion().getMark() - mark) < 0.00001) {
                 map.get(q).getColor().setStyle("-fx-background-color: green");
@@ -168,9 +175,11 @@ public class AttemptQuizController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("result.fxml"));
         Parent parent = fxmlLoader.load();
         ResultController view = fxmlLoader.getController();
-        end = getDate();
+        String end = getDate();
         view.showInformation(totalMark, dataModel.getCurrentQuiz().getTotalMarks(), start, end, timeTaken);
         stackPane.getChildren().add(parent);
+        container.getChildren().remove(finish);
+        export.setVisible(true);
     }
 
     private String getDate() {

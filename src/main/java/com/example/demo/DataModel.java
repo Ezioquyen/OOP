@@ -36,7 +36,7 @@ public class DataModel {
     private TreeItem<String> CurrentCategory;
     private Question currentQuestion;
 
-    private int totalQuestion;
+    private int totalQuestion = 0;
 
 
     private void Initialize() {
@@ -114,7 +114,7 @@ public class DataModel {
 
     public void insertQuestion(TreeItem<String> parent, String title, int type, Double mark) {
         try {
-            String sql = "INSERT INTO QUESTIONS (Content,typeOfQuestion,CategoryID,mark) VALUES ( ?, ?, ?,?)";
+            String sql = "INSERT INTO QUESTIONS (Content,typeOfQuestion,CategoryID,mark) VALUES ( ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, title);
             statement.setInt(2, type);
@@ -123,15 +123,71 @@ public class DataModel {
             statement.executeUpdate();
             statement.close();
             totalQuestion += 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    public void updateImagePath(Question question) {
+        try {
+            int index = 0;
+            for (Integer id : question.getImageID()) {
+                String sql = "UPDATE IMAGE SET imagePath = ? WHERE imageID = ? ";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setString(1, question.getImageFilePath().get(index));
+                statement.setInt(2, id);
+                statement.executeUpdate();
+                index++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void deleteImagePath(Question question) {
+        try {
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.append("DELETE FROM IMAGE WHERE imageID NOT IN (");
+            for (int i = 0; i < question.getImageFilePath().size(); i++) {
+                sqlBuilder.append("?");
+                if (i < question.getImageOptionPath().size() - 1) {
+                    sqlBuilder.append(",");
+                }
+            }
+            sqlBuilder.append(")");
+            sqlBuilder.append("AND questionID = ?");
+            PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString());
+            for (int i = 0; i < question.getImageFilePath().size(); i++) {
+                statement.setInt(i + 1, question.getAnsID().get(i));
+            }
+            statement.setInt(question.getImageFilePath().size() + 1, question.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void insertAnswers(List<String> options, List<Double> percent, int id) {
+    public void insertImage(String path, int id) {
         try {
-            String sql = "INSERT INTO ANSWER (questionID, choice, percent) VALUES ( ?, ?, ?)";
+            String sql = "INSERT INTO IMAGE (imagePath, QuestionID) VALUES ( ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, path);
+            if (id == 0) {
+                statement.setInt(2, totalQuestion);
+            } else statement.setInt(2, id);
+
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertAnswers(List<String> options, List<Double> percent, int id, List<String> path) {
+        try {
+            String sql = "INSERT INTO ANSWER (questionID, choice, percent,imagePath) VALUES ( ?, ?, ?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
 
             int i = 0;
@@ -143,6 +199,8 @@ public class DataModel {
                 statement.setString(2, option);
 
                 statement.setDouble(3, percent.get(i));
+                if (path != null && path.size() > i) statement.setString(4, path.get(i));
+                else statement.setString(4, null);
 
                 statement.executeUpdate();
                 i++;
@@ -188,8 +246,8 @@ public class DataModel {
         return categoryMap;
     }
 
-    public ArrayList<Question> getQuestion(Integer id) {
-        ArrayList<Question> questions = new ArrayList<>();
+    public List<Question> getQuestion(Integer id) {
+        List<Question> questions = new ArrayList<>();
         try {
             String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -211,7 +269,7 @@ public class DataModel {
         }
         try {
             for (Question question : questions) {
-                String sql = "SELECT answerID, choice, percent FROM ANSWER WHERE questionID = ?";
+                String sql = "SELECT answerID, choice, percent,imagePath FROM ANSWER WHERE questionID = ?";
                 PreparedStatement statement = conn.prepareStatement(sql);
                 statement.setInt(1, question.getId());
                 ResultSet rs = statement.executeQuery();
@@ -219,6 +277,26 @@ public class DataModel {
                     question.getAnsID().add(rs.getInt("answerID"));
                     question.getOptions().add(rs.getString("choice"));
                     question.getPercent().add(rs.getDouble("percent"));
+                    question.setImageOptionPath(rs.getString("imagePath"));
+                }
+                rs.close();
+                statement.close();
+            }
+
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Question question : questions) {
+
+                String sql = "SELECT imagePath,imageID FROM IMAGE WHERE questionID = ?";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, question.getId());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    question.getImageID().add(rs.getInt("imageID"));
+                    if (rs.getString("imagePath") != null) question.getImageFilePath().add(rs.getString("imagePath"));
+
                 }
                 rs.close();
                 statement.close();
@@ -230,10 +308,10 @@ public class DataModel {
         return questions;
     }
 
-    public ArrayList<Quiz> getQuiz() {
-        ArrayList<Quiz> quizs = new ArrayList<>();
+    public List<Quiz> getQuiz() {
+        List<Quiz> quizs = new ArrayList<>();
         try {
-            String sql = "SELECT name,time,quizID,totalMark,shuffle FROM QUIZ";
+            String sql = "SELECT name,time,quizID,totalMark,shuffle, totalQuestion, grade FROM QUIZ";
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -243,6 +321,8 @@ public class DataModel {
                 quiz.setTime(rs.getDouble("time"));
                 quiz.setShuffle(rs.getBoolean("shuffle"));
                 quiz.setTotalMarks(rs.getDouble("totalMark"));
+                quiz.setMaxGrade(rs.getDouble("grade"));
+                quiz.setTotalQuestion(rs.getInt("totalQuestion"));
                 quizs.add(quiz);
             }
             rs.close();
@@ -260,7 +340,7 @@ public class DataModel {
             String sql = "INSERT INTO QUIZ (name, time,totalMark,shuffle) value (?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, name);
-            if (time != 0) statement.setFloat(2, time);
+            statement.setFloat(2, time);
             statement.setDouble(3, 0.00);
             statement.setBoolean(4, false);
             statement.executeUpdate();
@@ -271,27 +351,27 @@ public class DataModel {
         }
     }
 
-    public void deleteAns(Question question, int currentAns) {
+    public void deleteAns(Question question) {
         int j = 0;
         for (int ignore : question.getAnsID()) {
-            if (j >= currentAns) question.getAnsID().remove(j);
+            if (j >= question.getOptions().size()) question.getAnsID().remove(j);
         }
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.append("DELETE FROM ANSWER WHERE answerID NOT IN (");
-            for (int i = 0; i < currentAns; i++) {
+            for (int i = 0; i < question.getOptions().size(); i++) {
                 sqlBuilder.append("?");
-                if (i < currentAns - 1) {
+                if (i < question.getOptions().size() - 1) {
                     sqlBuilder.append(",");
                 }
             }
             sqlBuilder.append(")");
             sqlBuilder.append("AND questionID = ?");
             PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString());
-            for (int i = 0; i < currentAns; i++) {
+            for (int i = 0; i < question.getOptions().size(); i++) {
                 statement.setInt(i + 1, question.getAnsID().get(i));
             }
-            statement.setInt(currentAns + 1, question.getId());
+            statement.setInt(question.getOptions().size() + 1, question.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -326,11 +406,12 @@ public class DataModel {
             statement.executeUpdate();
             int index = 0;
             for (Integer id : question.getAnsID()) {
-                sql = "UPDATE ANSWER SET choice = ?,percent =? WHERE answerID = ? ";
+                sql = "UPDATE ANSWER SET choice = ?,percent =?, imagePath = ? WHERE answerID = ? ";
                 statement = conn.prepareStatement(sql);
                 statement.setString(1, question.getOptions().get(index));
                 statement.setDouble(2, question.getPercent().get(index));
-                statement.setInt(3, id);
+                statement.setString(3, question.getImageOptionPath().get(index));
+                statement.setInt(4, id);
                 statement.executeUpdate();
                 index++;
             }
@@ -394,7 +475,7 @@ public class DataModel {
         }
         try {
             for (Question question : questions) {
-                String sql = "SELECT answerID, choice, percent FROM ANSWER WHERE questionID = ?";
+                String sql = "SELECT answerID, choice, percent,imagePath FROM ANSWER WHERE questionID = ?";
                 PreparedStatement statement = conn.prepareStatement(sql);
                 statement.setInt(1, question.getId());
                 ResultSet rs = statement.executeQuery();
@@ -402,6 +483,23 @@ public class DataModel {
                     question.getAnsID().add(rs.getInt("answerID"));
                     question.getOptions().add(rs.getString("choice"));
                     question.getPercent().add(rs.getDouble("percent"));
+                    question.getImageOptionPath().add(rs.getString("imagePath"));
+                }
+                rs.close();
+                statement.close();
+            }
+
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Question question : questions) {
+                String sql = "SELECT imagePath FROM IMAGE WHERE questionID = ?";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, question.getId());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    question.getImageFilePath().add(rs.getString("imagePath"));
                 }
                 rs.close();
                 statement.close();
@@ -417,8 +515,8 @@ public class DataModel {
         this.currentQuiz = quiz;
     }
 
-    public ArrayList<Question> getQuestionExcept(Integer id, int quizID) {
-        ArrayList<Question> questions = new ArrayList<>();
+    public List<Question> getQuestionExcept(Integer id, int quizID) {
+        List<Question> questions = new ArrayList<>();
         try {
             String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ? AND QuestionID NOT IN(SELECT QuestionID FROM QUIZ_QUESTION WHERE quizID = ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -441,7 +539,7 @@ public class DataModel {
         }
         try {
             for (Question question : questions) {
-                String sql = "SELECT answerID, choice, percent FROM ANSWER WHERE questionID = ?";
+                String sql = "SELECT answerID, choice, percent, imagePath FROM ANSWER WHERE questionID = ?";
                 PreparedStatement statement = conn.prepareStatement(sql);
                 statement.setInt(1, question.getId());
                 ResultSet rs = statement.executeQuery();
@@ -449,6 +547,23 @@ public class DataModel {
                     question.getAnsID().add(rs.getInt("answerID"));
                     question.getOptions().add(rs.getString("choice"));
                     question.getPercent().add(rs.getDouble("percent"));
+                    question.setImageOptionPath(rs.getString("imagePath"));
+                }
+                rs.close();
+                statement.close();
+            }
+
+        } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Question question : questions) {
+                String sql = "SELECT imagePath FROM IMAGE WHERE questionID = ?";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, question.getId());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    question.getImageFilePath().add(rs.getString("imagePath"));
                 }
                 rs.close();
                 statement.close();
@@ -462,11 +577,13 @@ public class DataModel {
 
     public void updateQuiz(Quiz quiz) {
         try {
-            String sql = "UPDATE QUIZ SET  shuffle = ?, totalMark = ? WHERE quizID = ?";
+            String sql = "UPDATE QUIZ SET  shuffle = ?, totalMark = ?, grade =? ,totalQuestion = ? WHERE quizID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setBoolean(1, quiz.getShuffle());
             statement.setDouble(2, quiz.getTotalMarks());
-            statement.setDouble(3, quiz.getQuizID());
+            statement.setDouble(3, quiz.getMaxGrade());
+            statement.setInt(4, quiz.getTotalQuestion());
+            statement.setDouble(5, quiz.getQuizID());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package com.example.demo;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 public class NotiController {
     @FXML
@@ -10,6 +11,8 @@ public class NotiController {
     private Button cancel;
     @FXML
     private Button startAttempt;
+    @FXML
+    private Label text;
 
     @FXML
     private void initialize() {
@@ -25,5 +28,9 @@ public class NotiController {
 
     public Button getStartAttempt() {
         return startAttempt;
+    }
+
+    public Label getText() {
+        return text;
     }
 }

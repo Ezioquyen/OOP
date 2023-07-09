@@ -1,26 +1,21 @@
 package com.example.demo;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuestionBox extends HBox {
     private final Question question;
@@ -29,13 +24,12 @@ public class QuestionBox extends HBox {
 
     private final Button flag = new Button("Flag");
     private Label label;
-    private Label answered = new Label("Not answered");
-    private VBox questionContainer = new VBox();
-    private VBox optionsContainer = new VBox(15);
-    private SimpleBooleanProperty selected = new SimpleBooleanProperty(false);
+    private final SimpleBooleanProperty selected = new SimpleBooleanProperty(false);
     private boolean triggered = false;
 
-    private List<String> selectedOps = new ArrayList<>();
+    private final List<OptionsPacket> selectedOps = new ArrayList<>();
+    private final Map<CheckBox, OptionsPacket> checkBoxOptionsPacketMap = new HashMap<>();
+    private final Map<RadioButton, OptionsPacket> packetMap = new HashMap<>();
 
     public void showAns() {
         HBox ans = new HBox();
@@ -52,10 +46,6 @@ public class QuestionBox extends HBox {
         box1.getChildren().add(ans);
     }
 
-    private String getAns() {
-        return "";
-    }
-
     public Label getLabel() {
         return label;
     }
@@ -67,6 +57,7 @@ public class QuestionBox extends HBox {
         setPrefWidth(877.0);
         setSpacing(20);
         setPrefHeight(USE_COMPUTED_SIZE);
+        setMaxSize(USE_COMPUTED_SIZE, USE_COMPUTED_SIZE);
         //
         VBox box = new VBox();
         box.setPrefSize(116, 288.0);
@@ -81,11 +72,12 @@ public class QuestionBox extends HBox {
         questionLabel.setStyle("-fx-font-size: 14");
         questionLabel.setStyle("-fx-text-fill:#c02424");
         number.setAlignment(Pos.BOTTOM_LEFT);
+        number.setStyle("-fx-font-weight: bold ");
         number.setStyle("-fx-font-size: 20");
         number.setStyle("-fx-text-fill: #c02424");
-        /*number.setStyle("-fx-font: ");*/
         boxChild1.getChildren().addAll(questionLabel, number);
 
+        Label answered = new Label("Not answered");
         answered.setStyle("-fx-text-fill: black");
 
         Label markForQues = new Label("Marked out of " + String.format("%,.2f", question.getMark()));
@@ -111,6 +103,7 @@ public class QuestionBox extends HBox {
         //
         setHgrow(box1, Priority.ALWAYS);
 
+        VBox questionContainer = new VBox();
         questionContainer.setSpacing(5);
         questionContainer.setPrefSize(592, 225);
         questionContainer.setStyle("-fx-background-color: #E7F3F5");
@@ -124,50 +117,87 @@ public class QuestionBox extends HBox {
         title.setStyle("-fx-text-fill: black");
 
         hBox.getChildren().add(title);
-
+        hBox.setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
+        questionContainer.getChildren().add(hBox);
+        VBox optionsContainer = new VBox(15);
         optionsContainer.setPadding(new Insets(0, 0, 0, 15));
-
-        questionContainer.getChildren().addAll(hBox, optionsContainer);
+        if (question.getImageFilePath() != null) {
+            FlowPane pane = new FlowPane();
+            questionContainer.getChildren().add(pane);
+            for (String path : question.getImageFilePath()) {
+                ImageView imageView = new ImageView(path);
+                double desiredWidth = 750;
+                double desiredHeight = 450;
+                imageView.setFitWidth(desiredWidth);
+                imageView.setFitHeight(desiredHeight);
+                imageView.setPreserveRatio(true);
+                pane.getChildren().add(imageView);
+            }
+        }
+        questionContainer.getChildren().add(optionsContainer);
 
         box1.getChildren().add(questionContainer);
 
 
         //
         title.setText(question.getTitle());
+
         if (question.isType() == 1) {
             ToggleGroup group = new ToggleGroup();
-            for (String option : question.getOptions()) {
-                RadioButton radioButton = new RadioButton(option);
+            int i = 0;
+            for (OptionsPacket pack : question.getPackets()) {
+                RadioButton radioButton = new RadioButton((char) (65 + i) + ". " + pack.getOption());
+                radioButton.setContentDisplay(ContentDisplay.RIGHT);
                 radioButton.setStyle("-fx-text-fill: black");
+                packetMap.put(radioButton, pack);
+                if (pack.getImagePath() != null) {
+                    ImageView imageView = new ImageView(pack.getImagePath());
+                    double desiredWidth = 300;
+                    double desiredHeight = 300;
+                    imageView.setFitWidth(desiredWidth);
+                    imageView.setFitHeight(desiredHeight);
+                    imageView.setPreserveRatio(true);
+                    radioButton.setGraphic(imageView);
+                }
                 group.getToggles().add(radioButton);
                 optionsContainer.getChildren().add(radioButton);
+                i++;
             }
             group.selectedToggleProperty().addListener(e -> {
                 selectedOps.clear();
-                selected.set(group.getSelectedToggle() != null);
-                selectedOps.add(((RadioButton) group.getSelectedToggle()).getText());
+                selected.set(true);
+                selectedOps.add(packetMap.get((RadioButton) group.getSelectedToggle()));
             });
         } else if (question.isType() == 0) {
             List<CheckBox> list = new ArrayList<>();
             ObservableList<CheckBox> checkBoxObservableList = FXCollections.observableList(list);
-            for (String option : question.getOptions()) {
-                CheckBox checkBox = new CheckBox(option);
+            int i = 0;
+            for (OptionsPacket pack : question.getPackets()) {
+                CheckBox checkBox = new CheckBox((char) (65 + i) + ". " + pack.getOption());
                 checkBox.setStyle("-fx-text-fill: black");
+                checkBox.setContentDisplay(ContentDisplay.RIGHT);
+                checkBoxOptionsPacketMap.put(checkBox, pack);
+                if (pack.getImagePath() != null) {
+                    ImageView imageView = new ImageView(pack.getImagePath());
+                    double desiredWidth = 300;
+                    double desiredHeight = 300;
+                    imageView.setFitWidth(desiredWidth);
+                    imageView.setFitHeight(desiredHeight);
+                    imageView.setPreserveRatio(true);
+                    checkBox.setGraphic(imageView);
+                }
                 optionsContainer.getChildren().add(checkBox);
                 checkBox.selectedProperty().addListener(e -> {
                     if (checkBox.isSelected()) {
                         checkBoxObservableList.add(checkBox);
-                        selectedOps.add(checkBox.getText());
+                        selectedOps.add(checkBoxOptionsPacketMap.get(checkBox));
                     } else {
                         checkBoxObservableList.remove(checkBox);
-                        selectedOps.remove(checkBox.getText());
+                        selectedOps.remove(checkBoxOptionsPacketMap.get(checkBox));
                     }
                 });
-                checkBoxObservableList.addListener((ListChangeListener<? super CheckBox>) e -> {
-
-                    selected.set(!checkBoxObservableList.isEmpty());
-
-                });
+                checkBoxObservableList.addListener((ListChangeListener<? super CheckBox>) e -> selected.set(!checkBoxObservableList.isEmpty()));
+                i++;
             }
 
 
@@ -199,7 +229,7 @@ public class QuestionBox extends HBox {
         return question;
     }
 
-    public List<String> getSelectedOps() {
+    public List<OptionsPacket> getSelectedOps() {
         return selectedOps;
     }
 }

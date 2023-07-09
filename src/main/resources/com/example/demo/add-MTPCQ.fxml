@@ -8,8 +8,11 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
@@ -68,7 +71,39 @@
                         </MenuButton>
                         <TextField fx:id="quesName" layoutX="10.0" layoutY="10.0" minHeight="-Infinity"
                                    minWidth="-Infinity"/>
-                        <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="226.0"/>
+                        <VBox>
+                            <children>
+                                <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="91.0"
+                                          prefWidth="226.0"/>
+                                <StackPane fx:id="dropZone" prefHeight="80.0" prefWidth="226.0"
+                                           style="-fx-border-color: transparent black black black;">
+                                    <children>
+                                        <VBox fx:id="dropFace" alignment="CENTER" prefHeight="112.0" prefWidth="579.0"
+                                              style="-fx-border-style: dashed;">
+                                            <children>
+                                                <ImageView fitHeight="66.0" fitWidth="62.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../../../arrow-icon-blue-12.jpg"/>
+                                                    </image>
+                                                </ImageView>
+                                                <Label text="Drop your images here"/>
+                                            </children>
+                                        </VBox>
+                                        <VBox fx:id="dropShow" prefHeight="200.0" prefWidth="100.0" visible="false"/>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                    </padding>
+                                </StackPane>
+                                <Button mnemonicParsing="false" onAction="#btnAction" styleClass="editionbutton"
+                                        text="Choose image">
+                                    <VBox.margin>
+                                        <Insets top="5.0"/>
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                        </VBox>
                         <HBox>
                             <children>
                                 <TextField fx:id="mark" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0"

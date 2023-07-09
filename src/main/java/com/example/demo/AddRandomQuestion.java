@@ -48,6 +48,15 @@ public class AddRandomQuestion {
     private void initialize() {
         initDataModel(DataModel.getInstance());
         root.setRoot(dataModel.getRoot());
+        numberOfQuestion.getSelectionModel().selectedItemProperty().addListener(e -> {
+            if (numberOfQuestion.getSelectionModel().getSelectedItem() != null) {
+                randomSelection = selectRandomElements(list, numberOfQuestion.getSelectionModel().getSelectedItem());
+                pagination.setPageCount(randomSelection.size() / 10 + 1);
+                pagination.setMaxPageIndicatorCount(Math.min((list.size() / 10) + 1, 8));
+                pagination.setCurrentPageIndex(0);
+                createPage();
+            }
+        });
         root.getSelectionModel().selectedItemProperty().addListener(e -> {
             dataModel.setCurrentCategory(root.getSelectionModel().getSelectedItem());
             label.setText(root.getSelectionModel().getSelectedItem().getValue());
@@ -56,10 +65,9 @@ public class AddRandomQuestion {
             page.getChildren().clear();
             showQuestion();
             totalQuestion.set(list.size());
-            pagination.setMaxPageIndicatorCount(Math.min((list.size() / 10) + 1, 8));
-            pagination.setPageCount(list.size() / 10 + 1);
-            pagination.setCurrentPageIndex(0);
-            createPage();
+            pagination.setMaxPageIndicatorCount(1);
+            pagination.setPageCount(1);
+            numberOfQuestion.setValue(null);
         });
         getQuesFromSubCategory.selectedProperty().addListener(e -> {
             if (getQuesFromSubCategory.isSelected()) {
@@ -70,8 +78,6 @@ public class AddRandomQuestion {
                 quesFromSubcategories.clear();
             }
             totalQuestion.set(list.size());
-            pagination.setMaxPageIndicatorCount(Math.min((list.size() / 10) + 1, 8));
-            pagination.setPageCount(list.size() / 10 + 1);
         });
         page.setMinSize(800, Region.USE_COMPUTED_SIZE);
         page.setPadding(new Insets(10));
@@ -83,10 +89,7 @@ public class AddRandomQuestion {
             }
         });
 
-        numberOfQuestion.getSelectionModel().selectedItemProperty().addListener(e -> {
-            if (numberOfQuestion.getSelectionModel().getSelectedItem() != null)
-                randomSelection = selectRandomElements(list, numberOfQuestion.getSelectionModel().getSelectedItem());
-        });
+
         pagination.currentPageIndexProperty().addListener(e -> {
             createPage();
         });
@@ -127,8 +130,8 @@ public class AddRandomQuestion {
 
     private void createPage() {
         page.getChildren().clear();
-        for (int i = pagination.getCurrentPageIndex() * 10; i < list.size() && i < (pagination.getCurrentPageIndex() * 10 + 10); i++) {
-            page.getChildren().add(list.get(i));
+        for (int i = pagination.getCurrentPageIndex() * 10; i < randomSelection.size() && i < (pagination.getCurrentPageIndex() * 10 + 10); i++) {
+            page.getChildren().add(randomSelection.get(i));
         }
     }
 

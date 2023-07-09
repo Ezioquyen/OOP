@@ -31,11 +31,6 @@ public class QuestionsView extends HBox {
         listIcon.setIconSize(15);
         getChildren().addAll(listIcon, title);
     }
-
-    public Label getTitle() {
-        return title;
-    }
-
     public Question getQuestion() {
         return question;
     }

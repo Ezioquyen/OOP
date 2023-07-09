@@ -26,7 +26,7 @@
                                         <HBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-border-color: Red;">
                                             <children>
                                                 <Label text="Time left:"/>
-                                                <Label fx:id="timerLabel" text="0:59:50"/>
+                                                <Label fx:id="timerLabel" text="NOT APPLIED"/>
                                             </children>
                                             <padding>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -69,15 +69,34 @@
                                 </VBox>
                                 <VBox prefWidth="375.0" spacing="5.0" style="-fx-background-color: white;">
                                     <children>
-                                        <Circle fill="DODGERBLUE" radius="14.0" stroke="BLACK" strokeType="INSIDE"/>
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                            <children>
+                                                <Circle fill="DODGERBLUE" radius="14.0" stroke="BLACK"
+                                                        strokeType="INSIDE"/>
+                                                <Label text="Nguyễn"/>
+                                            </children>
+                                        </HBox>
                                         <FlowPane fx:id="navigationContainer" hgap="5.0" vgap="5.0"/>
-                                        <Button mnemonicParsing="false" onAction="#btnFinish" prefHeight="40.0"
-                                                prefWidth="74.0" style="-fx-background-color: transparent;"
-                                                text="Finish" textFill="#36b7ec" underline="true">
-                                            <font>
-                                                <Font size="18.0"/>
-                                            </font>
-                                        </Button>
+                                        <HBox fx:id="container">
+                                            <children>
+                                                <Button fx:id="finish" mnemonicParsing="false" onAction="#btnFinish"
+                                                        prefHeight="40.0" prefWidth="74.0"
+                                                        style="-fx-background-color: transparent;" text="Finish"
+                                                        textFill="#36b7ec" underline="true">
+                                                    <font>
+                                                        <Font size="18.0"/>
+                                                    </font>
+                                                </Button>
+                                                <Button fx:id="export" layoutX="10.0" layoutY="10.0"
+                                                        mnemonicParsing="false" prefHeight="40.0"
+                                                        style="-fx-background-color: transparent;" text="Export preview"
+                                                        textFill="#36b7ec" underline="true" visible="false">
+                                                    <font>
+                                                        <Font size="18.0"/>
+                                                    </font>
+                                                </Button>
+                                            </children>
+                                        </HBox>
                                     </children>
                                     <padding>
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>

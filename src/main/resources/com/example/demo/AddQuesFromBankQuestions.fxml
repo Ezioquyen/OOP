@@ -119,7 +119,7 @@
                         </VBox>
                         <VBox fx:id="showQuestion" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                             <children>
-                                <ListView id="one" fx:id="list" VBox.vgrow="ALWAYS">
+                                <ListView id="two" fx:id="list" VBox.vgrow="ALWAYS">
                                     <VBox.margin>
                                         <Insets/>
                                     </VBox.margin>

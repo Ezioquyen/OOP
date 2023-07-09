@@ -11,6 +11,7 @@ public class Question {
 
     private Double mark;
     private List<Integer> ansID;
+    private List<Integer> imageID;
 
 
     public void setOptions(List<String> options) {
@@ -22,27 +23,34 @@ public class Question {
     }
 
     private List<Double> percent;
-    /*private String imageFilePath;*/
-    private final Map<String, Double> matchAns = new HashMap<>();
+    private List<String> imageFilePath;
+    private List<String> gifPath;
+    private List<String> videoPath;
+    private List<String> imageOptionPath;
+    private List<OptionsPacket> packets = new ArrayList<>();
 
     public Question() {
+        this.gifPath = new ArrayList<>();
+        this.videoPath = new ArrayList<>();
+        this.imageFilePath = new ArrayList<>();
+        this.imageOptionPath = new ArrayList<>();
         this.options = new ArrayList<>();
         this.percent = new ArrayList<>();
         this.ansID = new ArrayList<>();
+        this.imageID = new ArrayList<>();
     }
 
     public void match() {
-        for (String op : options) {
-            matchAns.put(op, percent.get(options.indexOf(op)));
+        int i = 0;
+        for (int id : ansID) {
+            OptionsPacket pack = new OptionsPacket(options.get(i), percent.get(i), id, imageOptionPath.get(i));
+            packets.add(pack);
+            i++;
         }
     }
 
     public void shuffle() {
-        Collections.shuffle(options);
-    }
-
-    public Double getPercentFromAns(String a) {
-        return matchAns.get(a);
+        Collections.shuffle(packets);
     }
 
     public String getTitle() {
@@ -106,6 +114,15 @@ public class Question {
         return categoryID;
     }
 
+    public List<String> getGifPath() {
+        return gifPath;
+    }
+
+    public List<String> getVideoPath() {
+        return videoPath;
+    }
+
+
     public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
     }
@@ -117,11 +134,32 @@ public class Question {
     public void setAnsID(List<Integer> ansID) {
         this.ansID = ansID;
     }
-    /*public String getImageFilePath() {
-        return imageFilePath;
-    }*/
 
-    /*public void setImageFilePath(String imageFilePath) {
-        this.imageFilePath = imageFilePath;
-    }*/
+    public List<String> getImageFilePath() {
+        return imageFilePath;
+    }
+
+    public void setImageFilePath(String imageFilePath) {
+        this.imageFilePath.add(imageFilePath);
+    }
+
+    public List<String> getImageOptionPath() {
+        return imageOptionPath;
+    }
+
+    public void setImageOptionPath(String imageOptionPath) {
+        this.imageOptionPath.add(imageOptionPath);
+    }
+
+    public List<Integer> getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(List<Integer> imageID) {
+        this.imageID = imageID;
+    }
+
+    public List<OptionsPacket> getPackets() {
+        return packets;
+    }
 }

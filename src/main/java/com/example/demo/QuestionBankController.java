@@ -1,18 +1,17 @@
 package com.example.demo;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.controlsfx.control.CheckListView;
+import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +39,14 @@ public class QuestionBankController {
     @FXML
     private VBox showInfor;
     @FXML
-    private ListView<CustomCheckBox> list;
+    private VBox dropZoneInterface;
     @FXML
-    private VBox showQuestion;
+    private VBox fileNameShow;
+    @FXML
+    private ListView<CustomCheckBox> list;
     private DataModel dataModel;
     private List<File> files;
-    private boolean isAllTextFile = false;
+
 
     public void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -84,9 +85,7 @@ public class QuestionBankController {
             updateCategorySelection();
         });
         root1.setRoot(dataModel.getRoot());
-        root1.getSelectionModel().selectedItemProperty().addListener(e -> {
-            label1.setText(root1.getSelectionModel().getSelectedItem().getValue());
-        });
+        root1.getSelectionModel().selectedItemProperty().addListener(e -> label1.setText(root1.getSelectionModel().getSelectedItem().getValue()));
 
         if (Objects.equals(breadCrumbBarModel.getCurrentView(), "questionbank.fxml")) {
             tabPane.getSelectionModel().select(0);
@@ -96,21 +95,14 @@ public class QuestionBankController {
             if (a != b) {
                 breadCrumbBarModel.setToggle(true);
                 switch (tabPane.getSelectionModel().getSelectedIndex()) {
-                    case 1 -> {
-                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("1"));
-                    }
-                    case 2 -> {
-                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("2"));
-
-                    }
-                    case 3 -> {
-                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("3"));
-
-                    }
-                    default -> {
-                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
-
-                    }
+                    case 1 ->
+                            breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("1"));
+                    case 2 ->
+                            breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("2"));
+                    case 3 ->
+                            breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("3"));
+                    default ->
+                            breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
                 }
 
             }
@@ -122,19 +114,17 @@ public class QuestionBankController {
             }
 
         });
-// Sự kiện thả vào VBox
+
         dropZone.setOnDragDropped(event -> {
             Dragboard dragboard = event.getDragboard();
             boolean success = false;
             if (dragboard.hasFiles()) {
                 files = dragboard.getFiles();
-
+                dropZoneInterface.setVisible(false);
                 for (File file : files) {
-                    if (!isTextFile(file)) {
-                        break;
-                    }
-                    isAllTextFile = true;
+                    fileNameShow.getChildren().add(new Label(file.getName()));
                 }
+                fileNameShow.setVisible(true);
                 success = true;
             }
             event.setDropCompleted(success);
@@ -163,201 +153,178 @@ public class QuestionBankController {
         dataModel.insertCategory(root1.getSelectionModel().getSelectedItem(), catogeryName.getText());
     }
 
+    private boolean haveTitle(Question question) {
+        return question.getTitle().isEmpty();
+    }
+
     public List<Question> readAikenQuestions(File file) {
         List<Question> questions = new ArrayList<>();
-        boolean start = false;
-        boolean hasContent = false;
-        boolean hasAnswer = false;
         int countLine = 0;
-        int contentLine = 0;
-        int countOption = 0;
-        Question question = new Question();
+        boolean haveAns = false;
         if (file.getName().substring(file.getName().lastIndexOf(".") + 1).equalsIgnoreCase("docx")) {
-            try (FileInputStream fis = new FileInputStream(file);
-                 XWPFDocument document = new XWPFDocument(fis)) {
-
-                List<XWPFParagraph> paragraphs = document.getParagraphs();
-                /*for (XWPFPictureData pictureData : document.getAllPictures()) {
-                    // Lấy dữ liệu hình ảnh dạng byte[]
-                    byte[] imageData = pictureData.getData();
-
-                    // Lưu hình ảnh thành file (tuỳ ý)
-                    String imageFileName = pictureData.getFileName();
-                    String imageFileExtension = pictureData.suggestFileExtension();
-                    String imageFilePath = "path/to/save/image/" + imageFileName + "." + imageFileExtension;
-                    IOUtils.write(imageData, new FileOutputStream(imageFilePath));
-                }*/
-
-                for (XWPFParagraph paragraph : paragraphs) {
-                    String text = paragraph.getText().trim();
+            try {
+                FileInputStream fis = new FileInputStream(file);
+                XWPFDocument document = new XWPFDocument(fis);
+                Question question = new Question();
+                String imageFileName;
+                for (XWPFParagraph paragraph : document.getParagraphs()) {
                     countLine++;
-                    if (hasContent && text.isEmpty()) {
-                        System.out.println("Error 1 at line: " + countLine);
-                        return null;
-                    }
-                    if (hasContent && text.matches("^[A-Z]\\.\\s.*[^.]$")) {
-                        if (!text.startsWith(String.valueOf((char) (countOption + 65)))) {
-                            System.out.println("Error 2 at line: " + countLine);
+                    String text = paragraph.getText().trim();
+                    if (haveTitle(question)) {
+                        question.addTitle(text);
+                        List<XWPFRun> runs = paragraph.getRuns();
+                        for (XWPFRun run : runs) {
+                            List<XWPFPicture> pictures = run.getEmbeddedPictures();
+                            int imageIndex = 0;
+                            for (XWPFPicture picture : pictures) {
+                                XWPFPictureData pictureData = picture.getPictureData();
+                                LocalTime time = LocalTime.now();
+                                LocalDate currentDate = LocalDate.now();
+
+                                // Định dạng ngày tháng năm
+                                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss");
+                                imageFileName = "D:\\TestFolder\\" + currentDate.format(formatter2) + "-" + time.format(formatter) + countLine + imageIndex + ".png";
+                                question.setImageFilePath(imageFileName);
+                                try (OutputStream os = new FileOutputStream(imageFileName)) {
+                                    os.write(pictureData.getData());
+                                }
+                                imageIndex++;
+                            }
+                        }
+                    } else {
+                        if (text.matches("^[A-Z]\\.\\s.*[^.]$")) {
+                            if (!text.startsWith(String.valueOf((char) ((question.getOptions().size()) + 65)))) {
+                                System.out.println(file.getName() + "Error 2 at line: " + countLine);
+                                return null;
+                            }
+                            question.addOption(text.substring("A. ".length()).trim());
+                        } else if (text.matches("^ANSWER:\\s[A-Z]") && question.getOptions().size() >= 2) {
+                            haveAns = true;
+                            for (String a : question.getOptions()) {
+                                if (question.getOptions().indexOf(a) == text.substring("ANSWER:".length()).trim().charAt(0) - 65) {
+                                    question.getPercent().add(100.0);
+                                } else question.getPercent().add(0.0);
+                            }
+                        } else if (text.isEmpty() && haveAns) {
+                            question.setMark(1.0);
+                            question.typeDetect();
+
+                            questions.add(question);
+                            question = new Question();
+                            haveAns = false;
+                        } else {
+                            System.out.println(file.getName() + "Error 3 at line: " + countLine);
                             return null;
                         }
-                        question.addOption(text.substring("A. ".length()).trim());
-                        countOption++;
-                    } else if (hasContent && countOption >= 2 && text.matches("^ANSWER:\\s[A-Z]")) {
-                        int i = 0;
-                        for (String option : question.getOptions()) {
-                            if (i == (int) text.substring("ANSWER:".length()).trim().charAt(0) - 65) {
-                                question.getPercent().add(100.0);
-                            } else question.getPercent().add((double) 0);
-                            i++;
-                        }
-                        question.typeDetect();
-                        hasAnswer = true;
-                    } else if (hasContent && countOption < 2 && text.matches("^ANSWER:\\s[A-Z]")) {
-                        System.out.println("Error 3 at line: " + countLine);
-                        return null;
-                    } else if (hasContent && countOption > 0) {
-                        System.out.println("Error 4 at line: " + countOption + " " + countLine);
-                        return null;
-                    }
-                    if (hasAnswer) {
-                        questions.add(question);
-                        question = new Question();
-                        countOption = 0;
-                        start = false;
-                        hasContent = false;
-                        hasAnswer = false;
-                    } else if (countOption == 0 && !text.isEmpty()) {
-                        if (!start) {
-                            contentLine = countLine;
-                            start = true;
-                        }
-                        question.addTitle(text);
-                        hasContent = true;
                     }
                 }
-                if (hasContent) {
-                    System.out.println("Error 5 at line: " + contentLine);
-                    return null;
-                }
+                fis.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
+                Question question = new Question();
                 while ((line = reader.readLine()) != null) {
                     String text = line.trim();
                     countLine++;
-                    if (hasContent && text.isEmpty()) {
-                        System.out.println("Error 1 at line: " + countLine);
-                        return null;
-                    }
-                    if (hasContent && text.matches("^[A-Z]\\.\\s.*[^.]$")) {
-                        if (!text.startsWith(String.valueOf((char) (countOption + 65)))) {
-                            System.out.println(countOption + 65);
-                            System.out.println("Error 2 at line: " + countLine);
+
+                    if (haveTitle(question)) {
+                        question.addTitle(text);
+                    } else {
+                        if (text.matches("^[A-Z]\\.\\s.*[^.]$")) {
+                            if (!text.startsWith(String.valueOf((char) ((question.getOptions().size()) + 65)))) {
+                                System.out.println(file.getName() + "Error 2 at line: " + countLine);
+                                return null;
+                            }
+                            question.addOption(text.substring("A. ".length()).trim());
+                        } else if (text.matches("^ANSWER:\\s[A-Z]") && question.getOptions().size() >= 2) {
+                            for (String a : question.getOptions()) {
+                                haveAns = true;
+                                if (question.getOptions().indexOf(a) == text.substring("ANSWER:".length()).trim().charAt(0) - 65) {
+                                    question.getPercent().add(100.0);
+                                } else question.getPercent().add(0.0);
+                            }
+                        } else if (text.isEmpty() && haveAns) {
+                            question.setMark(1.0);
+                            question.typeDetect();
+                            questions.add(question);
+                            question = new Question();
+                            haveAns = false;
+                        } else {
+                            System.out.println(file.getName() + "Error 3 at line: " + countLine);
                             return null;
                         }
-                        question.addOption(text.substring("A. ".length()).trim());
-                        countOption++;
-                    } else if (hasContent && countOption >= 2 && text.matches("^ANSWER:\\s[A-Z]")) {
-                        int i = 0;
-                        for (String ignored : question.getOptions()) {
-                            if (i == text.substring("ANSWER:".length()).trim().charAt(0) - 65) {
-                                question.getPercent().add(100.0);
-                            } else question.getPercent().add((double) 0);
-                            i++;
-                        }
-                        question.typeDetect();
-                        hasAnswer = true;
-                    } else if (hasContent && countOption < 2 && text.matches("^ANSWER:\\s[A-Z]")) {
-                        System.out.println("Error 3 at line: " + countLine);
-                        return null;
-                    } else if (hasContent && countOption > 0) {
-                        System.out.println("Error 4 at line: " + countLine);
-                        return null;
                     }
-                    if (hasAnswer) {
-                        questions.add(question);
-                        question = new Question();
-                        countOption = 0;
-                        start = false;
-                        hasContent = false;
-                        hasAnswer = false;
-                    } else if (countOption == 0 && !text.isEmpty()) {
-                        if (!start) {
-                            contentLine = countLine;
-                            start = true;
-                        }
-                        question.addTitle(text);
-                        hasContent = true;
-                    }
-                }
-                if (hasContent) {
-                    System.out.println("Error 5 at line: " + contentLine);
-                    return null;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
-
         return questions;
     }
 
     public void btnImport() {
-        try {
-            if (isAllTextFile) {
-                int i = 0;
-                int count = 0;
-                if (dataModel.getLastNode_id() != 0) {
-                    Random random = new Random();
-                    i = random.nextInt(dataModel.getLastNode_id()) + 1;
-                } else {
-                    LocalDate currentDate = LocalDate.now();
-
-                    // Định dạng ngày tháng năm
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-                    // Chuyển đổi thành chuỗi và in ra
-                    String formattedDate = currentDate.format(formatter);
-                    dataModel.insertCategory(dataModel.getCategoryMap().inverse().get(i), formattedDate);
-                    i = 1;
-
-                }
-                for (File file : files) {
-                    for (Question question : readAikenQuestions(file)) {
-                        dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0);
-                        dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0);
-                        count++;
-                    }
-                }
-                dataModel.setCount(count);
-                dataModel.updateCategory(dataModel.getCategoryMap().inverse().get(i));
-                label1.setText(dataModel.getCategoryMap().inverse().get(i).getValue());
-                dataModel.setCount(0);
-                isAllTextFile = false;
-                files = null;
-            } else {
-                System.out.println("Do some thing");
+        for (File file : files) {
+            if (!isTextFile(file)) {
+                files.remove(file);
+                System.out.println(file.getName() + " is not text file");
             }
-        } catch (NullPointerException e) {
-            System.out.println("No file selected");
         }
+
+        int i = 0;
+        int count = 0;
+        if (dataModel.getLastNode_id() != 0) {
+            Random random = new Random();
+            i = random.nextInt(dataModel.getLastNode_id()) + 1;
+        } else {
+            LocalDate currentDate = LocalDate.now();
+
+            // Định dạng ngày tháng năm
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            // Chuyển đổi thành chuỗi và in ra
+            String formattedDate = currentDate.format(formatter);
+            dataModel.insertCategory(dataModel.getCategoryMap().inverse().get(i), formattedDate);
+            i = 1;
+
+        }
+        for (File file : files) {
+            try {
+
+                for (Question question : readAikenQuestions(file)) {
+                    dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0);
+                    if (!question.getImageFilePath().isEmpty()) {
+                        for (String string : question.getImageFilePath()) dataModel.insertImage(string, 0);
+                    }
+                    dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, null);
+                    count++;
+                }
+            } catch (NullPointerException e) {
+                System.out.println("Wrong question format");
+            }
+        }
+        dataModel.setCount(count);
+        dataModel.updateCategory(dataModel.getCategoryMap().inverse().get(i));
+        label1.setText(dataModel.getCategoryMap().inverse().get(i).getValue());
+        dataModel.setCount(0);
+        fileNameShow.getChildren().clear();
+        fileNameShow.setVisible(false);
+        dropZoneInterface.setVisible(true);
+        files = null;
+        /*} catch (NullPointerException e) {
+            System.out.println("No file selected");
+        }*/
     }
 
     public void chooseFile() {
         // Tạo một đối tượng FileChooser
         FileChooser fileChooser = new FileChooser();
 
-        // Đặt tiêu đề của hộp thoại chọn tệp
         fileChooser.setTitle("Chọn tệp");
 
-        // Thêm bộ lọc tệp (tùy chọn)
-        FileChooser.ExtensionFilter txtFilter = new FileChooser.ExtensionFilter("Tệp văn bản (.txt)", "*.txt");
-        FileChooser.ExtensionFilter docFilter = new FileChooser.ExtensionFilter("Tệp Word (.doc)", "*.doc");
-        FileChooser.ExtensionFilter docxFilter = new FileChooser.ExtensionFilter("Tệp Word (.docx)", "*.docx");
-        fileChooser.getExtensionFilters().addAll(txtFilter, docFilter, docxFilter);
 
         // Lấy stage của scene hiện tại từ nút
         Stage stage = new Stage();
@@ -369,9 +336,11 @@ public class QuestionBankController {
         if (selectedFile != null) {
             if (files == null) {
                 files = new ArrayList<>();
+                dropZoneInterface.setVisible(false);
+                fileNameShow.setVisible(true);
             }
             files.add(selectedFile);
-            isAllTextFile = true;
+            fileNameShow.getChildren().add(new Label(selectedFile.getName()));
         }
     }
 

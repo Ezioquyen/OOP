@@ -4,6 +4,8 @@ package com.example.demo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.image.Image;
 
 import javafx.scene.layout.HBox;
@@ -25,6 +27,14 @@ public class HelloController {
     private HBox bar;
     private BreadCrumbBarModel breadCrumbBarModel;
     private DataModel dataModel;
+    @FXML
+    private MenuButton menu;
+    @FXML
+    private Button editButton;
+    @FXML
+    private HBox menuContainer;
+    @FXML
+    private HBox buttonEditionContainer;
     @FXML
     private Circle circle_avatar;
 
@@ -57,6 +67,14 @@ public class HelloController {
         //Listener
         breadCrumbBarModel.getBreadCrumbBar().selectedCrumbProperty().addListener((obs, oldVal, newVal) -> {
             if (!breadCrumbBarModel.isToggle()) {
+                if (Objects.equals(oldVal.getValue(), "THI CUỐI KỲ")) {
+                    menuContainer.getChildren().remove(menu);
+                    buttonEditionContainer.getChildren().remove(editButton);
+                }
+                if (Objects.equals(newVal.getValue(), "THI CUỐI KỲ")) {
+                    menuContainer.getChildren().add(menu);
+                    buttonEditionContainer.getChildren().add(editButton);
+                }
                 if (Objects.equals(oldVal.getValue(), "Edit multiple choice question")) {
                     pane.setVisible(true);
                     pane1.setVisible(false);
@@ -75,7 +93,7 @@ public class HelloController {
                     } else if (Objects.equals(newVal.getValue(), "Edit multiple choice question")) {
                         pane.setVisible(false);
                         pane1.setVisible(true);
-                        VBox vBox = null;
+                        VBox vBox;
                         try {
                             vBox = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(breadCrumbBarModel.getBreadConnection().inverse().get(newVal))));
                         } catch (IOException e) {
@@ -87,7 +105,7 @@ public class HelloController {
                         pane1.setVisible(false);
                         pane1.getChildren().removeAll();
                     } else {
-                        VBox vBox = null;
+                        VBox vBox;
                         try {
                             vBox = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(breadCrumbBarModel.getBreadConnection().inverse().get(newVal))));
                         } catch (IOException e) {

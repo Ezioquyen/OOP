@@ -42,7 +42,7 @@
         </Label>
         <HBox prefHeight="211.0" prefWidth="714.0">
             <children>
-                <VBox prefHeight="211.0" prefWidth="218.0" spacing="20.0">
+                <VBox prefHeight="211.0" prefWidth="242.0" spacing="20.0">
                     <children>
                         <Label text="Name"/>
                         <Label text="Description"/>
@@ -52,12 +52,12 @@
                     </HBox.margin>
                 </VBox>
                 <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                <VBox alignment="TOP_RIGHT" prefHeight="211.0" prefWidth="43.0">
+                <VBox>
                     <children>
                         <FontIcon iconColor="#be151d" iconLiteral="fas-exclamation-circle"
-                                  wrappingWidth="22.39990234375">
+                                  wrappingWidth="18.399904251098633">
                             <VBox.margin>
-                                <Insets left="7.0" top="7.0"/>
+                                <Insets top="6.0"/>
                             </VBox.margin>
                         </FontIcon>
                     </children>
@@ -98,7 +98,7 @@
         </Label>
         <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
-                <VBox prefHeight="161.0" prefWidth="218.0" spacing="27.0">
+                <VBox prefHeight="161.0" prefWidth="242.0" spacing="27.0">
                     <children>
                         <Label text="Open the quiz"/>
                         <Label text="Close the quiz"/>
@@ -110,18 +110,18 @@
                     </HBox.margin>
                 </VBox>
                 <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                <VBox alignment="CENTER_RIGHT" prefHeight="162.0" prefWidth="43.0" spacing="25.0">
+                <VBox alignment="CENTER_RIGHT" spacing="25.0">
                     <children>
                         <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" text=""
-                                  wrappingWidth="18.399962902069092">
+                                  wrappingWidth="17.599958896636963">
                             <VBox.margin>
                                 <Insets bottom="10.0"/>
                             </VBox.margin>
                         </FontIcon>
                         <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" layoutX="10.0" layoutY="21.0"
-                                  text="" wrappingWidth="18.399962902069092"/>
+                                  text="" wrappingWidth="18.40004014968872"/>
                         <FontIcon iconColor="#009ee5" iconLiteral="fas-question-circle" layoutX="10.0" layoutY="85.0"
-                                  text="" wrappingWidth="18.399962902069092">
+                                  text="" wrappingWidth="18.399917125701904">
                             <VBox.margin>
                                 <Insets top="55.0"/>
                             </VBox.margin>
@@ -168,7 +168,8 @@
                         <HBox alignment="CENTER_LEFT" spacing="5.0">
                             <children>
                                 <TextField fx:id="textField" prefHeight="26.0" prefWidth="49.0"/>
-                                <ComboBox disable="true" prefHeight="27.0" prefWidth="90.0" promptText="minutes"/>
+                                <ComboBox fx:id="minutes" disable="true" prefHeight="27.0" prefWidth="90.0"
+                                          promptText="minutes"/>
                                 <CheckBox fx:id="checkBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="61.0"
                                           text="Enable"/>
                             </children>

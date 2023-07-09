@@ -24,6 +24,7 @@ public class EditQuesFromQuiz extends HBox {
     private Button button;
 
     public EditQuesFromQuiz(Question question) {
+        this.question = question;
         setAlignment(Pos.CENTER_LEFT);
         setPadding(new Insets(6));
         setSpacing(10);
@@ -84,17 +85,8 @@ public class EditQuesFromQuiz extends HBox {
         this.index.setText(index);
     }
 
-    public Label getQuestionTitle() {
-        return questionTitle;
-    }
-
-
     public Label getPoint() {
         return point;
-    }
-
-    public void setPoint(Label point) {
-        this.point = point;
     }
 
     public Button getButton() {

@@ -4,10 +4,28 @@ public class Quiz {
     private int QuizID;
     private String name;
     private double time;
-    private Boolean shuffle;
-    private double totalMarks;
+    private Boolean shuffle = false;
+    private double totalMarks = 0.00;
+    private int totalQuestion = 0;
+    private double maxGrade = 0.00;
 
     public Quiz() {
+    }
+
+    public int getTotalQuestion() {
+        return totalQuestion;
+    }
+
+    public void setTotalQuestion(int totalQuestion) {
+        this.totalQuestion = totalQuestion;
+    }
+
+    public double getMaxGrade() {
+        return maxGrade;
+    }
+
+    public void setMaxGrade(double maxGrade) {
+        this.maxGrade = maxGrade;
     }
 
     public int getQuizID() {
