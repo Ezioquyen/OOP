@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,11 +99,10 @@ public class ChoiceBoxController {
         fileChooser.setTitle("Chọn tệp");
 
 
-        // Lấy stage của scene hiện tại từ nút
-        Stage stage = new Stage();
+
 
         // Hiển thị hộp thoại chọn tệp và lấy tệp được chọn
-        File selectedFile = fileChooser.showOpenDialog(stage);
+        File selectedFile = fileChooser.showOpenDialog(Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null));
 
 
         if (selectedFile != null && isImageFile(selectedFile)) {

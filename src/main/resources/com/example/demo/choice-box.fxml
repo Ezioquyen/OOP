@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="204.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+<HBox prefHeight="239.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.demo.ChoiceBoxController">
     <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0">
         <padding>
@@ -20,11 +20,15 @@
         </padding>
         <Region prefHeight="150.0" prefWidth="50.0"/>
         <Label fx:id="choice" text="Choice 1"/>
-        <Label layoutX="20.0" layoutY="210.0" text="Grade"/>
+        <Label layoutX="20.0" layoutY="210.0" text="Grade">
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+        </Label>
     </VBox>
-    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0"
+    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="238.0"
           prefWidth="298.0" spacing="10.0">
-        <StackPane fx:id="dropZone" style="-fx-border-color: black;">
+        <StackPane fx:id="dropZone" prefHeight="123.0" prefWidth="298.0" style="-fx-border-color: black;">
             <children>
                 <VBox fx:id="dropFace" alignment="CENTER" prefHeight="112.0" prefWidth="579.0"
                       style="-fx-border-style: dashed;">
@@ -50,14 +54,10 @@
                         style="-fx-background-color: red;" text="Remove" textFill="WHITE"/>
             </children>
         </HBox>
-        <TextArea fx:id="textArea" prefHeight="25.0" prefWidth="579.0" wrapText="true">
-            <VBox.margin>
-                <Insets left="10.0" right="10.0"/>
-            </VBox.margin>
-        </TextArea>
+        <TextArea fx:id="textArea" prefHeight="25.0" prefWidth="579.0" wrapText="true"/>
         <ComboBox fx:id="comboBox" prefHeight="27.0" prefWidth="100.0" promptText="None">
             <VBox.margin>
-                <Insets left="10.0"/>
+                <Insets/>
             </VBox.margin>
         </ComboBox>
     </VBox>

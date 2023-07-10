@@ -71,7 +71,7 @@
                                     <children>
                                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                                             <children>
-                                                <Circle fill="DODGERBLUE" radius="14.0" stroke="BLACK"
+                                                <Circle fx:id="avatar" fill="DODGERBLUE" radius="14.0" stroke="BLACK"
                                                         strokeType="INSIDE"/>
                                                 <Label text="Nguyễn"/>
                                             </children>

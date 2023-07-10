@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="668.0" prefWidth="743.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
+<VBox fx:id="rootPane" prefHeight="668.0" prefWidth="743.0" spacing="20.0" style="-fx-border-color: #C8CCE8;"
       xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.demo.EditMTPCQController">
     <children>
@@ -31,9 +31,9 @@
                 <FontIcon iconColor="#009ee5" iconLiteral="fas-caret-down" wrappingWidth="7.999938011169434"/>
             </graphic>
         </Label>
-        <HBox prefHeight="398.0" prefWidth="702.0" VBox.vgrow="ALWAYS">
+        <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="702.0" VBox.vgrow="ALWAYS">
             <children>
-                <VBox spacing="20.0">
+                <VBox spacing="35.0">
                     <children>
                         <Label text="Category"/>
                         <Label text="Question name"/>
@@ -42,15 +42,12 @@
                         <Label text="Default mark"/>
                         <Region prefHeight="2.0" prefWidth="175.0" VBox.vgrow="ALWAYS"/>
                     </children>
-                    <padding>
-                        <Insets top="5.0"/>
-                    </padding>
                 </VBox>
                 <Region prefHeight="369.0" prefWidth="0.0" HBox.hgrow="ALWAYS"/>
-                <VBox prefHeight="369.0" prefWidth="226.0" spacing="20.0">
+                <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="384.0" prefWidth="226.0" spacing="25.0">
                     <children>
                         <MenuButton fx:id="category" alignment="CENTER_RIGHT" graphicTextGap="0.0" minHeight="-Infinity"
-                                    minWidth="-Infinity" mnemonicParsing="false" prefHeight="31.0" prefWidth="140.0"
+                                    minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0"
                                     style="-fx-border-color: black;" styleClass="menubutton">
                             <items>
                                 <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
@@ -69,9 +66,12 @@
                                 </HBox>
                             </graphic>
                         </MenuButton>
-                        <TextField fx:id="quesName" layoutX="10.0" layoutY="10.0" minHeight="-Infinity"
-                                   minWidth="-Infinity"/>
-                        <VBox>
+                        <TextField fx:id="quesName" minHeight="-Infinity" minWidth="-Infinity">
+                            <VBox.margin>
+                                <Insets/>
+                            </VBox.margin>
+                        </TextField>
+                        <VBox prefHeight="225.0" prefWidth="226.0">
                             <children>
                                 <TextArea minHeight="-Infinity" minWidth="-Infinity" prefHeight="91.0"
                                           prefWidth="226.0"/>
@@ -104,7 +104,7 @@
                                 </Button>
                             </children>
                         </VBox>
-                        <HBox>
+                        <HBox prefHeight="54.0" prefWidth="226.0" spacing="5.0">
                             <children>
                                 <TextField fx:id="mark" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0"
                                            prefWidth="88.0"/>
@@ -115,9 +115,6 @@
                     <HBox.margin>
                         <Insets/>
                     </HBox.margin>
-                    <padding>
-                        <Insets top="5.0"/>
-                    </padding>
                 </VBox>
                 <Region prefHeight="383.0" prefWidth="122.0"/>
             </children>

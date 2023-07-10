@@ -362,3 +362,21 @@ bread-crumb-bar {
     -fx-opacity: 1;
 }
 
+#snack1 .jfx-snackbar-content {
+    -fx-background-color: #DCF3D5;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill: #889F81;
+    -fx-font-size: 15
+}
+
+#snack2 .jfx-snackbar-content {
+    -fx-background-color: #EAC9C2;
+}
+
+#snack2 .jfx-snackbar-toast {
+    -fx-text-fill: #AF5D61;
+    -fx-font-size: 15;
+}
+

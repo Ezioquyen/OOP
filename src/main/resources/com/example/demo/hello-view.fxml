@@ -17,13 +17,13 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<ScrollPane hbarPolicy="ALWAYS" pannable="true" prefHeight="600.0" prefWidth="600.0"
-            style="-fx-background-color: white;" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.HelloController">
+<ScrollPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: white;"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.demo.HelloController">
     <content>
-        <BorderPane prefHeight="900.0" prefWidth="1525.0" style="-fx-background-color: white;">
+        <BorderPane style="-fx-background-color: white;">
             <top>
-                <VBox prefHeight="222.0" prefWidth="960.0" BorderPane.alignment="CENTER">
+                <VBox prefHeight="220.0" prefWidth="1525.0" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets/>
                     </BorderPane.margin>
@@ -88,11 +88,11 @@
                                                             <children>
                                                                 <Label text="Question Bank" textFill="#00acea">
                                                                     <font>
-                                                      <Font name="Arial" size="18.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" top="20.0" />
-                                                   </HBox.margin>
+                                                                        <Font name="Arial" size="18.0"/>
+                                                                    </font>
+                                                                    <HBox.margin>
+                                                                        <Insets left="10.0" top="20.0"/>
+                                                                    </HBox.margin>
                                                 </Label>
                                                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0" spacing="5.0">
                                                    <padding>
@@ -149,9 +149,8 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
                     </BorderPane.margin>
                     <children>
-                        <VBox fx:id="pane" prefHeight="1000.0" prefWidth="1000.0"/>
-                        <VBox fx:id="pane1" layoutX="10.0" layoutY="10.0" prefHeight="1000.0" prefWidth="1000.0"
-                              visible="false"/>
+                        <VBox fx:id="pane"/>
+                        <VBox fx:id="pane1" layoutX="10.0" layoutY="10.0" visible="false"/>
                     </children>
                 </StackPane>
             </center>

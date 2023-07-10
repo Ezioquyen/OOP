@@ -42,8 +42,8 @@ public class Question {
 
     public void match() {
         int i = 0;
-        for (int id : ansID) {
-            OptionsPacket pack = new OptionsPacket(options.get(i), percent.get(i), id, imageOptionPath.get(i));
+        for (int ignored : ansID) {
+            OptionsPacket pack = new OptionsPacket(options.get(i), percent.get(i), imageOptionPath.get(i));
             packets.add(pack);
             i++;
         }
@@ -147,8 +147,8 @@ public class Question {
         return imageOptionPath;
     }
 
-    public void setImageOptionPath(String imageOptionPath) {
-        this.imageOptionPath.add(imageOptionPath);
+    public void setImageOptionPath(List<String> imageOptionPath) {
+        this.imageOptionPath = imageOptionPath;
     }
 
     public List<Integer> getImageID() {

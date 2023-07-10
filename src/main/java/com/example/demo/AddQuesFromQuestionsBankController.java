@@ -33,7 +33,7 @@ public class AddQuesFromQuestionsBankController {
     private DataModel dataModel;
     @FXML
     private ListView<CustomCheckBox> list;
-
+    private final List<CustomCheckBox> quesFromSubcategories = new ArrayList<>();
 
     private final List<CustomCheckBox> questions = new ArrayList<>();
 
@@ -48,24 +48,27 @@ public class AddQuesFromQuestionsBankController {
     private void initialize() {
         initDataModel(DataModel.getInstance());
         showInfor.setVisible(false);
-        list.setOnMouseClicked(null);
         showQuesFromCate.selectedProperty().addListener(e -> {
-            if (showQuesFromCate.isSelected()) {
-                showInfor.setVisible(true);
-                showQuestion();
-            } else {
-                list.getItems().clear();
-                showInfor.setVisible(false);
+            if (root.getSelectionModel().getSelectedItem() != null) {
+                if (showQuesFromCate.isSelected()) {
+                    traverseTreeView(root.getSelectionModel().getSelectedItem());
+                    list.getItems().addAll(quesFromSubcategories);
+                } else {
+                    list.getItems().removeAll(quesFromSubcategories);
+                    quesFromSubcategories.clear();
+                }
+                showInfor.setVisible(!list.getItems().isEmpty());
             }
         });
         root.setRoot(dataModel.getRoot());
         root.getSelectionModel().selectedItemProperty().addListener(e -> {
-            if (showQuesFromCate.isSelected()) {
-                list.getItems().clear();
-                showQuestion();
-            }
+            list.getItems().clear();
+            quesFromSubcategories.clear();
+            showQuestion();
+            showInfor.setVisible(!list.getItems().isEmpty());
             label.setText(root.getSelectionModel().getSelectedItem().getValue());
         });
+
     }
 
     public Button getButton() {
@@ -91,6 +94,9 @@ public class AddQuesFromQuestionsBankController {
                     } else questions.remove(customCheckBox);
                 });
             }
+            if (showQuesFromCate.isSelected()) {
+                traverseTreeView(root.getSelectionModel().getSelectedItem());
+            }
             /*list.getSelectionModel().selectedItemProperty().addListener(e -> {
                 list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(true);
             });*/
@@ -109,13 +115,27 @@ public class AddQuesFromQuestionsBankController {
         return btnADD;
     }
 
-    @FXML
-    private void btnAdd() {
-        for (CustomCheckBox question : questions) {
-            dataModel.insertQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
-            list.getItems().remove(question);
+    private void traverseTreeView(TreeItem<String> root) {
+        if (root != null) {
+            for (TreeItem<String> child : root.getChildren()) {
+                traverseTreeView(child);
+                for (Question question : dataModel.getQuestionExcept(dataModel.getCategoryMap().get(child), dataModel.getCurrentQuiz().getQuizID())) {
+                    CustomCheckBox customCheckBox = new CustomCheckBox(question);
+                    customCheckBox.getBox().getChildren().remove(customCheckBox.getButton());
+                    FontIcon icon = new FontIcon("fas-plus");
+                    icon.setIconColor(Color.valueOf("#00ACEA"));
+                    FontIcon icon2 = new FontIcon("fas-search-plus");
+                    icon2.setIconColor(Color.valueOf("#00ACEA"));
+                    customCheckBox.getBox().getChildren().add(0, icon);
+                    customCheckBox.getChildren().add(icon2);
+                    customCheckBox.getCheckBox().selectedProperty().addListener(e -> {
+                        if (customCheckBox.getCheckBox().isSelected()) {
+                            questions.add(customCheckBox);
+                        } else questions.remove(customCheckBox);
+                    });
+                    quesFromSubcategories.add(customCheckBox);
+                }
+            }
         }
-        list.getSelectionModel().clearSelection();
-        questions.clear();
     }
 }

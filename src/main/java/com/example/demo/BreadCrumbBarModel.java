@@ -82,7 +82,7 @@ public class BreadCrumbBarModel {
         TreeItem<String> myCourse = new TreeItem<>("My Course");
         TreeItem<String> questionBank = new TreeItem<>("Question Bank");
         TreeItem<String> question = new TreeItem<>("Questions");
-        TreeItem<String> addMTPCQ = new TreeItem<>("Editing a Multiple choice question");
+        TreeItem<String> addMTPCQ = new TreeItem<>("Add a Multiple choice question");
         TreeItem<String> addQuiz = new TreeItem<>("Add new quiz");
         TreeItem<String> category = new TreeItem<>("Category");
         TreeItem<String> importVar = new TreeItem<>("Import");

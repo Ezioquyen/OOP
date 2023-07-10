@@ -8,6 +8,8 @@ module com.example.demo {
     requires org.apache.poi.poi;
     requires org.apache.logging.log4j;
     requires org.apache.poi.ooxml;
+    requires net.synedra.validatorfx;
+    requires com.jfoenix;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

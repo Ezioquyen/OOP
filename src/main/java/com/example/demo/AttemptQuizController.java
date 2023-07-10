@@ -9,11 +9,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -23,6 +26,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class AttemptQuizController {
@@ -37,6 +41,8 @@ public class AttemptQuizController {
     @FXML
     private FlowPane navigationContainer;
     private DataModel dataModel;
+    @FXML
+    private Circle avatar;
     private double totalMark = 0.0;
     @FXML
     private HBox timerContainer;
@@ -78,6 +84,8 @@ public class AttemptQuizController {
             timeline.play();
         }
         startTime = LocalTime.now();
+        Image img = new Image(Objects.requireNonNull(getClass().getResource("/hello.jfif")).toExternalForm());
+        avatar.setFill(new ImagePattern(img));
         for (Question question : dataModel.getQuestionToQuiz(dataModel.getCurrentQuiz().getQuizID())) {
             question.typeDetect();
             question.match();

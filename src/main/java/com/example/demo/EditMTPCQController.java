@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.ss.formula.SheetRangeIdentifier;
+import javafx.stage.Window;
+import org.controlsfx.validation.Severity;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +23,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static java.lang.Math.abs;
 
 public class EditMTPCQController {
     @FXML
@@ -39,12 +45,16 @@ public class EditMTPCQController {
     private VBox dropShow;
     @FXML
     private VBox dropFace;
+    @FXML
+    private VBox rootPane;
     private int preNumberOfChoice = 0;
     private int currentChoice = 0;
     private DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
     private final List<ChoiceBoxController> controllers = new ArrayList<>();
-    private List<File> files = new ArrayList<>();
+    private final List<File> files = new ArrayList<>();
+    private final List<ValidationSupport> validationSupportList = new ArrayList<>();
+
 
     public void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -64,14 +74,31 @@ public class EditMTPCQController {
     private void initialize() throws IOException {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
+
+        ValidationSupport validationSupportForQuestionName = new ValidationSupport();
+        ValidationSupport validationSupportForMark = new ValidationSupport();
+        validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+
+        validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:1000(?:\\.0*)?|\\d{0,3}(?:\\.\\d*)?))$", Severity.ERROR));
+        validationSupportList.add(validationSupportForQuestionName);
+        validationSupportList.add(validationSupportForMark);
         quesName.setText(dataModel.getCurrentQuestion().getTitle());
         mark.setText("" + dataModel.getCurrentQuestion().getMark());
 
         for (String string : dataModel.getCurrentQuestion().getImageFilePath()) {
             if (string != null) {
                 File file = new File(string);
+                FileShow fileShow = new FileShow(file);
+                fileShow.getRemove().setOnAction(e -> {
+                    dropShow.getChildren().remove(fileShow);
+                    files.remove(file);
+                    if (dropShow.getChildren().isEmpty()) {
+                        dropShow.setVisible(false);
+                        dropFace.setVisible(true);
+                    }
+                });
+                dropShow.getChildren().add(fileShow);
                 files.add(file);
-                dropShow.getChildren().add(new Label(file.getName()));
             }
         }
         if (!dropShow.getChildren().isEmpty()) {
@@ -84,6 +111,13 @@ public class EditMTPCQController {
             ChoiceBoxController view = fxmlLoader.getController();
             view.setChoice("Choice " + (1 + currentChoice));
             view.getTextArea().setText(option);
+            ValidationSupport validationSupport = new ValidationSupport();
+            validationSupport.registerValidator(view.getTextArea(), Validator.createRegexValidator("Invalid Value", "(^\\S.*\\S$)|(^$)|(^\\S+$)", Severity.ERROR));
+            showChoices.getChildren().add(parent);
+            validationSupportList.add(validationSupport);
+            view.getTextArea().promptTextProperty().addListener(e -> {
+                validationSupport.setErrorDecorationEnabled(!view.getTextArea().getText().isEmpty());
+            });
             if (dataModel.getCurrentQuestion().getImageOptionPath().get(currentChoice) != null) {
                 view.showImage(new File(dataModel.getCurrentQuestion().getImageOptionPath().get(currentChoice)));
             }
@@ -96,14 +130,11 @@ public class EditMTPCQController {
             }
             currentChoice++;
             controllers.add(view);
-            showChoices.getChildren().add(parent);
         }
         root.setRoot(dataModel.getRoot());
         root.getSelectionModel().select(dataModel.getCurrentCategory());
         label.setText(root.getSelectionModel().getSelectedItem().getValue());
-        root.getSelectionModel().selectedItemProperty().addListener(e -> {
-            label.setText(root.getSelectionModel().getSelectedItem().getValue());
-        });
+        root.getSelectionModel().selectedItemProperty().addListener(e -> label.setText(root.getSelectionModel().getSelectedItem().getValue()));
         preNumberOfChoice = currentChoice;
         category.setDisable(true);
         dropZone.setOnDragOver(event -> {
@@ -125,8 +156,16 @@ public class EditMTPCQController {
                 if (!dropFile.isEmpty()) {
                     dropShow.setVisible(true);
                     for (File file : dropFile) {
-                        dropShow.getChildren().add(new Label(file.getName()));
-                        files.add(file);
+                        FileShow fileShow = new FileShow(file);
+                        fileShow.getRemove().setOnAction(e -> {
+                            dropShow.getChildren().remove(fileShow);
+                            files.remove(file);
+                            if (dropShow.getChildren().isEmpty()) {
+                                dropShow.setVisible(false);
+                                dropFace.setVisible(true);
+                            }
+                        });
+                        dropShow.getChildren().add(fileShow);
                     }
                     dropFace.setVisible(false);
                 }
@@ -138,14 +177,17 @@ public class EditMTPCQController {
     }
 
     private void isImageFile(List<File> files) {
+        boolean check = false;
         for (File file : files) {
             try {
-                Image image = new Image(file.getPath());
+                new Image(file.getPath());
             } catch (Exception e) {
                 e.printStackTrace();
+                check = true;
                 files.remove(file);
             }
         }
+        if (check) snackBarNoti("Wrong file format please try again", false);
     }
 
     private boolean isImageFile(File file) {
@@ -154,6 +196,7 @@ public class EditMTPCQController {
             return !image.isError();
         } catch (Exception e) {
             e.printStackTrace();
+            snackBarNoti("Wrong file format please try again", false);
             return false;
         }
     }
@@ -161,23 +204,28 @@ public class EditMTPCQController {
     @FXML
     private void btnAction() {
         FileChooser fileChooser = new FileChooser();
-
         fileChooser.setTitle("Chọn tệp");
-
-
         // Lấy stage của scene hiện tại từ nút
-        Stage stage = new Stage();
+        Window owner = Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null);
 
         // Hiển thị hộp thoại chọn tệp và lấy tệp được chọn
-        File selectedFile = fileChooser.showOpenDialog(stage);
-
+        File selectedFile = fileChooser.showOpenDialog(owner);
 
         if (selectedFile != null && isImageFile(selectedFile)) {
+            FileShow fileShow = new FileShow(selectedFile);
             if (dropShow.getChildren().isEmpty()) {
                 dropShow.setVisible(true);
                 dropFace.setVisible(false);
             }
-            dropShow.getChildren().add(new Label(selectedFile.getName()));
+            fileShow.getRemove().setOnAction(e -> {
+                dropShow.getChildren().remove(fileShow);
+                files.remove(selectedFile);
+                if (dropShow.getChildren().isEmpty()) {
+                    dropShow.setVisible(false);
+                    dropFace.setVisible(true);
+                }
+            });
+            dropShow.getChildren().add(fileShow);
             files.add(selectedFile);
         }
     }
@@ -188,25 +236,32 @@ public class EditMTPCQController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("choice-box.fxml"));
             Parent parent = fxmlLoader.load();
             ChoiceBoxController view = fxmlLoader.getController();
+            ValidationSupport validationSupport = new ValidationSupport();
+            validationSupport.registerValidator(view.getTextArea(), Validator.createRegexValidator("Invalid Value", "(^\\S.*\\S$)|(^$)|(^\\S+$)", Severity.ERROR));
             view.setChoice("Choice " + (i + currentChoice));
+            validationSupportList.add(validationSupport);
             controllers.add(view);
             showChoices.getChildren().add(parent);
         }
         currentChoice += 3;
     }
 
-    @FXML
-    private void btnSaveAndContinueEditing() throws NullPointerException {
+    private boolean validChecker() {
+        for (ValidationSupport validSupport : validationSupportList) {
+            if (!validSupport.getValidationResult().getErrors().isEmpty()) {
+                snackBarNoti("Invalid value please check again", false);
+                return false;
+            }
+        }
         List<String> options = new ArrayList<>();
         List<Double> percent = new ArrayList<>();
-        List<String> opPath = new ArrayList<>();
-        dataModel.getCurrentQuestion().setTitle(quesName.getText());
-        dataModel.getCurrentQuestion().setMark(Double.valueOf(mark.getText()));
+        List<String> opPath = dataModel.getCurrentQuestion().getImageOptionPath();
         int index = 0;
         for (ChoiceBoxController controller : controllers) {
             if (!(controller.getTextArea().getText().isEmpty() && controller.getDropShow().getChildren().isEmpty())) {
                 options.add(controller.getTextArea().getText());
-                dataModel.getCurrentQuestion().getImageOptionPath().set(index, controller.getFilePath());
+                if (opPath.size() <= index) opPath.add(index, controller.getFilePath());
+                else opPath.set(index, controller.getFilePath());
                 if (Objects.equals(controller.getComboBox().getSelectionModel().getSelectedItem(), "None") || controller.getComboBox().getSelectionModel().getSelectedItem() == null) {
                     percent.add((double) 0);
                 } else
@@ -214,45 +269,83 @@ public class EditMTPCQController {
             }
             index++;
         }
-        dataModel.getCurrentQuestion().setOptions(options);
-        dataModel.getCurrentQuestion().setPercent(percent);
-        dataModel.getCurrentQuestion().typeDetect();
-        if (dataModel.getCurrentQuestion().getAnsID().size() > options.size()) {
-            dataModel.getCurrentQuestion().getAnsID().subList(options.size(), dataModel.getCurrentQuestion().getAnsID().size()).clear();
+        if (options.size() < 2) {
+            snackBarNoti("Question must have atleast two options", false);
+            return false;
         }
-        dataModel.updateQuestion(dataModel.getCurrentQuestion());
-        if (options.size() > preNumberOfChoice) {
-            List<String> newOption = new ArrayList<>();
-            List<Double> newPercent = new ArrayList<>();
-            List<String> newPath = new ArrayList<>();
-            for (int i = preNumberOfChoice; i < options.size(); i++) {
-                newOption.add(dataModel.getCurrentQuestion().getOptions().get(i));
-                newPercent.add(dataModel.getCurrentQuestion().getPercent().get(i));
-                newPath.add(dataModel.getCurrentQuestion().getImageOptionPath().get(i));
-            }
-            dataModel.insertAnswers(newOption, newPercent, dataModel.getCurrentQuestion().getId(), newPath);
-        } else if (options.size() < preNumberOfChoice) {
-            dataModel.deleteAns(dataModel.getCurrentQuestion());
+        double sum = 0;
+        for (Double value : percent) {
+            if (value > 0) sum = sum + value;
         }
-        /*dataModel.updateImagePath(dataModel.getCurrentQuestion());*/
-        if (files.size() > dataModel.getCurrentQuestion().getImageFilePath().size()) {
-            for (int i = dataModel.getCurrentQuestion().getImageFilePath().size() + 1; i <= files.size(); i++) {
-                dataModel.getCurrentQuestion().getImageFilePath().add(files.get(i).getPath());
-                dataModel.insertImage(files.get(i).getPath(), dataModel.getCurrentQuestion().getId());
+        if (abs(100.0 - sum) < 0.00001) {
+            dataModel.getCurrentQuestion().setTitle(quesName.getText());
+            dataModel.getCurrentQuestion().setMark(Double.valueOf(mark.getText()));
+            dataModel.getCurrentQuestion().setOptions(options);
+            dataModel.getCurrentQuestion().setPercent(percent);
+            dataModel.getCurrentQuestion().setImageOptionPath(opPath);
+            index = 0;
+            dataModel.getCurrentQuestion().getImageFilePath().clear();
+            for (File file : files) {
+                dataModel.getCurrentQuestion().getImageFilePath().add(index, file.getAbsolutePath());
+                index++;
             }
-        }/*else if(files.size()<dataModel.getCurrentQuestion().getImageFilePath().size()){
+            dataModel.getCurrentQuestion().typeDetect();
+            if (dataModel.getCurrentQuestion().getAnsID().size() > options.size()) {
+                dataModel.getCurrentQuestion().getAnsID().subList(options.size(), dataModel.getCurrentQuestion().getAnsID().size()).clear();
+            }
+            dataModel.updateQuestion(dataModel.getCurrentQuestion());
+            if (options.size() > preNumberOfChoice) {
+                List<String> newOption = new ArrayList<>();
+                List<Double> newPercent = new ArrayList<>();
+                List<String> newPath = new ArrayList<>();
+                for (int i = preNumberOfChoice; i < options.size(); i++) {
+                    newOption.add(dataModel.getCurrentQuestion().getOptions().get(i));
+                    newPercent.add(dataModel.getCurrentQuestion().getPercent().get(i));
+                    newPath.add(dataModel.getCurrentQuestion().getImageOptionPath().get(i));
+                }
+                dataModel.insertAnswers(newOption, newPercent, dataModel.getCurrentQuestion().getId(), newPath);
+            } else if (options.size() < preNumberOfChoice) {
+                dataModel.deleteAns(dataModel.getCurrentQuestion());
+            }
+            if (files.size() > 0) dataModel.updateImagePath(dataModel.getCurrentQuestion());
+            if (files.size() > dataModel.getCurrentQuestion().getImageID().size()) {
+                for (int i = dataModel.getCurrentQuestion().getImageID().size() + 1; i <= files.size(); i++) {
+                    dataModel.insertImage(files.get(i - 1).getPath(), dataModel.getCurrentQuestion().getId());
+                }
+            } else if (files.size() < dataModel.getCurrentQuestion().getImageID().size()) {
+                dataModel.deleteImagePath(dataModel.getCurrentQuestion());
+            }
+        } else {
+            snackBarNoti("Invalid total grade (max of total grade must be 100%)", false);
+            return false;
+        }
+        return true;
+    }
 
-        }*/
+    @FXML
+    private void btnSaveAndContinueEditing() throws NullPointerException {
+        if (validChecker()) {
+            snackBarNoti("Saved", true);
+        }
     }
 
     @FXML
     private void btnSaveChanges() throws NullPointerException {
-        btnSaveAndContinueEditing();
-        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
+        if (validChecker())
+            breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
     }
 
     @FXML
     private void btnCancel() {
         breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
+    }
+
+    private void snackBarNoti(String text, boolean check) {
+        JFXSnackbar snackbar = new JFXSnackbar(rootPane);
+        if (check) {
+            snackbar.setId("snack1");
+        } else snackbar.setId("snack2");
+        snackbar.show(text, 4000);
+
     }
 }

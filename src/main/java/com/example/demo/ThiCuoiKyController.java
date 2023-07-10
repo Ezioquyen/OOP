@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 

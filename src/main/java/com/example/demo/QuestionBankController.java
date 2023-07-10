@@ -1,13 +1,20 @@
 package com.example.demo;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.apache.poi.xwpf.usermodel.*;
+import org.controlsfx.validation.Severity;
+import org.controlsfx.validation.ValidationMessage;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -41,12 +48,17 @@ public class QuestionBankController {
     @FXML
     private VBox dropZoneInterface;
     @FXML
+    private VBox rootPane;
+    @FXML
     private VBox fileNameShow;
     @FXML
     private ListView<CustomCheckBox> list;
+    @FXML
+    private Button btnChooseFile;
     private DataModel dataModel;
-    private List<File> files;
-
+    private File file;
+    private int countLine = 0;
+    private final List<CustomCheckBox> quesFromSubcategories = new ArrayList<>();
 
     public void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -62,26 +74,32 @@ public class QuestionBankController {
         this.breadCrumbBarModel = breadCrumbBarModel;
     }
 
+    private ValidationSupport validationSupport = new ValidationSupport();
+
     @FXML
     private void initialize() {
         initDataModel(DataModel.getInstance());// design partten single ton
         initModel(BreadCrumbBarModel.getInstance());
         showInfor.setVisible(false);
+        validationSupport.registerValidator(catogeryName, Validator.createRegexValidator("Invalid value", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         showQuesFromCate.selectedProperty().addListener(e -> {
-            if (showQuesFromCate.isSelected()) {
-                showInfor.setVisible(true);
-                showQuestion();
-            } else {
-                list.getItems().clear();
-                showInfor.setVisible(false);
+            if (root.getSelectionModel().getSelectedItem() != null) {
+                if (showQuesFromCate.isSelected()) {
+                    traverseTreeView(root.getSelectionModel().getSelectedItem());
+                    list.getItems().addAll(quesFromSubcategories);
+                } else {
+                    list.getItems().removeAll(quesFromSubcategories);
+                    quesFromSubcategories.clear();
+                    showInfor.setVisible(!list.getItems().isEmpty());
+                }
             }
         });
         root.setRoot(dataModel.getRoot());
         root.getSelectionModel().selectedItemProperty().addListener(e -> {
-            if (showQuesFromCate.isSelected()) {
-                list.getItems().clear();
-                showQuestion();
-            }
+            list.getItems().clear();
+            quesFromSubcategories.clear();
+            showQuestion();
+            showInfor.setVisible(!list.getItems().isEmpty());
             updateCategorySelection();
         });
         root1.setRoot(dataModel.getRoot());
@@ -108,7 +126,7 @@ public class QuestionBankController {
             }
         });
         dropZone.setOnDragOver(event -> {
-            if (event.getGestureSource() != dropZone && event.getDragboard().hasFiles()) {
+            if (event.getGestureSource() != dropZone && event.getDragboard().hasFiles() && event.getDragboard().getFiles().size() == 1 && fileNameShow.getChildren().isEmpty()) {
                 event.acceptTransferModes(TransferMode.COPY);
                 event.consume();
             }
@@ -119,12 +137,19 @@ public class QuestionBankController {
             Dragboard dragboard = event.getDragboard();
             boolean success = false;
             if (dragboard.hasFiles()) {
-                files = dragboard.getFiles();
+                file = dragboard.getFiles().get(0);
                 dropZoneInterface.setVisible(false);
-                for (File file : files) {
-                    fileNameShow.getChildren().add(new Label(file.getName()));
-                }
+                FileShow fileShow = new FileShow(file);
+                fileShow.getRemove().setOnAction(e -> {
+                    file = null;
+                    btnChooseFile.setDisable(false);
+                    dropZoneInterface.setVisible(true);
+                    fileNameShow.setVisible(false);
+                    fileNameShow.getChildren().remove(fileShow);
+                });
+                fileNameShow.getChildren().add(fileShow);
                 fileNameShow.setVisible(true);
+                btnChooseFile.setDisable(true);
                 success = true;
             }
             event.setDropCompleted(success);
@@ -150,7 +175,19 @@ public class QuestionBankController {
 
     @FXML
     private void textAction() {
-        dataModel.insertCategory(root1.getSelectionModel().getSelectedItem(), catogeryName.getText());
+        if (root1.getSelectionModel().isEmpty()) {
+            snackBarNoti("No category selected", false);
+        } else {
+            if (!validationSupport.getValidationResult().getErrors().isEmpty()) {
+                for (ValidationMessage msg : validationSupport.getValidationResult().getErrors()) {
+                    snackBarNoti(msg.getText(), false);
+                }
+            } else {
+                if (dataModel.insertCategory(root1.getSelectionModel().getSelectedItem(), catogeryName.getText()))
+                    snackBarNoti("Import category successful", true);
+                else snackBarNoti("Category existed", false);
+            }
+        }
     }
 
     private boolean haveTitle(Question question) {
@@ -159,7 +196,7 @@ public class QuestionBankController {
 
     public List<Question> readAikenQuestions(File file) {
         List<Question> questions = new ArrayList<>();
-        int countLine = 0;
+        countLine = 0;
         boolean haveAns = false;
         if (file.getName().substring(file.getName().lastIndexOf(".") + 1).equalsIgnoreCase("docx")) {
             try {
@@ -193,9 +230,8 @@ public class QuestionBankController {
                             }
                         }
                     } else {
-                        if (text.matches("^[A-Z]\\.\\s.*[^.]$")) {
+                        if (text.matches("^[A-Z]\\.\\s.*")) {
                             if (!text.startsWith(String.valueOf((char) ((question.getOptions().size()) + 65)))) {
-                                System.out.println(file.getName() + "Error 2 at line: " + countLine);
                                 return null;
                             }
                             question.addOption(text.substring("A. ".length()).trim());
@@ -214,7 +250,6 @@ public class QuestionBankController {
                             question = new Question();
                             haveAns = false;
                         } else {
-                            System.out.println(file.getName() + "Error 3 at line: " + countLine);
                             return null;
                         }
                     }
@@ -234,9 +269,8 @@ public class QuestionBankController {
                     if (haveTitle(question)) {
                         question.addTitle(text);
                     } else {
-                        if (text.matches("^[A-Z]\\.\\s.*[^.]$")) {
+                        if (text.matches("^[A-Z]\\.\\s.*")) {
                             if (!text.startsWith(String.valueOf((char) ((question.getOptions().size()) + 65)))) {
-                                System.out.println(file.getName() + "Error 2 at line: " + countLine);
                                 return null;
                             }
                             question.addOption(text.substring("A. ".length()).trim());
@@ -254,7 +288,6 @@ public class QuestionBankController {
                             question = new Question();
                             haveAns = false;
                         } else {
-                            System.out.println(file.getName() + "Error 3 at line: " + countLine);
                             return null;
                         }
                     }
@@ -267,53 +300,53 @@ public class QuestionBankController {
     }
 
     public void btnImport() {
-        for (File file : files) {
-            if (!isTextFile(file)) {
-                files.remove(file);
-                System.out.println(file.getName() + " is not text file");
-            }
-        }
-
-        int i = 0;
-        int count = 0;
-        if (dataModel.getLastNode_id() != 0) {
-            Random random = new Random();
-            i = random.nextInt(dataModel.getLastNode_id()) + 1;
+        if (file == null) {
+            snackBarNoti("No file selected", false);
         } else {
-            LocalDate currentDate = LocalDate.now();
+            if (!isTextFile(file)) {
+                snackBarNoti(file.getName() + " is not text file", false);
+            } else {
+                int i = 0;
+                int count = 0;
+                if (dataModel.getLastNode_id() != 0) {
+                    Random random = new Random();
+                    i = random.nextInt(dataModel.getLastNode_id()) + 1;
+                } else {
+                    LocalDate currentDate = LocalDate.now();
 
-            // Định dạng ngày tháng năm
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    // Định dạng ngày tháng năm
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            // Chuyển đổi thành chuỗi và in ra
-            String formattedDate = currentDate.format(formatter);
-            dataModel.insertCategory(dataModel.getCategoryMap().inverse().get(i), formattedDate);
-            i = 1;
+                    // Chuyển đổi thành chuỗi và in ra
+                    String formattedDate = currentDate.format(formatter);
+                    dataModel.insertCategory(dataModel.getCategoryMap().inverse().get(i), formattedDate);
+                    i = 1;
 
-        }
-        for (File file : files) {
-            try {
-
-                for (Question question : readAikenQuestions(file)) {
-                    dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0);
-                    if (!question.getImageFilePath().isEmpty()) {
-                        for (String string : question.getImageFilePath()) dataModel.insertImage(string, 0);
-                    }
-                    dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, null);
-                    count++;
                 }
-            } catch (NullPointerException e) {
-                System.out.println("Wrong question format");
+                try {
+                    for (Question question : readAikenQuestions(file)) {
+                        dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0);
+                        if (!question.getImageFilePath().isEmpty()) {
+                            for (String string : question.getImageFilePath()) dataModel.insertImage(string, 0);
+                        }
+                        dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, null);
+                        count++;
+                    }
+                    dataModel.setCount(count);
+                    dataModel.updateCategory(dataModel.getCategoryMap().inverse().get(i));
+                    label1.setText(dataModel.getCategoryMap().inverse().get(i).getValue());
+                    dataModel.setCount(0);
+                    fileNameShow.getChildren().clear();
+                    fileNameShow.setVisible(false);
+                    dropZoneInterface.setVisible(true);
+                    btnChooseFile.setDisable(false);
+                    file = null;
+                    snackBarNoti("Imported successful", true);
+                } catch (NullPointerException e) {
+                    snackBarNoti("Wrong question format: Error at line " + countLine, false);
+                }
             }
         }
-        dataModel.setCount(count);
-        dataModel.updateCategory(dataModel.getCategoryMap().inverse().get(i));
-        label1.setText(dataModel.getCategoryMap().inverse().get(i).getValue());
-        dataModel.setCount(0);
-        fileNameShow.getChildren().clear();
-        fileNameShow.setVisible(false);
-        dropZoneInterface.setVisible(true);
-        files = null;
         /*} catch (NullPointerException e) {
             System.out.println("No file selected");
         }*/
@@ -327,21 +360,26 @@ public class QuestionBankController {
 
 
         // Lấy stage của scene hiện tại từ nút
-        Stage stage = new Stage();
+        Window owner = Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null);
 
         // Hiển thị hộp thoại chọn tệp và lấy tệp được chọn
-        File selectedFile = fileChooser.showOpenDialog(stage);
-
-
+        File selectedFile = fileChooser.showOpenDialog(owner);
         if (selectedFile != null) {
-            if (files == null) {
-                files = new ArrayList<>();
-                dropZoneInterface.setVisible(false);
-                fileNameShow.setVisible(true);
-            }
-            files.add(selectedFile);
-            fileNameShow.getChildren().add(new Label(selectedFile.getName()));
+            dropZoneInterface.setVisible(false);
+            fileNameShow.setVisible(true);
+            file = selectedFile;
+            FileShow fileShow = new FileShow(file);
+            fileShow.getRemove().setOnAction(e -> {
+                file = null;
+                btnChooseFile.setDisable(false);
+                dropZoneInterface.setVisible(true);
+                fileNameShow.setVisible(false);
+                fileNameShow.getChildren().remove(fileShow);
+            });
+            fileNameShow.getChildren().add(fileShow);
+            btnChooseFile.setDisable(true);
         }
+
     }
 
     private void showQuestion() {
@@ -357,12 +395,41 @@ public class QuestionBankController {
 
                 list.getItems().add(customCheckBox);
             }
+            if (showQuesFromCate.isSelected()) {
+                traverseTreeView(root.getSelectionModel().getSelectedItem());
+                list.getItems().addAll(quesFromSubcategories);
+            }
             list.getSelectionModel().selectedItemProperty().addListener(observable -> {
                 if (list.getSelectionModel().getSelectedItem() != null) {
                     list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(!list.getSelectionModel().getSelectedItem().getCheckBox().isSelected());
 
                 }
             });
+        }
+    }
+
+    private void snackBarNoti(String text, boolean check) {
+        JFXSnackbar snackbar = new JFXSnackbar(rootPane);
+        if (check) {
+            snackbar.setId("snack1");
+        } else snackbar.setId("snack2");
+        snackbar.show(text, 4000);
+
+    }
+
+    private void traverseTreeView(TreeItem<String> root) {
+        if (root != null) {
+            for (TreeItem<String> child : root.getChildren()) {
+                traverseTreeView(child);
+                for (Question question : dataModel.getQuestion(dataModel.getCategoryMap().get(child))) {
+                    CustomCheckBox customCheckBox = new CustomCheckBox(question);
+                    customCheckBox.getButton().setOnAction(event -> {
+                        dataModel.setCurrentQuestion(customCheckBox.getQuestion());
+                        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("edit-MTPCQ.fxml"));
+                    });
+                    quesFromSubcategories.add(customCheckBox);
+                }
+            }
         }
     }
 }

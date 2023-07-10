@@ -26,7 +26,7 @@ public class ResultController {
         endTime.setText(end);
         timeTaken.setText(time);
         marks.setText(String.format("%,.2f", totalMarksSelected) + "/" + String.format("%,.2f", totalMarks));
-        marks1.setText(String.format("%,.2f", totalMarksSelected));
+        marks1.setText(String.format("%,.2f", (totalMarksSelected / totalMarks) * 10));
         marks2.setText(String.format("%,.2f", (totalMarksSelected / totalMarks) * 100));
     }
 }

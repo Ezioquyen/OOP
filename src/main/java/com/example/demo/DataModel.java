@@ -5,10 +5,7 @@ import com.google.common.collect.HashBiMap;
 import javafx.scene.control.TreeItem;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataModel {
     private static DataModel instance;
@@ -37,7 +34,7 @@ public class DataModel {
     private Question currentQuestion;
 
     private int totalQuestion = 0;
-
+    private List<Quiz> quizs = new ArrayList<>();
 
     private void Initialize() {
 
@@ -93,23 +90,39 @@ public class DataModel {
         return root;
     }
 
-    public void insertCategory(TreeItem<String> parent, String text) {
-        try {
-            String sql = "INSERT INTO CATEGORIES (parent_id, name) VALUES (?, ?)";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, categoryMap.get(parent));
-            statement.setString(2, text);
-            TreeItem<String> child = new TreeItem<>(text);
-            mapName.put(child, text);
-            lastNode_id++;
-            parent.getChildren().add(child);
-            categoryMap.put(child, lastNode_id);
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private boolean duplicateCategoryCheck(TreeItem<String> parent, String text) {
+        if (numberOfQuestion.get(categoryMap.get(parent)) != null) {
+            if (Objects.equals(parent.getValue(), text + " (" + numberOfQuestion.get(categoryMap.get(parent)) + ")"))
+                return false;
+        } else if (Objects.equals(parent.getValue(), text)) return false;
+        for (TreeItem<String> item : parent.getChildren()) {
+            if (numberOfQuestion.get(categoryMap.get(item)) != null) {
+                if (Objects.equals(item.getValue(), text + " (" + numberOfQuestion.get(categoryMap.get(item)) + ")"))
+                    return false;
+            } else if (Objects.equals(item.getValue(), text)) return false;
         }
+        return true;
+    }
 
+    public boolean insertCategory(TreeItem<String> parent, String text) {
+        if (duplicateCategoryCheck(parent, text)) {
+            try {
+                String sql = "INSERT INTO CATEGORIES (parent_id, name) VALUES (?, ?)";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setInt(1, categoryMap.get(parent));
+                statement.setString(2, text);
+                TreeItem<String> child = new TreeItem<>(text);
+                mapName.put(child, text);
+                lastNode_id++;
+                parent.getChildren().add(child);
+                categoryMap.put(child, lastNode_id);
+                statement.executeUpdate();
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else return false;
+        return true;
     }
 
     public void insertQuestion(TreeItem<String> parent, String title, int type, Double mark) {
@@ -149,18 +162,22 @@ public class DataModel {
     public void deleteImagePath(Question question) {
         try {
             StringBuilder sqlBuilder = new StringBuilder();
-            sqlBuilder.append("DELETE FROM IMAGE WHERE imageID NOT IN (");
-            for (int i = 0; i < question.getImageFilePath().size(); i++) {
-                sqlBuilder.append("?");
-                if (i < question.getImageOptionPath().size() - 1) {
-                    sqlBuilder.append(",");
+
+            if (question.getImageFilePath().size() > 0) {
+                sqlBuilder.append("DELETE FROM IMAGE WHERE imageID NOT IN (");
+                for (int i = 0; i < question.getImageFilePath().size(); i++) {
+                    sqlBuilder.append("?");
+                    if (i < question.getImageFilePath().size() - 1) {
+                        sqlBuilder.append(",");
+                    }
                 }
-            }
-            sqlBuilder.append(")");
-            sqlBuilder.append("AND questionID = ?");
+                sqlBuilder.append(")");
+                sqlBuilder.append("AND QuestionID = ?");
+            } else sqlBuilder.append("DELETE FROM IMAGE WHERE QuestionID = ?");
+            System.out.println(sqlBuilder);
             PreparedStatement statement = conn.prepareStatement(sqlBuilder.toString());
             for (int i = 0; i < question.getImageFilePath().size(); i++) {
-                statement.setInt(i + 1, question.getAnsID().get(i));
+                statement.setInt(i + 1, question.getImageID().get(i));
             }
             statement.setInt(question.getImageFilePath().size() + 1, question.getId());
             statement.executeUpdate();
@@ -277,7 +294,7 @@ public class DataModel {
                     question.getAnsID().add(rs.getInt("answerID"));
                     question.getOptions().add(rs.getString("choice"));
                     question.getPercent().add(rs.getDouble("percent"));
-                    question.setImageOptionPath(rs.getString("imagePath"));
+                    question.getImageOptionPath().add(rs.getString("imagePath"));
                 }
                 rs.close();
                 statement.close();
@@ -309,7 +326,7 @@ public class DataModel {
     }
 
     public List<Quiz> getQuiz() {
-        List<Quiz> quizs = new ArrayList<>();
+        quizs = new ArrayList<>();
         try {
             String sql = "SELECT name,time,quizID,totalMark,shuffle, totalQuestion, grade FROM QUIZ";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -332,6 +349,10 @@ public class DataModel {
         } catch (SQLException | NullPointerException e) {
             e.printStackTrace();
         }
+        return quizs;
+    }
+
+    public List<Quiz> getQuizs() {
         return quizs;
     }
 
@@ -547,7 +568,7 @@ public class DataModel {
                     question.getAnsID().add(rs.getInt("answerID"));
                     question.getOptions().add(rs.getString("choice"));
                     question.getPercent().add(rs.getDouble("percent"));
-                    question.setImageOptionPath(rs.getString("imagePath"));
+                    question.getImageOptionPath().add(rs.getString("imagePath"));
                 }
                 rs.close();
                 statement.close();
