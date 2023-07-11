@@ -7,40 +7,30 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="275.0"
       prefWidth="600.0" style="-fx-border-color: #DFDFDF;" xmlns="http://javafx.com/javafx/19"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.NotiController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Confirmation">
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="599.0"
               style="-fx-border-color: transparent transparent #DFDFDF transparent;">
             <children>
-                <Label text="Start attempt">
+                <Label text="Finish attempt">
                     <font>
                         <Font size="25.0"/>
                     </font>
                 </Label>
-                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                <Button fx:id="closeButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="28.0"
-                        prefWidth="13.0" style="-fx-background-color: transparent;">
-                    <graphic>
-                        <FontIcon iconColor="#787878" iconLiteral="fas-times" iconSize="20"
-                                  wrappingWidth="18.400083661079407"/>
-                    </graphic>
-                </Button>
             </children>
         </HBox>
         <VBox prefHeight="141.0" prefWidth="578.0" spacing="10.0">
             <children>
-                <Label text="Time limit" textFill="#ea0d0d">
+                <Label text="Finish attempt and recive grade" textFill="#ea0d0d">
                     <font>
                         <Font size="20.0"/>
                     </font>
                 </Label>
-                <Label fx:id="text" prefHeight="66.0" prefWidth="558.0"
-                       text="Your attempt wil have time limit of 60 minutes. When you start, the timer will begin to count down and cannot paused. You must finish your attempt before it expires. Are you sure you wish start now?"
-                       wrapText="true">
+                <Label prefHeight="66.0" prefWidth="558.0"
+                       text="If you finish attempt you can not come back to the attempt. Are you sure?" wrapText="true">
                     <font>
                         <Font size="15.0"/>
                     </font>
@@ -55,12 +45,10 @@
         <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="578.0" spacing="2.0">
             <children>
                 <Button fx:id="startAttempt" mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0"
-                        style="-fx-background-color: #C02424;" text="START ATTEMPT" textFill="WHITE"/>
+                        style="-fx-background-color: #C02424;" text="FINISH ATTEMPT" textFill="WHITE"/>
                 <Button fx:id="cancel" mnemonicParsing="false" prefHeight="64.0" prefWidth="78.0"
-                        styleClass="editionbutton" text="CANCEL"/>
+                        styleClass="editionbutton" text="CONTINUE"/>
                 <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                <Button fx:id="Export" layoutX="123.0" layoutY="10.0" mnemonicParsing="false" prefHeight="34.0"
-                        prefWidth="143.0" styleClass="editionbutton" text="EXPORT QUIZ AS PDF"/>
             </children>
         </HBox>
     </children>

@@ -74,7 +74,7 @@ public class QuestionBankController {
         this.breadCrumbBarModel = breadCrumbBarModel;
     }
 
-    private ValidationSupport validationSupport = new ValidationSupport();
+    private final ValidationSupport validationSupport = new ValidationSupport();
 
     @FXML
     private void initialize() {
@@ -85,13 +85,14 @@ public class QuestionBankController {
         showQuesFromCate.selectedProperty().addListener(e -> {
             if (root.getSelectionModel().getSelectedItem() != null) {
                 if (showQuesFromCate.isSelected()) {
+
                     traverseTreeView(root.getSelectionModel().getSelectedItem());
                     list.getItems().addAll(quesFromSubcategories);
                 } else {
                     list.getItems().removeAll(quesFromSubcategories);
                     quesFromSubcategories.clear();
-                    showInfor.setVisible(!list.getItems().isEmpty());
                 }
+                showInfor.setVisible(!list.getItems().isEmpty());
             }
         });
         root.setRoot(dataModel.getRoot());
@@ -130,7 +131,6 @@ public class QuestionBankController {
                 event.acceptTransferModes(TransferMode.COPY);
                 event.consume();
             }
-
         });
 
         dropZone.setOnDragDropped(event -> {
@@ -324,6 +324,7 @@ public class QuestionBankController {
 
                 }
                 try {
+                    int questionCount = 0;
                     for (Question question : readAikenQuestions(file)) {
                         dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0);
                         if (!question.getImageFilePath().isEmpty()) {
@@ -331,6 +332,7 @@ public class QuestionBankController {
                         }
                         dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, null);
                         count++;
+                        questionCount++;
                     }
                     dataModel.setCount(count);
                     dataModel.updateCategory(dataModel.getCategoryMap().inverse().get(i));
@@ -341,7 +343,7 @@ public class QuestionBankController {
                     dropZoneInterface.setVisible(true);
                     btnChooseFile.setDisable(false);
                     file = null;
-                    snackBarNoti("Imported successful", true);
+                    snackBarNoti("Imported " + questionCount + " questions successful", true);
                 } catch (NullPointerException e) {
                     snackBarNoti("Wrong question format: Error at line " + countLine, false);
                 }

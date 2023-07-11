@@ -8,7 +8,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -16,8 +15,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -123,10 +120,6 @@ public class ChoiceBoxController {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public void setTextArea(TextArea textArea) {
-        this.textArea = textArea;
     }
 
     public ComboBox<String> getComboBox() {

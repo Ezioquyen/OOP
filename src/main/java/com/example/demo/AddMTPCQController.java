@@ -55,7 +55,7 @@ public class AddMTPCQController {
     private final List<ChoiceBoxController> controllers = new ArrayList<>();
     private final List<File> files = new ArrayList<>();
 
-    private List<ValidationSupport> validationSupportList = new ArrayList<>();
+    private final List<ValidationSupport> validationSupportList = new ArrayList<>();
 
     public void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -79,7 +79,7 @@ public class AddMTPCQController {
         ValidationSupport validationSupportForQuestionName = new ValidationSupport();
         validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         ValidationSupport validationSupportForMark = new ValidationSupport();
-        validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:1000(?:\\.0*)?|\\d{0,3}(?:\\.\\d*)?))$", Severity.ERROR));
+        validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
 
         validationSupportList.add(validationSupportForQuestionName);
         validationSupportList.add(validationSupportForMark);

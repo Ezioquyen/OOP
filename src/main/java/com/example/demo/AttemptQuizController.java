@@ -6,21 +6,24 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 import java.io.IOException;
-
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +56,14 @@ public class AttemptQuizController {
     @FXML
     private StackPane stackPane;
     private LocalTime startTime;
+    private BreadCrumbBarModel breadCrumbBarModel;
+
+    public void initModel(BreadCrumbBarModel breadCrumbBarModel) {
+        if (this.breadCrumbBarModel != null) {
+            throw new IllegalStateException("Model can only be initialized once");
+        }
+        this.breadCrumbBarModel = breadCrumbBarModel;
+    }
 
     private void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -70,6 +81,7 @@ public class AttemptQuizController {
     @FXML
     private void initialize() {
         initDataModel(DataModel.getInstance());
+        initModel(BreadCrumbBarModel.getInstance());
         Boolean shuffle = dataModel.getCurrentQuiz().getShuffle();
         dataModel.updateQuiz(dataModel.getCurrentQuiz());
         start = getDate();
@@ -115,7 +127,7 @@ public class AttemptQuizController {
 
     private void updateTimer() {
         if (hour == 0 && minute == 0 && second == 0) {
-            listQuestion.setDisable(true);
+            showResult();
             return;
         }
 
@@ -141,8 +153,7 @@ public class AttemptQuizController {
         this.second = (int) ((minutes - totalMinutes) * 60); // Số giây
     }
 
-    @FXML
-    private void btnFinish() throws IOException {
+    private void showResult() {
         if (dataModel.getCurrentQuiz().getTime() != 0) timeline.stop();
         LocalTime endTime = LocalTime.now();
         int totalSeconds = (endTime.toSecondOfDay() - startTime.toSecondOfDay());
@@ -181,7 +192,12 @@ public class AttemptQuizController {
         }
         timerContainer.setVisible(false);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("result.fxml"));
-        Parent parent = fxmlLoader.load();
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
         ResultController view = fxmlLoader.getController();
         String end = getDate();
         view.showInformation(totalMark, dataModel.getCurrentQuiz().getTotalMarks(), start, end, timeTaken);
@@ -190,9 +206,78 @@ public class AttemptQuizController {
         export.setVisible(true);
     }
 
+    @FXML
+    private void btnFinish() throws IOException {
+        Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
+        FXMLLoader fxmlLoadera = new FXMLLoader(Objects.requireNonNull(getClass().getResource("Confirmation.fxml")));
+        Parent root = fxmlLoadera.load();
+        Confirmation controller = fxmlLoadera.getController();
+        controller.getStartAttempt().setOnAction(e -> {
+            showResult();
+            stage.close();
+        });
+        controller.getCancel().setOnAction(e -> {
+            stage.close();
+        });
+        Scene scene = new Scene(root, 600, 275);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+        stage.setScene(scene);
+        stage.initModality(Modality.WINDOW_MODAL);
+        Window owner = Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null);
+        stage.initOwner(owner);
+        stage.show();
+    }
+
     private String getDate() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, d MMMM yyyy, h:mm a");
         return now.format(formatter);
+    }
+
+    @FXML
+    private void btnExport() {
+        breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("quiz.fxml"));
+       /* LocalTime time = LocalTime.now();
+        LocalDate currentDate = LocalDate.now();
+
+        // Định dạng ngày tháng năm
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss");
+        String path = "D:\\TestFolder\\" + currentDate.format(formatter2) + "-" + time.format(formatter) + dataModel.getCurrentQuiz().getQuizID() + ".pdf";
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, new FileOutputStream(path));
+        document.open();
+
+        for(QuestionBox box: listQuestion.getItems()){
+            Font font = FontFactory.getFont(FontFactory.TIMES_BOLD,16, BaseColor.BLACK);
+            Chunk chunk = new Chunk(box.getQuestion().getTitle(),font);
+            document.add(chunk);
+            for(String imgPath : box.getQuestion().getImageFilePath()){
+                com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imgPath);
+                document.add(img);
+            }
+            int i = 0;
+            for(OptionsPacket optionsPacket : box.getQuestion().getPackets()){
+                font = FontFactory.getFont(FontFactory.TIMES,16, BaseColor.BLACK);
+                chunk = new Chunk((char) (65 + i) + ". " + optionsPacket.getOption(),font);
+                document.add(chunk);
+                if(optionsPacket.getImagePath()!=null) {com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(optionsPacket.getImagePath());
+                document.add(img);}
+                i++;
+            }
+            i = 0;
+            StringBuilder correctAns = new StringBuilder();
+            for(OptionsPacket optionsPacket : box.getQuestion().getPackets()) {
+                    if (optionsPacket.getPercent() > 0) {
+                        correctAns.append(" ").append((char) (65 + i++)).append(",");
+                    }
+                    i++;
+            }
+            String out = "Correct answer: " + correctAns.substring(0, correctAns.length() - 1) + ".";
+            chunk = new Chunk(out, font);
+            document.add(chunk);
+        }
+        document.close();*/
     }
 }

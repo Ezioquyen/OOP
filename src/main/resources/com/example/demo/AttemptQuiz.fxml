@@ -80,17 +80,18 @@
                                         <HBox fx:id="container">
                                             <children>
                                                 <Button fx:id="finish" mnemonicParsing="false" onAction="#btnFinish"
-                                                        prefHeight="40.0" prefWidth="74.0"
-                                                        style="-fx-background-color: transparent;" text="Finish"
+                                                        prefHeight="40.0" prefWidth="155.0"
+                                                        style="-fx-background-color: transparent;" text="Finish atempt"
                                                         textFill="#36b7ec" underline="true">
                                                     <font>
                                                         <Font size="18.0"/>
                                                     </font>
                                                 </Button>
                                                 <Button fx:id="export" layoutX="10.0" layoutY="10.0"
-                                                        mnemonicParsing="false" prefHeight="40.0"
-                                                        style="-fx-background-color: transparent;" text="Export preview"
-                                                        textFill="#36b7ec" underline="true" visible="false">
+                                                        mnemonicParsing="false" onAction="#btnExport" prefHeight="40.0"
+                                                        prefWidth="146.0" style="-fx-background-color: transparent;"
+                                                        text="Finish review" textFill="#36b7ec" underline="true"
+                                                        visible="false">
                                                     <font>
                                                         <Font size="18.0"/>
                                                     </font>

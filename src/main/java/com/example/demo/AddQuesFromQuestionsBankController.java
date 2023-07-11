@@ -87,6 +87,7 @@ public class AddQuesFromQuestionsBankController {
                 icon2.setIconColor(Color.valueOf("#00ACEA"));
                 customCheckBox.getBox().getChildren().add(0, icon);
                 customCheckBox.getChildren().add(icon2);
+                customCheckBox.getLabel().setMaxHeight(500);
                 list.getItems().add(customCheckBox);
                 customCheckBox.getCheckBox().selectedProperty().addListener(e -> {
                     if (customCheckBox.getCheckBox().isSelected()) {
@@ -96,6 +97,7 @@ public class AddQuesFromQuestionsBankController {
             }
             if (showQuesFromCate.isSelected()) {
                 traverseTreeView(root.getSelectionModel().getSelectedItem());
+                list.getItems().addAll(quesFromSubcategories);
             }
             /*list.getSelectionModel().selectedItemProperty().addListener(e -> {
                 list.getSelectionModel().getSelectedItem().getCheckBox().setSelected(true);
@@ -127,6 +129,7 @@ public class AddQuesFromQuestionsBankController {
                     FontIcon icon2 = new FontIcon("fas-search-plus");
                     icon2.setIconColor(Color.valueOf("#00ACEA"));
                     customCheckBox.getBox().getChildren().add(0, icon);
+                    customCheckBox.getLabel().setMaxHeight(500);
                     customCheckBox.getChildren().add(icon2);
                     customCheckBox.getCheckBox().selectedProperty().addListener(e -> {
                         if (customCheckBox.getCheckBox().isSelected()) {

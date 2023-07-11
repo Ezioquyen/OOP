@@ -23,4 +23,8 @@ public class OptionsPacket {
     public String getImagePath() {
         return imagePath;
     }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
 }

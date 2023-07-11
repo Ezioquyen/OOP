@@ -12,6 +12,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class EditQuesFromQuiz extends HBox {
 
     private Question question;
@@ -20,7 +24,8 @@ public class EditQuesFromQuiz extends HBox {
     private final Label questionTitle;
 
     private Label point;
-
+    private DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.US);
+    private final DecimalFormat decimalFormat = new DecimalFormat("#0.00", decimalFormatSymbols);
     private Button button;
 
     public EditQuesFromQuiz(Question question) {
@@ -63,7 +68,7 @@ public class EditQuesFromQuiz extends HBox {
         button.setStyle("-fx-background-color: transparent");
         FontIcon pen = new FontIcon("fas-pen");
         pen.setIconColor(Color.valueOf("#029fe5"));
-        point = new Label("" + String.format("%,.2f", question.getMark()));
+        point = new Label("" + decimalFormat.format(question.getMark()));
         point.setAlignment(Pos.CENTER);
         point.setContentDisplay(ContentDisplay.RIGHT);
         point.setGraphic(pen);

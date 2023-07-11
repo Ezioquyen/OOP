@@ -247,14 +247,6 @@ public class DataModel {
         parent.setValue(mapName.get(parent) + " (" + this.numberOfQuestion.get(categoryMap.get(parent)) + ")");
     }
 
-    public int getTotalQuestion() {
-        return totalQuestion;
-    }
-
-    public void setTotalQuestion(int totalQuestion) {
-        this.totalQuestion = totalQuestion;
-    }
-
     public Integer getLastNode_id() {
         return lastNode_id;
     }
@@ -358,12 +350,13 @@ public class DataModel {
 
     public void insertQuiz(String name, float time) {
         try {
-            String sql = "INSERT INTO QUIZ (name, time,totalMark,shuffle) value (?,?,?,?)";
+            String sql = "INSERT INTO QUIZ (name, time,totalMark,shuffle,grade) value (?,?,?,?,?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, name);
             statement.setFloat(2, time);
             statement.setDouble(3, 0.00);
             statement.setBoolean(4, false);
+            statement.setDouble(5, 10.00);
             statement.executeUpdate();
             statement.close();
 

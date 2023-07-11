@@ -10,6 +10,8 @@ module com.example.demo {
     requires org.apache.poi.ooxml;
     requires net.synedra.validatorfx;
     requires com.jfoenix;
+    requires org.apache.pdfbox;
+    requires itextpdf;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

@@ -79,7 +79,7 @@ public class EditMTPCQController {
         ValidationSupport validationSupportForMark = new ValidationSupport();
         validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
 
-        validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:1000(?:\\.0*)?|\\d{0,3}(?:\\.\\d*)?))$", Severity.ERROR));
+        validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
         validationSupportList.add(validationSupportForQuestionName);
         validationSupportList.add(validationSupportForMark);
         quesName.setText(dataModel.getCurrentQuestion().getTitle());

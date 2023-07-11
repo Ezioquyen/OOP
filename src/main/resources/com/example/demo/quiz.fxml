@@ -10,8 +10,8 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.demo.QuizController">
+<VBox fx:id="rootPane" style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.QuizController">
     <children>
         <VBox minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
             <children>
@@ -46,10 +46,10 @@
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
-                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="186.0" spacing="10.0">
+                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="197.0" spacing="10.0">
                             <children>
-                                <Label text="Time limit: 1 hour"/>
-                                <Label text="Grading method: Last attempt"/>
+                                <Label fx:id="time" text="Time limit: 1 hour"/>
+                                <Label text="Grading method: unlimited attempt"/>
                             </children>
                         </VBox>
                         <Region prefHeight="100.0" prefWidth="63.0"/>

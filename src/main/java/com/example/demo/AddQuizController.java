@@ -54,7 +54,6 @@ public class AddQuizController {
         checkBox.selectedProperty().addListener(e -> {
             if (checkBox.isSelected()) {
                 validationSupportForTime.setErrorDecorationEnabled(true);
-                time = Float.parseFloat(textField.getText());
                 minutes.setDisable(false);
             } else {
                 validationSupportForTime.setErrorDecorationEnabled(false);
@@ -73,12 +72,15 @@ public class AddQuizController {
                 break;
             }
         }
-        if (check) {
-            if (validationSupportForTime.getValidationResult().getErrors().isEmpty() && validationSupportForName.getValidationResult().getErrors().isEmpty()) {
-                dataModel.insertQuiz(name.getText(), time);
-                breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("thi-cuoi-ky.fxml"));
-            } else snackBarNoti("Invalid value", false);
+        if (checkBox.isSelected()) {
+            time = Float.parseFloat(textField.getText());
+            check = validationSupportForTime.getValidationResult().getErrors().isEmpty();
         }
+
+        if (validationSupportForName.getValidationResult().getErrors().isEmpty() && check) {
+            dataModel.insertQuiz(name.getText(), time);
+            breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("thi-cuoi-ky.fxml"));
+        } else snackBarNoti("Invalid value", false);
     }
 
     @FXML

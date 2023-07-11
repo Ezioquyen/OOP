@@ -4,24 +4,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class NotiController {
-    @FXML
-    private Button closeButton;
+public class Confirmation {
     @FXML
     private Button cancel;
     @FXML
     private Button startAttempt;
-    @FXML
-    private Button Export;
-    @FXML
-    private Label text;
 
     @FXML
     private void initialize() {
-    }
-
-    public Button getCloseButton() {
-        return closeButton;
     }
 
     public Button getCancel() {
@@ -30,13 +20,5 @@ public class NotiController {
 
     public Button getStartAttempt() {
         return startAttempt;
-    }
-
-    public Label getText() {
-        return text;
-    }
-
-    public Button getExport() {
-        return Export;
     }
 }

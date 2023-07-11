@@ -12,12 +12,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 public class QuestionBox extends HBox {
+    private DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.US);
+    private final DecimalFormat decimalFormat = new DecimalFormat("#0.00", decimalFormatSymbols);
     private final Question question;
     private final Label number = new Label();
     private final VBox box1 = new VBox(15);
@@ -68,7 +69,7 @@ public class QuestionBox extends HBox {
 
         HBox boxChild1 = new HBox();
         boxChild1.setAlignment(Pos.BOTTOM_LEFT);
-        Label questionLabel = new Label("Question");
+        Label questionLabel = new Label("Question ");
         questionLabel.setStyle("-fx-font-size: 14");
         questionLabel.setStyle("-fx-text-fill:#c02424");
         number.setAlignment(Pos.BOTTOM_LEFT);
@@ -80,7 +81,7 @@ public class QuestionBox extends HBox {
         Label answered = new Label("Not answered");
         answered.setStyle("-fx-text-fill: black");
 
-        Label markForQues = new Label("Marked out of " + String.format("%,.2f", question.getMark()));
+        Label markForQues = new Label("Marked out of " + decimalFormat.format(question.getMark()));
         markForQues.setWrapText(true);
         markForQues.setStyle("-fx-text-fill: black");
         flag.setPrefSize(97, 26);
@@ -146,7 +147,8 @@ public class QuestionBox extends HBox {
             ToggleGroup group = new ToggleGroup();
             int i = 0;
             for (OptionsPacket pack : question.getPackets()) {
-                RadioButton radioButton = new RadioButton((char) (65 + i) + ". " + pack.getOption());
+                pack.setOption((char) (65 + i) + ". " + pack.getOption());
+                RadioButton radioButton = new RadioButton(pack.getOption());
                 radioButton.setContentDisplay(ContentDisplay.RIGHT);
                 radioButton.setStyle("-fx-text-fill: black");
                 packetMap.put(radioButton, pack);
@@ -173,7 +175,8 @@ public class QuestionBox extends HBox {
             ObservableList<CheckBox> checkBoxObservableList = FXCollections.observableList(list);
             int i = 0;
             for (OptionsPacket pack : question.getPackets()) {
-                CheckBox checkBox = new CheckBox((char) (65 + i) + ". " + pack.getOption());
+                pack.setOption((char) (65 + i) + ". " + pack.getOption());
+                CheckBox checkBox = new CheckBox(pack.getOption());
                 checkBox.setStyle("-fx-text-fill: black");
                 checkBox.setContentDisplay(ContentDisplay.RIGHT);
                 checkBoxOptionsPacketMap.put(checkBox, pack);

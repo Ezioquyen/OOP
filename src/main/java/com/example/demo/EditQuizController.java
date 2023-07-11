@@ -13,10 +13,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import org.controlsfx.validation.ValidationSupport;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class EditQuizController {
@@ -43,6 +47,8 @@ public class EditQuizController {
     @FXML
     private CheckBox shuffle;
     private int totalQuestion;
+    private DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.US);
+    private final DecimalFormat decimalFormat = new DecimalFormat("#0.00", decimalFormatSymbols);
 
     public void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -63,7 +69,7 @@ public class EditQuizController {
         btnContainer.getChildren().removeAll(delete, cancel);
         initDataModel(DataModel.getInstance());
         initBreadCrumbBarModel(BreadCrumbBarModel.getInstance());
-        grade.setText(String.format("%,.2f", dataModel.getCurrentQuiz().getMaxGrade()));
+        grade.setText(decimalFormat.format(dataModel.getCurrentQuiz().getMaxGrade()));
 
         List<EditQuesFromQuiz> list1 = new ArrayList<>();
         ObservableList<EditQuesFromQuiz> tempList = FXCollections.observableList(list1);
@@ -79,7 +85,7 @@ public class EditQuizController {
                 totalMarkValue -= ques.getQuestion().getMark();
                 totalQuestion--;
                 totalQuestions.setText("" + totalQuestion);
-                totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
+                totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
                 dataModel.removeQuestionToQuiz(question.getId(), dataModel.getCurrentQuiz().getQuizID());
                 list.getItems().remove(ques);
                 dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
@@ -90,7 +96,7 @@ public class EditQuizController {
         }
         dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
         dataModel.getCurrentQuiz().setTotalQuestion(totalQuestion);
-        totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
+        totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
         totalQuestions.setText("" + totalQuestion);
         list.setItems(tempList);
         tempList.addListener((ListChangeListener<? super EditQuesFromQuiz>) change -> {
@@ -109,7 +115,7 @@ public class EditQuizController {
             dataModel.getCurrentQuiz().setTotalQuestion(totalQuestion);
             totalQuestions.setText("" + totalQuestion);
             dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
-            totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
+            totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
             list.getSelectionModel().clearSelection();
             list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             btnContainer.getChildren().removeAll(delete, cancel);
@@ -139,7 +145,7 @@ public class EditQuizController {
                 ques.getButton().setOnAction(p -> {
                     totalMarkValue -= question.getQuestion().getMark();
                     totalQuestion--;
-                    totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
+                    totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
                     totalQuestions.setText("" + totalQuestion);
                     dataModel.removeQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
                     list.getItems().remove(ques);
@@ -152,7 +158,7 @@ public class EditQuizController {
             controller.getQuestions().clear();
             dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
             dataModel.getCurrentQuiz().setTotalQuestion(totalQuestion);
-            totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
+            totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
             totalQuestions.setText("" + totalQuestion);
         });
         Scene scene = new Scene(root, 1000, 800);
@@ -183,7 +189,7 @@ public class EditQuizController {
                     totalMarkValue -= question.getQuestion().getMark();
                     totalQuestion--;
                     totalQuestions.setText("" + totalQuestion);
-                    totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
+                    totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
                     dataModel.removeQuestionToQuiz(question.getQuestion().getId(), dataModel.getCurrentQuiz().getQuizID());
                     list.getItems().remove(ques);
                     dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
@@ -196,7 +202,7 @@ public class EditQuizController {
             controller.getRandomSelection().clear();
             controller.setPagination();
             dataModel.getCurrentQuiz().setTotalMarks(totalMarkValue);
-            totalMark.setText("Total of marks: " + String.format("%,.2f", totalMarkValue));
+            totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
             totalQuestions.setText("" + totalQuestion);
             dataModel.getCurrentQuiz().setTotalQuestion(totalQuestion);
         });
