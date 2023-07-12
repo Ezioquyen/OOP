@@ -23,15 +23,13 @@ public class Question {
     }
 
     private List<Double> percent;
-    private List<String> imageFilePath;
-    private List<String> gifPath;
-    private List<String> videoPath;
+    private final List<String> imageFilePath;
+    private String gifPath;
+    private String videoPath;
     private List<String> imageOptionPath;
     private List<OptionsPacket> packets = new ArrayList<>();
 
     public Question() {
-        this.gifPath = new ArrayList<>();
-        this.videoPath = new ArrayList<>();
         this.imageFilePath = new ArrayList<>();
         this.imageOptionPath = new ArrayList<>();
         this.options = new ArrayList<>();
@@ -110,18 +108,21 @@ public class Question {
         return ansID;
     }
 
-    public int getCategoryID() {
-        return categoryID;
+    public void setGifPath(String gifPath) {
+        this.gifPath = gifPath;
     }
 
-    public List<String> getGifPath() {
+    public void setVideoPath(String videoPath) {
+        this.videoPath = videoPath;
+    }
+
+    public String getGifPath() {
         return gifPath;
     }
 
-    public List<String> getVideoPath() {
+    public String getVideoPath() {
         return videoPath;
     }
-
 
     public void setCategoryID(int categoryID) {
         this.categoryID = categoryID;
@@ -129,10 +130,6 @@ public class Question {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setAnsID(List<Integer> ansID) {
-        this.ansID = ansID;
     }
 
     public List<String> getImageFilePath() {
@@ -153,10 +150,6 @@ public class Question {
 
     public List<Integer> getImageID() {
         return imageID;
-    }
-
-    public void setImageID(List<Integer> imageID) {
-        this.imageID = imageID;
     }
 
     public List<OptionsPacket> getPackets() {

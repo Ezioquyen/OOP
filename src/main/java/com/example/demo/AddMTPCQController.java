@@ -1,18 +1,18 @@
 package com.example.demo;
-
 import com.jfoenix.controls.JFXSnackbar;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -22,7 +22,9 @@ import org.controlsfx.validation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,7 +40,11 @@ public class AddMTPCQController {
     private Label label;
 
     @FXML
+    private TextArea quesTitle;
+    @FXML
     private TextField quesName;
+    @FXML
+    private Button getVideo;
     @FXML
     private TextField mark;
     @FXML
@@ -52,10 +58,14 @@ public class AddMTPCQController {
     private int currentChoice = 0;
     private DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
+    private final List<String> VIDEO_EXTENSIONS = Arrays.asList(".mp4", ".avi", ".mkv", ".mov", ".wmv");
     private final List<ChoiceBoxController> controllers = new ArrayList<>();
     private final List<File> files = new ArrayList<>();
 
     private final List<ValidationSupport> validationSupportList = new ArrayList<>();
+    private File video;
+    @FXML
+    private HBox containerVid;
 
     public void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
@@ -75,13 +85,14 @@ public class AddMTPCQController {
     private void initialize() throws IOException {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
-
-        ValidationSupport validationSupportForQuestionName = new ValidationSupport();
-        validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        ValidationSupport validationSupportForquestionName = new ValidationSupport();
+        validationSupportForquestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        ValidationSupport validationSupportForquestionTitle = new ValidationSupport();
+        validationSupportForquestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         ValidationSupport validationSupportForMark = new ValidationSupport();
         validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
-
-        validationSupportList.add(validationSupportForQuestionName);
+        validationSupportList.add(validationSupportForquestionName);
+        validationSupportList.add(validationSupportForquestionTitle);
         validationSupportList.add(validationSupportForMark);
 
         for (int i = 1; i <= 2; i++) {
@@ -106,14 +117,21 @@ public class AddMTPCQController {
             boolean success = false;
             if (db.hasFiles()) {
                 success = true;
-
-                List<File> dropfile = new ArrayList<>(db.getFiles());
-                isImageFile(dropfile);
-                if (!dropfile.isEmpty()) {
+                List<File> dropFile = new ArrayList<>(db.getFiles());
+                isImageFile(dropFile);
+                if (!dropFile.isEmpty()) {
                     dropShow.setVisible(true);
-                    for (File file : dropfile) {
-                        dropShow.getChildren().add(new Label(file.getName()));
-                        files.add(file);
+                    for (File file : dropFile) {
+                        FileShow fileShow = new FileShow(file);
+                        fileShow.getRemove().setOnAction(e -> {
+                            dropShow.getChildren().remove(fileShow);
+                            files.remove(file);
+                            if (dropShow.getChildren().isEmpty()) {
+                                dropShow.setVisible(false);
+                                dropFace.setVisible(true);
+                            }
+                        });
+                        dropShow.getChildren().add(fileShow);
                     }
                     dropFace.setVisible(false);
                 }
@@ -184,8 +202,10 @@ public class AddMTPCQController {
         }
 
         Question question = new Question();
-        question.addTitle(quesName.getText());
+        question.addTitle(quesName.getText() + ": " + quesTitle.getText());
         question.setMark(Double.valueOf(mark.getText()));
+        String vidPath = null;
+        if (video != null) vidPath = video.getAbsolutePath();
         for (ChoiceBoxController controller : controllers) {
             if (!(controller.getTextArea().getText().isEmpty() && controller.getDropShow().getChildren().isEmpty())) {
                 question.getOptions().add(controller.getTextArea().getText());
@@ -204,7 +224,7 @@ public class AddMTPCQController {
             if (value > 0) sum = sum + value;
         }
         if (abs(100 - sum) < 0.00001) {
-            dataModel.insertQuestion(root.getSelectionModel().getSelectedItem(), question.getTitle(), question.isType(), Double.valueOf(mark.getText()));
+            dataModel.insertQuestion(root.getSelectionModel().getSelectedItem(), question.getTitle(), question.isType(), Double.valueOf(mark.getText()), vidPath);
             dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, question.getImageOptionPath());
             if (!files.isEmpty()) {
                 for (File file : files) {
@@ -257,11 +277,20 @@ public class AddMTPCQController {
 
 
         if (selectedFile != null && isImageFile(selectedFile)) {
+            FileShow fileShow = new FileShow(selectedFile);
             if (dropShow.getChildren().isEmpty()) {
                 dropShow.setVisible(true);
                 dropFace.setVisible(false);
             }
-            dropShow.getChildren().add(new Label(selectedFile.getName()));
+            fileShow.getRemove().setOnAction(e -> {
+                dropShow.getChildren().remove(fileShow);
+                files.remove(selectedFile);
+                if (dropShow.getChildren().isEmpty()) {
+                    dropShow.setVisible(false);
+                    dropFace.setVisible(true);
+                }
+            });
+            dropShow.getChildren().add(fileShow);
             files.add(selectedFile);
         }
     }
@@ -274,4 +303,41 @@ public class AddMTPCQController {
         snackbar.show(text, 4000);
 
     }
+
+    @FXML
+    private void btnInsertVideo() throws MalformedURLException {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setTitle("Chọn tệp");
+
+
+        // Lấy stage của scene hiện tại từ nút
+
+        // Hiển thị hộp thoại chọn tệp và lấy tệp được chọn
+        File selectedFile = fileChooser.showOpenDialog(Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null));
+
+
+        if (selectedFile != null && isVideoFile(selectedFile.getAbsolutePath())) {
+
+            video = selectedFile;
+            FileShow fileShow = new FileShow(video);
+            containerVid.getChildren().add(fileShow);
+            fileShow.getRemove().setOnAction(e -> {
+                containerVid.getChildren().remove(fileShow);
+                getVideo.setDisable(false);
+                video = null;
+            });
+            getVideo.setDisable(true);
+
+        }
+    }
+
+    private boolean isVideoFile(String filePath) {
+        File file = new File(filePath);
+        String fileName = file.getName();
+        String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+
+        return VIDEO_EXTENSIONS.contains(fileExtension.toLowerCase());
+    }
+
 }

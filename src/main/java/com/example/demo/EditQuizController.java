@@ -161,7 +161,7 @@ public class EditQuizController {
             totalMark.setText("Total of marks: " + decimalFormat.format(totalMarkValue));
             totalQuestions.setText("" + totalQuestion);
         });
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, 700, 800);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
@@ -206,7 +206,7 @@ public class EditQuizController {
             totalQuestions.setText("" + totalQuestion);
             dataModel.getCurrentQuiz().setTotalQuestion(totalQuestion);
         });
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, 700, 800);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);

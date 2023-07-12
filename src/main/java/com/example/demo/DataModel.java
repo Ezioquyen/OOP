@@ -125,14 +125,15 @@ public class DataModel {
         return true;
     }
 
-    public void insertQuestion(TreeItem<String> parent, String title, int type, Double mark) {
+    public void insertQuestion(TreeItem<String> parent, String title, int type, Double mark, String video) {
         try {
-            String sql = "INSERT INTO QUESTIONS (Content,typeOfQuestion,CategoryID,mark) VALUES ( ?, ?, ?, ?)";
+            String sql = "INSERT INTO QUESTIONS (Content,typeOfQuestion,CategoryID,mark,videoPath) VALUES ( ?,?,?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, title);
             statement.setInt(2, type);
             statement.setInt(3, categoryMap.get(parent));
             statement.setDouble(4, mark);
+            statement.setString(5, video);
             statement.executeUpdate();
             statement.close();
             totalQuestion += 1;
@@ -258,7 +259,7 @@ public class DataModel {
     public List<Question> getQuestion(Integer id) {
         List<Question> questions = new ArrayList<>();
         try {
-            String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ?";
+            String sql = "SELECT QuestionID, Content, mark,videoPath FROM QUESTIONS WHERE CategoryID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
@@ -269,6 +270,7 @@ public class DataModel {
                 question.setId(rs.getInt("QuestionID"));
                 question.addTitle(rs.getString("Content"));
                 question.setMark(rs.getDouble("mark"));
+                question.setVideoPath(rs.getString("videoPath"));
                 questions.add(question);
             }
             rs.close();
@@ -411,12 +413,14 @@ public class DataModel {
 
     public void updateQuestion(Question question) {
         try {
-            String sql = "UPDATE QUESTIONS SET Content = ?, typeOfQuestion = ?, mark = ? WHERE QuestionID = ?";
+            String sql = "UPDATE QUESTIONS SET Content = ?, typeOfQuestion = ?, mark = ?,videoPath=? WHERE QuestionID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, question.getTitle());
             statement.setInt(2, question.isType());
             statement.setDouble(3, question.getMark());
-            statement.setInt(4, question.getId());
+            statement.setString(4, question.getVideoPath());
+            statement.setInt(5, question.getId());
+
             statement.executeUpdate();
             int index = 0;
             for (Integer id : question.getAnsID()) {
@@ -470,7 +474,7 @@ public class DataModel {
     public List<Question> getQuestionToQuiz(int quizID) {
         List<Question> questions = new ArrayList<>();
         try {
-            String sql = "SELECT q.QuestionID,q.CategoryID, q.Content, q.mark FROM QUESTIONS q JOIN QUIZ_QUESTION QQ on q.QuestionID = QQ.QuestionID WHERE QQ.quizID = ?";
+            String sql = "SELECT q.QuestionID,q.CategoryID, q.Content, q.mark, q.videoPath FROM QUESTIONS q JOIN QUIZ_QUESTION QQ on q.QuestionID = QQ.QuestionID WHERE QQ.quizID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, quizID);
             ResultSet rs = statement.executeQuery();
@@ -480,6 +484,7 @@ public class DataModel {
                 question.setCategoryID(rs.getInt("CategoryID"));
                 question.addTitle(rs.getString("Content"));
                 question.setMark(rs.getDouble("mark"));
+                question.setVideoPath(rs.getString("videoPath"));
                 questions.add(question);
             }
             rs.close();
@@ -532,7 +537,7 @@ public class DataModel {
     public List<Question> getQuestionExcept(Integer id, int quizID) {
         List<Question> questions = new ArrayList<>();
         try {
-            String sql = "SELECT QuestionID, Content, mark FROM QUESTIONS WHERE CategoryID = ? AND QuestionID NOT IN(SELECT QuestionID FROM QUIZ_QUESTION WHERE quizID = ?)";
+            String sql = "SELECT QuestionID, Content, mark,videoPath FROM QUESTIONS WHERE CategoryID = ? AND QuestionID NOT IN(SELECT QuestionID FROM QUIZ_QUESTION WHERE quizID = ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             statement.setInt(2, quizID);
@@ -544,6 +549,7 @@ public class DataModel {
                 question.setId(rs.getInt("QuestionID"));
                 question.addTitle(rs.getString("Content"));
                 question.setMark(rs.getDouble("mark"));
+                question.setVideoPath(rs.getString("videoPath"));
                 questions.add(question);
             }
             rs.close();

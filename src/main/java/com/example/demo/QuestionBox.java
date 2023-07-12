@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -134,6 +135,11 @@ public class QuestionBox extends HBox {
                 imageView.setPreserveRatio(true);
                 pane.getChildren().add(imageView);
             }
+        }
+        if (question.getVideoPath() != null) {
+            VideoPlayer videoPlayer = new VideoPlayer(new File(question.getVideoPath()));
+            videoPlayer.setMaxSize(700, 450);
+            questionContainer.getChildren().add(videoPlayer);
         }
         questionContainer.getChildren().add(optionsContainer);
 

@@ -142,9 +142,11 @@ public class QuizController {
                 document.add(new Paragraph(question.getTitle(), font));
                 if (!question.getImageFilePath().isEmpty()) {
                     for (String path : question.getImageFilePath()) {
-                        Image image = Image.getInstance(path);
-                        image.scaleToFit(maxWidth, maxHeight);
-                        document.add(image);
+                        if (!path.substring(path.lastIndexOf(".") + 1, path.length() - 1).equals("gif")) {
+                            Image image = Image.getInstance(path);
+                            image.scaleToFit(maxWidth, maxHeight);
+                            document.add(image);
+                        }
                     }
                 }
                 int j = 0;

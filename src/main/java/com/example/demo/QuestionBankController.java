@@ -326,7 +326,7 @@ public class QuestionBankController {
                 try {
                     int questionCount = 0;
                     for (Question question : readAikenQuestions(file)) {
-                        dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0);
+                        dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0, null);
                         if (!question.getImageFilePath().isEmpty()) {
                             for (String string : question.getImageFilePath()) dataModel.insertImage(string, 0);
                         }

@@ -8,8 +8,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -19,10 +22,10 @@ import org.controlsfx.validation.Validator;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -38,7 +41,10 @@ public class EditMTPCQController {
     @FXML
     private TextField mark;
     @FXML
+    private TextArea quesTitle;
+    @FXML
     private TextField quesName;
+
     @FXML
     private StackPane dropZone;
     @FXML
@@ -54,6 +60,12 @@ public class EditMTPCQController {
     private final List<ChoiceBoxController> controllers = new ArrayList<>();
     private final List<File> files = new ArrayList<>();
     private final List<ValidationSupport> validationSupportList = new ArrayList<>();
+    @FXML
+    private Button getVideo;
+    private final List<String> VIDEO_EXTENSIONS = Arrays.asList(".mp4", ".avi", ".mkv", ".mov", ".wmv");
+    private File video;
+    @FXML
+    private HBox containerVid;
 
 
     public void initDataModel(DataModel dataModel) {
@@ -75,14 +87,35 @@ public class EditMTPCQController {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
 
-        ValidationSupport validationSupportForQuestionName = new ValidationSupport();
+        ValidationSupport validationSupportForquestionName = new ValidationSupport();
+        validationSupportForquestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        ValidationSupport validationSupportForquestionTitle = new ValidationSupport();
+        validationSupportForquestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         ValidationSupport validationSupportForMark = new ValidationSupport();
-        validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
-
         validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
-        validationSupportList.add(validationSupportForQuestionName);
+        validationSupportList.add(validationSupportForquestionName);
+        validationSupportList.add(validationSupportForquestionTitle);
         validationSupportList.add(validationSupportForMark);
-        quesName.setText(dataModel.getCurrentQuestion().getTitle());
+        if (dataModel.getCurrentQuestion().getVideoPath() != null) {
+            video = new File(dataModel.getCurrentQuestion().getVideoPath());
+            FileShow fileShow = new FileShow(video);
+            fileShow.getRemove().setOnAction(e -> {
+                containerVid.getChildren().remove(fileShow);
+                getVideo.setDisable(false);
+                video = null;
+            });
+            containerVid.getChildren().add(fileShow);
+            getVideo.setDisable(true);
+        }
+        String input = dataModel.getCurrentQuestion().getTitle();
+        String[] parts = input.split(":", 2);
+
+        if (parts.length >= 2) {
+            String beforeColon = parts[0].trim();
+            String afterColon = parts[1].trim();
+            quesName.setText(beforeColon);
+            quesTitle.setText(afterColon);
+        } else quesTitle.setText(input);
         mark.setText("" + dataModel.getCurrentQuestion().getMark());
 
         for (String string : dataModel.getCurrentQuestion().getImageFilePath()) {
@@ -124,7 +157,8 @@ public class EditMTPCQController {
             if (dataModel.getCurrentQuestion().getPercent().get(currentChoice) == 0.0)
                 view.getComboBox().getSelectionModel().select("None");
             else {
-                DecimalFormat decimalFormat = new DecimalFormat("#.######");
+                DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.US);
+                DecimalFormat decimalFormat = new DecimalFormat("#0.#####", decimalFormatSymbols);
                 decimalFormat.setGroupingUsed(false);
                 view.getComboBox().getSelectionModel().select(decimalFormat.format(dataModel.getCurrentQuestion().getPercent().get(currentChoice)) + "%");
             }
@@ -195,8 +229,9 @@ public class EditMTPCQController {
             Image image = new Image(file.getPath());
             return !image.isError();
         } catch (Exception e) {
-            e.printStackTrace();
             snackBarNoti("Wrong file format please try again", false);
+            e.printStackTrace();
+
             return false;
         }
     }
@@ -278,7 +313,10 @@ public class EditMTPCQController {
             if (value > 0) sum = sum + value;
         }
         if (abs(100.0 - sum) < 0.00001) {
-            dataModel.getCurrentQuestion().setTitle(quesName.getText());
+            if (video != null) {
+                dataModel.getCurrentQuestion().setVideoPath(video.getAbsolutePath());
+            } else dataModel.getCurrentQuestion().setVideoPath(null);
+            dataModel.getCurrentQuestion().setTitle(quesName.getText() + ": " + quesTitle.getText());
             dataModel.getCurrentQuestion().setMark(Double.valueOf(mark.getText()));
             dataModel.getCurrentQuestion().setOptions(options);
             dataModel.getCurrentQuestion().setPercent(percent);
@@ -340,6 +378,44 @@ public class EditMTPCQController {
         breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("questionbank.fxml"));
     }
 
+    @FXML
+    private void btnInsertVideo() throws MalformedURLException {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setTitle("Chọn tệp");
+
+
+        // Lấy stage của scene hiện tại từ nút
+
+        // Hiển thị hộp thoại chọn tệp và lấy tệp được chọn
+        File selectedFile = fileChooser.showOpenDialog(Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null));
+
+
+        if (selectedFile != null && isVideoFile(selectedFile.getAbsolutePath())) {
+            Media media = new Media(selectedFile.toURI().toURL().toString());
+
+            /*if (media.getDuration().toSeconds() < 10) {*/
+            video = selectedFile;
+            FileShow fileShow = new FileShow(video);
+            containerVid.getChildren().add(fileShow);
+            fileShow.getRemove().setOnAction(e -> {
+                containerVid.getChildren().remove(fileShow);
+                getVideo.setDisable(false);
+                video = null;
+            });
+            getVideo.setDisable(true);
+            /* } else snackBarNoti("Video duration is too long: out of 10 seconds", false);*/
+        }
+    }
+
+    private boolean isVideoFile(String filePath) {
+        File file = new File(filePath);
+        String fileName = file.getName();
+        String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+
+        return VIDEO_EXTENSIONS.contains(fileExtension.toLowerCase());
+    }
+
     private void snackBarNoti(String text, boolean check) {
         JFXSnackbar snackbar = new JFXSnackbar(rootPane);
         if (check) {
@@ -348,4 +424,5 @@ public class EditMTPCQController {
         snackbar.show(text, 4000);
 
     }
+
 }

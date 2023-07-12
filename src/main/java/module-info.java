@@ -12,6 +12,7 @@ module com.example.demo {
     requires com.jfoenix;
     requires org.apache.pdfbox;
     requires itextpdf;
+    requires javafx.media;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
