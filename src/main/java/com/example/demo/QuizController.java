@@ -136,13 +136,13 @@ public class QuizController {
             String fontName = "D:\\OOP\\Demo\\src\\main\\resources\\font\\arial.ttf";
             BaseFont baseFont = BaseFont.createFont(fontName, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(baseFont);
-            float maxWidth = 500f;
-            float maxHeight = 500f;
+            float maxWidth = 350f;
+            float maxHeight = 350f;
             for (Question question : questions) {
                 document.add(new Paragraph(question.getTitle(), font));
                 if (!question.getImageFilePath().isEmpty()) {
                     for (String path : question.getImageFilePath()) {
-                        if (!path.substring(path.lastIndexOf(".") + 1, path.length() - 1).equals("gif")) {
+                        if (!path.substring(path.lastIndexOf(".") + 1).equals("gif")) {
                             Image image = Image.getInstance(path);
                             image.scaleToFit(maxWidth, maxHeight);
                             document.add(image);

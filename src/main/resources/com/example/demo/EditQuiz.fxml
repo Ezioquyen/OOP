@@ -15,8 +15,8 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.demo.EditQuizController">
+<VBox fx:id="rootPane" style="-fx-border-color: #C8CCE8;" xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.EditQuizController">
     <children>
         <VBox minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" VBox.vgrow="ALWAYS">
             <children>

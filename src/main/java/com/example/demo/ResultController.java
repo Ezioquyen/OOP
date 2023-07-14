@@ -27,12 +27,12 @@ public class ResultController {
     private void initialize() {
     }
 
-    public void showInformation(double totalMarksSelected, double totalMarks, String start, String end, String time) {
+    public void showInformation(double totalMarksSelected, double totalMarks, String start, String end, String time, double grade) {
         startTime.setText(start);
         endTime.setText(end);
         timeTaken.setText(time);
         marks.setText(decimalFormat.format(totalMarksSelected) + "/" + decimalFormat.format(totalMarks));
-        marks1.setText(decimalFormat.format((totalMarksSelected / totalMarks) * 10));
+        marks1.setText(decimalFormat.format((totalMarksSelected / totalMarks) * grade));
         marks2.setText(decimalFormat.format((totalMarksSelected / totalMarks) * 100));
     }
 }

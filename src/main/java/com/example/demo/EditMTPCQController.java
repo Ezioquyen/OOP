@@ -88,7 +88,7 @@ public class EditMTPCQController {
         initModel(BreadCrumbBarModel.getInstance());
 
         ValidationSupport validationSupportForquestionName = new ValidationSupport();
-        validationSupportForquestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        validationSupportForquestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "^[\\S]+$", Severity.ERROR));
         ValidationSupport validationSupportForquestionTitle = new ValidationSupport();
         validationSupportForquestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         ValidationSupport validationSupportForMark = new ValidationSupport();
@@ -108,13 +108,17 @@ public class EditMTPCQController {
             getVideo.setDisable(true);
         }
         String input = dataModel.getCurrentQuestion().getTitle();
-        String[] parts = input.split(":", 2);
+        int colonIndex = input.indexOf(":");
 
-        if (parts.length >= 2) {
-            String beforeColon = parts[0].trim();
-            String afterColon = parts[1].trim();
-            quesName.setText(beforeColon);
-            quesTitle.setText(afterColon);
+        if (colonIndex != -1) {
+            quesName.setText(input.substring(0, colonIndex).trim());
+            quesTitle.setText(input.substring(colonIndex + 1).trim());
+
+            // Kiểm tra question name không chứa dấu trắng
+            if (quesName.getText().contains(" ")) {
+                quesName.setText("");
+                quesTitle.setText(input);
+            }
         } else quesTitle.setText(input);
         mark.setText("" + dataModel.getCurrentQuestion().getMark());
 
@@ -305,7 +309,7 @@ public class EditMTPCQController {
             index++;
         }
         if (options.size() < 2) {
-            snackBarNoti("Question must have atleast two options", false);
+            snackBarNoti("Question must have latest two options", false);
             return false;
         }
         double sum = 0;
@@ -390,11 +394,10 @@ public class EditMTPCQController {
         // Hiển thị hộp thoại chọn tệp và lấy tệp được chọn
         File selectedFile = fileChooser.showOpenDialog(Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null));
 
-
         if (selectedFile != null && isVideoFile(selectedFile.getAbsolutePath())) {
             Media media = new Media(selectedFile.toURI().toURL().toString());
 
-            /*if (media.getDuration().toSeconds() < 10) {*/
+
             video = selectedFile;
             FileShow fileShow = new FileShow(video);
             containerVid.getChildren().add(fileShow);
@@ -404,7 +407,6 @@ public class EditMTPCQController {
                 video = null;
             });
             getVideo.setDisable(true);
-            /* } else snackBarNoti("Video duration is too long: out of 10 seconds", false);*/
         }
     }
 

@@ -235,7 +235,7 @@ public class QuestionBankController {
                                 return null;
                             }
                             question.addOption(text.substring("A. ".length()).trim());
-                        } else if (text.matches("^ANSWER:\\s[A-Z]") && question.getOptions().size() >= 2) {
+                        } else if (text.matches("^ANSWER:\\s[A-Z]") && question.getOptions().size() >= 2 && (text.substring("ANSWER:".length()).trim().charAt(0) - 65) <= question.getOptions().size()) {
                             haveAns = true;
                             for (String a : question.getOptions()) {
                                 if (question.getOptions().indexOf(a) == text.substring("ANSWER:".length()).trim().charAt(0) - 65) {
@@ -274,7 +274,7 @@ public class QuestionBankController {
                                 return null;
                             }
                             question.addOption(text.substring("A. ".length()).trim());
-                        } else if (text.matches("^ANSWER:\\s[A-Z]") && question.getOptions().size() >= 2) {
+                        } else if (text.matches("^ANSWER:\\s[A-Z]") && question.getOptions().size() >= 2 && (text.substring("ANSWER:".length()).trim().charAt(0) - 65) <= question.getOptions().size()) {
                             for (String a : question.getOptions()) {
                                 haveAns = true;
                                 if (question.getOptions().indexOf(a) == text.substring("ANSWER:".length()).trim().charAt(0) - 65) {

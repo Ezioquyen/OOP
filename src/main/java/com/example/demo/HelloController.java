@@ -67,6 +67,9 @@ public class HelloController {
         //Listener
         breadCrumbBarModel.getBreadCrumbBar().selectedCrumbProperty().addListener((obs, oldVal, newVal) -> {
             if (!breadCrumbBarModel.isToggle()) {
+                if (Objects.equals(oldVal.getValue(), "Edit quiz")) {
+                    dataModel.updateQuiz(dataModel.getCurrentQuiz());
+                }
                 if (Objects.equals(oldVal.getValue(), "THI CUỐI KỲ")) {
                     menuContainer.getChildren().remove(menu);
                     buttonEditionContainer.getChildren().remove(editButton);

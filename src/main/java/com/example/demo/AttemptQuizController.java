@@ -83,7 +83,6 @@ public class AttemptQuizController {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
         Boolean shuffle = dataModel.getCurrentQuiz().getShuffle();
-        dataModel.updateQuiz(dataModel.getCurrentQuiz());
         start = getDate();
         if (dataModel.getCurrentQuiz().getTime() != 0) {
             convertMinutesToHoursMinutesSeconds(dataModel.getCurrentQuiz().getTime());
@@ -200,7 +199,7 @@ public class AttemptQuizController {
         }
         ResultController view = fxmlLoader.getController();
         String end = getDate();
-        view.showInformation(totalMark, dataModel.getCurrentQuiz().getTotalMarks(), start, end, timeTaken);
+        view.showInformation(totalMark, dataModel.getCurrentQuiz().getTotalMarks(), start, end, timeTaken, dataModel.getCurrentQuiz().getMaxGrade());
         stackPane.getChildren().add(parent);
         container.getChildren().remove(finish);
         export.setVisible(true);
@@ -238,46 +237,5 @@ public class AttemptQuizController {
     @FXML
     private void btnExport() {
         breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("quiz.fxml"));
-       /* LocalTime time = LocalTime.now();
-        LocalDate currentDate = LocalDate.now();
-
-        // Định dạng ngày tháng năm
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH-mm-ss");
-        String path = "D:\\TestFolder\\" + currentDate.format(formatter2) + "-" + time.format(formatter) + dataModel.getCurrentQuiz().getQuizID() + ".pdf";
-        Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, new FileOutputStream(path));
-        document.open();
-
-        for(QuestionBox box: listQuestion.getItems()){
-            Font font = FontFactory.getFont(FontFactory.TIMES_BOLD,16, BaseColor.BLACK);
-            Chunk chunk = new Chunk(box.getQuestion().getTitle(),font);
-            document.add(chunk);
-            for(String imgPath : box.getQuestion().getImageFilePath()){
-                com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(imgPath);
-                document.add(img);
-            }
-            int i = 0;
-            for(OptionsPacket optionsPacket : box.getQuestion().getPackets()){
-                font = FontFactory.getFont(FontFactory.TIMES,16, BaseColor.BLACK);
-                chunk = new Chunk((char) (65 + i) + ". " + optionsPacket.getOption(),font);
-                document.add(chunk);
-                if(optionsPacket.getImagePath()!=null) {com.itextpdf.text.Image img = com.itextpdf.text.Image.getInstance(optionsPacket.getImagePath());
-                document.add(img);}
-                i++;
-            }
-            i = 0;
-            StringBuilder correctAns = new StringBuilder();
-            for(OptionsPacket optionsPacket : box.getQuestion().getPackets()) {
-                    if (optionsPacket.getPercent() > 0) {
-                        correctAns.append(" ").append((char) (65 + i++)).append(",");
-                    }
-                    i++;
-            }
-            String out = "Correct answer: " + correctAns.substring(0, correctAns.length() - 1) + ".";
-            chunk = new Chunk(out, font);
-            document.add(chunk);
-        }
-        document.close();*/
     }
 }

@@ -380,3 +380,7 @@ bread-crumb-bar {
     -fx-font-size: 15;
 }
 
+.tree-view > .tree-cell > .arrow {
+    -fx-background-color: transparent;
+}
+

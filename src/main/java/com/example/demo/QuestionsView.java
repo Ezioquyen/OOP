@@ -23,7 +23,7 @@ public class QuestionsView extends HBox {
         setStyle("-fx-border-color: black");
         this.question = question;
         title = new Label(question.getTitle());
-        title.setMaxWidth(1000);
+        title.setMaxWidth(200);
         title.setStyle("-fx-font-size: 15");
         title.setWrapText(true);
         title.setTextOverrun(OverrunStyle.ELLIPSIS);

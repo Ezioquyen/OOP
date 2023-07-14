@@ -24,7 +24,6 @@ public class Question {
 
     private List<Double> percent;
     private final List<String> imageFilePath;
-    private String gifPath;
     private String videoPath;
     private List<String> imageOptionPath;
     private List<OptionsPacket> packets = new ArrayList<>();
@@ -108,16 +107,8 @@ public class Question {
         return ansID;
     }
 
-    public void setGifPath(String gifPath) {
-        this.gifPath = gifPath;
-    }
-
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
-    }
-
-    public String getGifPath() {
-        return gifPath;
     }
 
     public String getVideoPath() {

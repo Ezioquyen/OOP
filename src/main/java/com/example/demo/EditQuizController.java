@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -9,11 +10,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import org.controlsfx.validation.Severity;
 import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -24,7 +28,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class EditQuizController {
-
+    @FXML
+    private VBox rootPane;
     @FXML
     private ListView<EditQuesFromQuiz> list;
     @FXML
@@ -50,25 +55,27 @@ public class EditQuizController {
     private DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.US);
     private final DecimalFormat decimalFormat = new DecimalFormat("#0.00", decimalFormatSymbols);
 
-    public void initDataModel(DataModel dataModel) {
+    private void initDataModel(DataModel dataModel) {
         if (this.dataModel != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.dataModel = dataModel;
     }
 
-    public void initBreadCrumbBarModel(BreadCrumbBarModel breadCrumbBarModel) {
+    private void initBreadCrumbBarModel(BreadCrumbBarModel breadCrumbBarModel) {
         if (this.breadCrumbBarModel != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.breadCrumbBarModel = breadCrumbBarModel;
     }
 
+    private final ValidationSupport validationSupportForGrade = new ValidationSupport();
     @FXML
     private void initialize() {
         btnContainer.getChildren().removeAll(delete, cancel);
         initDataModel(DataModel.getInstance());
         initBreadCrumbBarModel(BreadCrumbBarModel.getInstance());
+        validationSupportForGrade.registerValidator(grade, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:1000(?:\\.0*)?|\\d{0,3}(?:\\.\\d*)?))$", Severity.ERROR));
         grade.setText(decimalFormat.format(dataModel.getCurrentQuiz().getMaxGrade()));
 
         List<EditQuesFromQuiz> list1 = new ArrayList<>();
@@ -223,7 +230,21 @@ public class EditQuizController {
 
     @FXML
     private void btnSave() {
-        dataModel.getCurrentQuiz().setMaxGrade(Double.parseDouble(grade.getText()));
+        if (validationSupportForGrade.getValidationResult().getErrors().isEmpty()) {
+            if (Double.parseDouble(grade.getText()) > 0.0) {
+                dataModel.getCurrentQuiz().setMaxGrade(Double.parseDouble(grade.getText()));
+                snackBarNoti("Saved", true);
+            } else snackBarNoti("Grade must be greater than 0", false);
+        } else snackBarNoti("Invalid Value", false);
+    }
+
+    private void snackBarNoti(String text, boolean check) {
+        JFXSnackbar snackbar = new JFXSnackbar(rootPane);
+        if (check) {
+            snackbar.setId("snack1");
+        } else snackbar.setId("snack2");
+        snackbar.show(text, 4000);
+
     }
 }
 
