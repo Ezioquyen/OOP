@@ -232,6 +232,7 @@ public class QuestionBankController {
                     } else {
                         if (text.matches("^[A-Z]\\.\\s.*")) {
                             if (!text.startsWith(String.valueOf((char) ((question.getOptions().size()) + 65)))) {
+                                System.out.println("Error 1");
                                 return null;
                             }
                             question.addOption(text.substring("A. ".length()).trim());
@@ -250,6 +251,7 @@ public class QuestionBankController {
                             question = new Question();
                             haveAns = false;
                         } else {
+                            System.out.println("Error 2");
                             return null;
                         }
                     }
@@ -271,6 +273,7 @@ public class QuestionBankController {
                     } else {
                         if (text.matches("^[A-Z]\\.\\s.*")) {
                             if (!text.startsWith(String.valueOf((char) ((question.getOptions().size()) + 65)))) {
+                                System.out.println("Error 1");
                                 return null;
                             }
                             question.addOption(text.substring("A. ".length()).trim());
@@ -288,6 +291,7 @@ public class QuestionBankController {
                             question = new Question();
                             haveAns = false;
                         } else {
+                            System.out.println("Error 2");
                             return null;
                         }
                     }
@@ -306,44 +310,47 @@ public class QuestionBankController {
             if (!isTextFile(file)) {
                 snackBarNoti(file.getName() + " is not text file", false);
             } else {
-                int i = 0;
-                int count = 0;
-                if (dataModel.getLastNode_id() != 0) {
-                    Random random = new Random();
-                    i = random.nextInt(dataModel.getLastNode_id()) + 1;
-                } else {
-                    LocalDate currentDate = LocalDate.now();
-
-                    // Định dạng ngày tháng năm
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-                    // Chuyển đổi thành chuỗi và in ra
-                    String formattedDate = currentDate.format(formatter);
-                    dataModel.insertCategory(dataModel.getCategoryMap().inverse().get(i), formattedDate);
-                    i = 1;
-
-                }
                 try {
-                    int questionCount = 0;
-                    for (Question question : readAikenQuestions(file)) {
-                        dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0, null);
-                        if (!question.getImageFilePath().isEmpty()) {
-                            for (String string : question.getImageFilePath()) dataModel.insertImage(string, 0);
+                    List<Question> questions = readAikenQuestions(file);
+                    if (questions != null) {
+                        int i = 0;
+                        int count = 0;
+                        if (dataModel.getLastNode_id() != 0) {
+                            Random random = new Random();
+                            i = random.nextInt(dataModel.getLastNode_id()) + 1;
+                        } else {
+                            LocalDate currentDate = LocalDate.now();
+
+                            // Định dạng ngày tháng năm
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                            // Chuyển đổi thành chuỗi và in ra
+                            String formattedDate = currentDate.format(formatter);
+                            dataModel.insertCategory(dataModel.getCategoryMap().inverse().get(i), formattedDate);
+                            i = 1;
+
                         }
-                        dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, null);
-                        count++;
-                        questionCount++;
-                    }
-                    dataModel.setCount(count);
-                    dataModel.updateCategory(dataModel.getCategoryMap().inverse().get(i));
-                    label1.setText(dataModel.getCategoryMap().inverse().get(i).getValue());
-                    dataModel.setCount(0);
-                    fileNameShow.getChildren().clear();
-                    fileNameShow.setVisible(false);
-                    dropZoneInterface.setVisible(true);
-                    btnChooseFile.setDisable(false);
-                    file = null;
-                    snackBarNoti("Imported " + questionCount + " questions successful", true);
+                        int questionCount = 0;
+                        for (Question question : questions) {
+                            dataModel.insertQuestion(dataModel.getCategoryMap().inverse().get(i), question.getTitle(), question.isType(), 1.0, null);
+                            if (!question.getImageFilePath().isEmpty()) {
+                                for (String string : question.getImageFilePath()) dataModel.insertImage(string, 0);
+                            }
+                            dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, null);
+                            count++;
+                            questionCount++;
+                        }
+                        dataModel.setCount(count);
+                        dataModel.updateCategory(dataModel.getCategoryMap().inverse().get(i));
+                        label1.setText(dataModel.getCategoryMap().inverse().get(i).getValue());
+                        dataModel.setCount(0);
+                        fileNameShow.getChildren().clear();
+                        fileNameShow.setVisible(false);
+                        dropZoneInterface.setVisible(true);
+                        btnChooseFile.setDisable(false);
+                        file = null;
+                        snackBarNoti("Imported " + questionCount + " questions successful", true);
+                    } else snackBarNoti("Wrong question format: Error at line " + countLine, false);
                 } catch (NullPointerException e) {
                     snackBarNoti("Wrong question format: Error at line " + countLine, false);
                 }

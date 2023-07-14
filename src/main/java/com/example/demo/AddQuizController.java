@@ -27,8 +27,8 @@ public class AddQuizController {
     private float time = 0;
     private DataModel dataModel;
     private BreadCrumbBarModel breadCrumbBarModel;
-    private ValidationSupport validationSupportForName = new ValidationSupport();
-    private ValidationSupport validationSupportForTime = new ValidationSupport();
+    private final ValidationSupport validationSupportForName = new ValidationSupport();
+    private final ValidationSupport validationSupportForTime = new ValidationSupport();
 
     public void initModel(BreadCrumbBarModel breadCrumbBarModel) {
         if (this.breadCrumbBarModel != null) {
@@ -49,7 +49,7 @@ public class AddQuizController {
         initModel(BreadCrumbBarModel.getInstance());
         initDataModel(DataModel.getInstance());
         validationSupportForName.registerValidator(name, Validator.createRegexValidator("Invalid", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
-        validationSupportForTime.registerValidator(textField, Validator.createRegexValidator("Invalid", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:1000(?:\\.0*)?|\\d{0,3}(?:\\.\\d*)?))$", Severity.ERROR));
+        validationSupportForTime.registerValidator(textField, Validator.createRegexValidator("Invalid", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
         validationSupportForTime.setErrorDecorationEnabled(false);
         checkBox.selectedProperty().addListener(e -> {
             if (checkBox.isSelected()) {

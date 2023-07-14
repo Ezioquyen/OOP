@@ -33,7 +33,7 @@
                             <children>
                                 <Button alignment="CENTER" contentDisplay="CENTER" minWidth="43.0"
                                         mnemonicParsing="false" prefHeight="52.0" prefWidth="48.0"
-                                        style="-fx-background-color: tranparent;">
+                                        style="-fx-background-color: transparent;">
                                     <graphic>
                                         <FontIcon iconColor="WHITE" iconLiteral="fas-bars" iconSize="47"
                                                   selectionStart="1" text="" wrappingWidth="47.99997019767761"/>

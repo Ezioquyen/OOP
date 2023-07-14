@@ -11,14 +11,12 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import java.io.File;
 
 public class FileShow extends HBox {
-    private File file;
-    private Label label = new Label();
-    private Button remove = new Button();
+    private final Button remove = new Button();
 
     public FileShow(File file) {
-        this.file = file;
         setSpacing(10);
         setAlignment(Pos.CENTER_LEFT);
+        Label label = new Label();
         label.setText(file.getName());
         label.setWrapText(true);
         remove.setStyle("-fx-background-color: transparent");

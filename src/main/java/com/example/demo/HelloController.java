@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import org.controlsfx.validation.ValidationSupport;
 
 import java.io.IOException;
 import java.util.Objects;

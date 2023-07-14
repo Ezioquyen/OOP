@@ -2,7 +2,6 @@ package com.example.demo;
 import com.jfoenix.controls.JFXSnackbar;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -11,11 +10,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.validation.*;
@@ -27,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 
@@ -85,14 +79,14 @@ public class AddMTPCQController {
     private void initialize() throws IOException {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
-        ValidationSupport validationSupportForquestionName = new ValidationSupport();
-        validationSupportForquestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
-        ValidationSupport validationSupportForquestionTitle = new ValidationSupport();
-        validationSupportForquestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        ValidationSupport validationSupportForQuestionName = new ValidationSupport();
+        validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        ValidationSupport validationSupportForqusâestionTitle = new ValidationSupport();
+        validationSupportForqusâestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         ValidationSupport validationSupportForMark = new ValidationSupport();
         validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
-        validationSupportList.add(validationSupportForquestionName);
-        validationSupportList.add(validationSupportForquestionTitle);
+        validationSupportList.add(validationSupportForQuestionName);
+        validationSupportList.add(validationSupportForqusâestionTitle);
         validationSupportList.add(validationSupportForMark);
 
         for (int i = 1; i <= 2; i++) {

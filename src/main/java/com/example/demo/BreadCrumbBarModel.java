@@ -54,18 +54,14 @@ public class BreadCrumbBarModel {
         this.toggle = toggle;
     }
 
-    private final TreeItem<String> thiCuoiKy = new TreeItem<>("THI CUỐI KỲ");
+    private final TreeItem<String> general = new TreeItem<>("General");
 
-
-    public TreeItem<String> getThiCuoiKy() {
-        return thiCuoiKy;
-    }
 
     public void insertQuizView(String view) {
         TreeItem<String> mainView = new TreeItem<>(view);
         TreeItem<String> edit = new TreeItem<>("Edit quiz");
         TreeItem<String> preview = new TreeItem<>("Preview");
-        getThiCuoiKy().getChildren().add(mainView);
+        general.getChildren().add(mainView);
         mainView.getChildren().add(edit);
         mainView.getChildren().add(preview);
         getBreadConnection().put("quiz.fxml", mainView);
@@ -75,7 +71,7 @@ public class BreadCrumbBarModel {
 
 
     public void removeQuizView() {
-        getThiCuoiKy().getChildren().remove(getBreadConnection().get("quiz.fxml"));
+        general.getChildren().remove(getBreadConnection().get("quiz.fxml"));
         getBreadConnection().remove("quiz.fxml", getBreadConnection().get("quiz.fxml"));
     }
     private void init() {
@@ -87,6 +83,8 @@ public class BreadCrumbBarModel {
         TreeItem<String> category = new TreeItem<>("Category");
         TreeItem<String> importVar = new TreeItem<>("Import");
         TreeItem<String> exportVar = new TreeItem<>("Export");
+        TreeItem<String> thiCuoiKy = new TreeItem<>("THI CUỐI KỲ");
+        thiCuoiKy.getChildren().add(general);
         TreeItem<String> editMultipleChoiceQuestion = new TreeItem<>("Edit multiple choice question");
         myCourse.getChildren().add(thiCuoiKy);
         thiCuoiKy.getChildren().add(questionBank);

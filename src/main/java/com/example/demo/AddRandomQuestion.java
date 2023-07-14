@@ -48,6 +48,7 @@ public class AddRandomQuestion {
     private void initialize() {
         initDataModel(DataModel.getInstance());
         root.setRoot(dataModel.getRoot());
+        numberOfQuestion.setValue(null);
         numberOfQuestion.getSelectionModel().selectedItemProperty().addListener(e -> {
             if (numberOfQuestion.getSelectionModel().getSelectedItem() != null) {
                 randomSelection = selectRandomElements(list, numberOfQuestion.getSelectionModel().getSelectedItem());

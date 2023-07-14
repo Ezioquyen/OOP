@@ -128,10 +128,11 @@ public class QuestionBox extends HBox {
             questionContainer.getChildren().add(pane);
             for (String path : question.getImageFilePath()) {
                 ImageView imageView = new ImageView(path);
-                double desiredWidth = 750;
+                /*double desiredWidth = 750;
                 double desiredHeight = 450;
                 imageView.setFitWidth(desiredWidth);
-                imageView.setFitHeight(desiredHeight);
+                imageView.setFitHeight(desiredHeight);*/
+                imageView.setPreserveRatio(true);
                 imageView.setPreserveRatio(true);
                 pane.getChildren().add(imageView);
             }
@@ -160,10 +161,10 @@ public class QuestionBox extends HBox {
                 packetMap.put(radioButton, pack);
                 if (pack.getImagePath() != null) {
                     ImageView imageView = new ImageView(pack.getImagePath());
-                    double desiredWidth = 300;
-                    double desiredHeight = 300;
-                    imageView.setFitWidth(desiredWidth);
-                    imageView.setFitHeight(desiredHeight);
+                    double desiredWidth = 250;
+                    double desiredHeight = 250;
+                    if (imageView.getFitWidth() > desiredWidth) imageView.setFitWidth(desiredWidth);
+                    if (imageView.getFitWidth() > desiredHeight) imageView.setFitHeight(desiredHeight);
                     imageView.setPreserveRatio(true);
                     radioButton.setGraphic(imageView);
                 }
@@ -188,10 +189,10 @@ public class QuestionBox extends HBox {
                 checkBoxOptionsPacketMap.put(checkBox, pack);
                 if (pack.getImagePath() != null) {
                     ImageView imageView = new ImageView(pack.getImagePath());
-                    double desiredWidth = 300;
-                    double desiredHeight = 300;
-                    imageView.setFitWidth(desiredWidth);
-                    imageView.setFitHeight(desiredHeight);
+                    double desiredWidth = 250;
+                    double desiredHeight = 250;
+                    if (imageView.getFitWidth() > desiredWidth) imageView.setFitWidth(desiredWidth);
+                    if (imageView.getFitWidth() > desiredHeight) imageView.setFitHeight(desiredHeight);
                     imageView.setPreserveRatio(true);
                     checkBox.setGraphic(imageView);
                 }
