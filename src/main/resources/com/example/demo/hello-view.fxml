@@ -28,8 +28,8 @@
                         <Insets/>
                     </BorderPane.margin>
                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="900.0"
-                              style="-fx-background-color: #0073A5;">
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0"
+                              prefWidth="900.0" style="-fx-background-color: #0073A5;">
                             <children>
                                 <Button alignment="CENTER" contentDisplay="CENTER" minWidth="43.0"
                                         mnemonicParsing="false" prefHeight="52.0" prefWidth="48.0"
@@ -67,7 +67,8 @@
                             <children>
                                 <HBox fx:id="menuContainer">
                                     <children>
-                                        <Label prefHeight="30.0" prefWidth="34.0" text="IT" textFill="#c02424">
+                                        <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0"
+                                               prefWidth="34.0" text="IT" textFill="#c02424">
                                             <font>
                                                 <Font name="Times New Roman" size="27.0"/>
                                             </font>
@@ -126,9 +127,10 @@
                                 <HBox fx:id="buttonEditionContainer">
                                     <children>
                                         <Region HBox.hgrow="ALWAYS"/>
-                                        <Button fx:id="editButton" alignment="CENTER" mnemonicParsing="false"
-                                                onAction="#btnTurnOnE" prefHeight="50.0" prefWidth="175.0"
-                                                styleClass="editionbutton" text="TURN EDITING ON">
+                                        <Button fx:id="editButton" alignment="CENTER" minHeight="-Infinity"
+                                                minWidth="-Infinity" mnemonicParsing="false" onAction="#btnTurnOnE"
+                                                prefHeight="50.0" prefWidth="175.0" styleClass="editionbutton"
+                                                text="TURN EDITING ON">
                                             <font>
                                                 <Font name="Arial Bold" size="12.0"/>
                                             </font>

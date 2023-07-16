@@ -44,7 +44,12 @@
     -fx-font-size: 15;
 }
 
-bread-crumb-bar {
+.bread-crumb-bar:disabled {
+    -fx-opacity: 1;
+}
+
+.bread-crumb-bar .button:disabled {
+    -fx-opacity: 1;
 }
 
 .bread-crumb-bar .button {
@@ -74,6 +79,10 @@ bread-crumb-bar {
 .crumb:selected,
 .crumb:focused {
     -fx-border-color: null;
+}
+
+.crumb:disabled {
+    -fx-opacity: 1;
 }
 
 .tabtab *.tab-header-background {

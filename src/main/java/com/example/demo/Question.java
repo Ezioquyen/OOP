@@ -1,9 +1,10 @@
 package com.example.demo;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.util.*;
 
 public class Question {
-    private int categoryID;
     private int id;
     private int type;
     private String title = "";
@@ -27,6 +28,7 @@ public class Question {
     private String videoPath;
     private List<String> imageOptionPath;
     private List<OptionsPacket> packets = new ArrayList<>();
+    private SimpleStringProperty titleProperty = new SimpleStringProperty();
 
     public Question() {
         this.imageFilePath = new ArrayList<>();
@@ -116,11 +118,19 @@ public class Question {
     }
 
     public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
     }
 
     public void setTitle(String title) {
         this.title = title;
+        titleProperty.set(title);
+    }
+
+    public String getTitleProperty() {
+        return titleProperty.get();
+    }
+
+    public SimpleStringProperty titlePropertyProperty() {
+        return titleProperty;
     }
 
     public List<String> getImageFilePath() {
@@ -146,4 +156,6 @@ public class Question {
     public List<OptionsPacket> getPackets() {
         return packets;
     }
+
+
 }

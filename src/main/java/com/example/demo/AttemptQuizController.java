@@ -82,6 +82,7 @@ public class AttemptQuizController {
     private void initialize() {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
+        breadCrumbBarModel.getBreadCrumbBar().setDisable(true);
         Boolean shuffle = dataModel.getCurrentQuiz().getShuffle();
         start = getDate();
         if (dataModel.getCurrentQuiz().getTime() != 0) {
@@ -183,7 +184,7 @@ public class AttemptQuizController {
                 totalMark += op.getPercent() * q.getQuestion().getMark() / (100);
                 mark += op.getPercent() * q.getQuestion().getMark() / (100);
             }
-            if ((q.getQuestion().getMark() - mark) < 0.00001) {
+            if ((q.getQuestion().getMark() - mark) < 0.0001) {
                 map.get(q).getColor().setStyle("-fx-background-color: green");
             } else map.get(q).getColor().setStyle("-fx-background-color: red");
             map.get(q).getFlag().setFill(Color.TRANSPARENT);
@@ -236,6 +237,7 @@ public class AttemptQuizController {
 
     @FXML
     private void btnExport() {
+        breadCrumbBarModel.getBreadCrumbBar().setDisable(false);
         breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("quiz.fxml"));
     }
 }

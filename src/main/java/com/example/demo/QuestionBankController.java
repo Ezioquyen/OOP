@@ -208,7 +208,7 @@ public class QuestionBankController {
                     countLine++;
                     String text = paragraph.getText().trim();
                     if (haveTitle(question)) {
-                        question.addTitle(text);
+                        question.setTitle(text);
                         List<XWPFRun> runs = paragraph.getRuns();
                         for (XWPFRun run : runs) {
                             List<XWPFPicture> pictures = run.getEmbeddedPictures();
@@ -246,7 +246,6 @@ public class QuestionBankController {
                         } else if (text.isEmpty() && haveAns) {
                             question.setMark(1.0);
                             question.typeDetect();
-
                             questions.add(question);
                             question = new Question();
                             haveAns = false;
@@ -269,7 +268,7 @@ public class QuestionBankController {
                     countLine++;
 
                     if (haveTitle(question)) {
-                        question.addTitle(text);
+                        question.setTitle(text);
                     } else {
                         if (text.matches("^[A-Z]\\.\\s.*")) {
                             if (!text.startsWith(String.valueOf((char) ((question.getOptions().size()) + 65)))) {
@@ -400,6 +399,8 @@ public class QuestionBankController {
                 customCheckBox.getButton().setOnAction(event -> {
                     dataModel.setCurrentQuestion(customCheckBox.getQuestion());
                     breadCrumbBarModel.getBreadCrumbBar().setSelectedCrumb(breadCrumbBarModel.getBreadConnection().get("edit-MTPCQ.fxml"));
+                    question.titlePropertyProperty().addListener(e ->
+                            customCheckBox.getLabel().setText(question.getTitle()));
                 });
 
                 list.getItems().add(customCheckBox);

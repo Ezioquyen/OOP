@@ -2,7 +2,6 @@ package com.example.demo;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 public class Confirmation {
     @FXML
@@ -13,7 +12,6 @@ public class Confirmation {
     @FXML
     private void initialize() {
     }
-
     public Button getCancel() {
         return cancel;
     }

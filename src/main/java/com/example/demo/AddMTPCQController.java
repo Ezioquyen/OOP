@@ -80,13 +80,13 @@ public class AddMTPCQController {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
         ValidationSupport validationSupportForQuestionName = new ValidationSupport();
-        validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
-        ValidationSupport validationSupportForqusâestionTitle = new ValidationSupport();
-        validationSupportForqusâestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        validationSupportForQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "^[\\S]+$", Severity.ERROR));
+        ValidationSupport validationSupportQuestionTitle = new ValidationSupport();
+        validationSupportQuestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         ValidationSupport validationSupportForMark = new ValidationSupport();
         validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
         validationSupportList.add(validationSupportForQuestionName);
-        validationSupportList.add(validationSupportForqusâestionTitle);
+        validationSupportList.add(validationSupportQuestionTitle);
         validationSupportList.add(validationSupportForMark);
 
         for (int i = 1; i <= 2; i++) {
@@ -196,7 +196,7 @@ public class AddMTPCQController {
         }
 
         Question question = new Question();
-        question.addTitle(quesName.getText() + ": " + quesTitle.getText());
+        question.setTitle(quesName.getText() + ": " + quesTitle.getText());
         question.setMark(Double.valueOf(mark.getText()));
         String vidPath = null;
         if (video != null) vidPath = video.getAbsolutePath();
@@ -213,11 +213,15 @@ public class AddMTPCQController {
             }
         }
         question.typeDetect();
+        if (question.getOptions().size() < 2) {
+            snackBarNoti("Question must have at least two options", false);
+            return false;
+        }
         double sum = 0;
         for (Double value : question.getPercent()) {
             if (value > 0) sum = sum + value;
         }
-        if (abs(100 - sum) < 0.00001) {
+        if (abs(100 - sum) < 0.0001) {
             dataModel.insertQuestion(root.getSelectionModel().getSelectedItem(), question.getTitle(), question.isType(), Double.valueOf(mark.getText()), vidPath);
             dataModel.insertAnswers(question.getOptions(), question.getPercent(), 0, question.getImageOptionPath());
             if (!files.isEmpty()) {

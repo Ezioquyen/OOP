@@ -268,7 +268,7 @@ public class DataModel {
                 Question question = new Question();
                 question.setCategoryID(id);
                 question.setId(rs.getInt("QuestionID"));
-                question.addTitle(rs.getString("Content"));
+                question.setTitle(rs.getString("Content"));
                 question.setMark(rs.getDouble("mark"));
                 question.setVideoPath(rs.getString("videoPath"));
                 questions.add(question);
@@ -482,7 +482,7 @@ public class DataModel {
                 Question question = new Question();
                 question.setId(rs.getInt("QuestionID"));
                 question.setCategoryID(rs.getInt("CategoryID"));
-                question.addTitle(rs.getString("Content"));
+                question.setTitle(rs.getString("Content"));
                 question.setMark(rs.getDouble("mark"));
                 question.setVideoPath(rs.getString("videoPath"));
                 questions.add(question);
@@ -547,7 +547,7 @@ public class DataModel {
                 Question question = new Question();
                 question.setCategoryID(id);
                 question.setId(rs.getInt("QuestionID"));
-                question.addTitle(rs.getString("Content"));
+                question.setTitle(rs.getString("Content"));
                 question.setMark(rs.getDouble("mark"));
                 question.setVideoPath(rs.getString("videoPath"));
                 questions.add(question);
@@ -597,7 +597,7 @@ public class DataModel {
 
     public void updateQuiz(Quiz quiz) {
         try {
-            String sql = "UPDATE QUIZ SET  shuffle = ?, totalMark = ?, grade =? ,totalQuestion = ? WHERE quizID = ?";
+            String sql = "UPDATE QUIZ SET  shuffle = ?, totalMark = ?, grade = ? ,totalQuestion = ? WHERE quizID = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setBoolean(1, quiz.getShuffle());
             statement.setDouble(2, quiz.getTotalMarks());

@@ -31,6 +31,7 @@ public class ResultController {
         startTime.setText(start);
         endTime.setText(end);
         timeTaken.setText(time);
+        if (totalMarksSelected < 0) totalMarksSelected = 0;
         marks.setText(decimalFormat.format(totalMarksSelected) + "/" + decimalFormat.format(totalMarks));
         marks1.setText(decimalFormat.format((totalMarksSelected / totalMarks) * grade));
         marks2.setText(decimalFormat.format((totalMarksSelected / totalMarks) * 100));

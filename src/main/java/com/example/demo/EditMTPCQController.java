@@ -11,8 +11,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -22,7 +21,6 @@ import org.controlsfx.validation.Validator;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -87,14 +85,14 @@ public class EditMTPCQController {
         initDataModel(DataModel.getInstance());
         initModel(BreadCrumbBarModel.getInstance());
 
-        ValidationSupport validationSupportForquestionName = new ValidationSupport();
-        validationSupportForquestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "^[\\S]+$", Severity.ERROR));
-        ValidationSupport validationSupportForquestionTitle = new ValidationSupport();
-        validationSupportForquestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
+        ValidationSupport validationSupportQuestionName = new ValidationSupport();
+        validationSupportQuestionName.registerValidator(quesName, Validator.createRegexValidator("Wrong input", "^[\\S]+$", Severity.ERROR));
+        ValidationSupport validationSupportQuestionTitle = new ValidationSupport();
+        validationSupportQuestionTitle.registerValidator(quesTitle, Validator.createRegexValidator("Wrong input", "(^\\S.*\\S$)|(^\\S+$)", Severity.ERROR));
         ValidationSupport validationSupportForMark = new ValidationSupport();
         validationSupportForMark.registerValidator(mark, Validator.createRegexValidator("Mark must be positive", "^(?=[+]?\\d+(\\.\\d+)?$)(?:0*(?:100(?:\\.0*)?|\\d{0,2}(?:\\.\\d*)?))$", Severity.ERROR));
-        validationSupportList.add(validationSupportForquestionName);
-        validationSupportList.add(validationSupportForquestionTitle);
+        validationSupportList.add(validationSupportQuestionName);
+        validationSupportList.add(validationSupportQuestionTitle);
         validationSupportList.add(validationSupportForMark);
         if (dataModel.getCurrentQuestion().getVideoPath() != null) {
             video = new File(dataModel.getCurrentQuestion().getVideoPath());
@@ -152,9 +150,7 @@ public class EditMTPCQController {
             validationSupport.registerValidator(view.getTextArea(), Validator.createRegexValidator("Invalid Value", "(^\\S.*\\S$)|(^$)|(^\\S+$)", Severity.ERROR));
             showChoices.getChildren().add(parent);
             validationSupportList.add(validationSupport);
-            view.getTextArea().promptTextProperty().addListener(e -> {
-                validationSupport.setErrorDecorationEnabled(!view.getTextArea().getText().isEmpty());
-            });
+            view.getTextArea().promptTextProperty().addListener(e -> validationSupport.setErrorDecorationEnabled(!view.getTextArea().getText().isEmpty()));
             if (dataModel.getCurrentQuestion().getImageOptionPath().get(currentChoice) != null) {
                 view.showImage(new File(dataModel.getCurrentQuestion().getImageOptionPath().get(currentChoice)));
             }
@@ -299,7 +295,7 @@ public class EditMTPCQController {
         for (ChoiceBoxController controller : controllers) {
             if (!(controller.getTextArea().getText().isEmpty() && controller.getDropShow().getChildren().isEmpty())) {
                 options.add(controller.getTextArea().getText());
-                if (opPath.size() <= index) opPath.add(index, controller.getFilePath());
+                if (opPath.size() <= index) opPath.add(controller.getFilePath());
                 else opPath.set(index, controller.getFilePath());
                 if (Objects.equals(controller.getComboBox().getSelectionModel().getSelectedItem(), "None") || controller.getComboBox().getSelectionModel().getSelectedItem() == null) {
                     percent.add((double) 0);
@@ -309,14 +305,14 @@ public class EditMTPCQController {
             index++;
         }
         if (options.size() < 2) {
-            snackBarNoti("Question must have latest two options", false);
+            snackBarNoti("Question must have at least two options", false);
             return false;
         }
         double sum = 0;
         for (Double value : percent) {
             if (value > 0) sum = sum + value;
         }
-        if (abs(100.0 - sum) < 0.00001) {
+        if (abs(100.0 - sum) < 0.0001) {
             if (video != null) {
                 dataModel.getCurrentQuestion().setVideoPath(video.getAbsolutePath());
             } else dataModel.getCurrentQuestion().setVideoPath(null);
@@ -361,6 +357,7 @@ public class EditMTPCQController {
             snackBarNoti("Invalid total grade (max of total grade must be 100%)", false);
             return false;
         }
+        dataModel.getCurrentQuestion().typeDetect();
         return true;
     }
 
@@ -383,7 +380,7 @@ public class EditMTPCQController {
     }
 
     @FXML
-    private void btnInsertVideo() throws MalformedURLException {
+    private void btnInsertVideo() {
         FileChooser fileChooser = new FileChooser();
 
         fileChooser.setTitle("Chọn tệp");
@@ -395,7 +392,6 @@ public class EditMTPCQController {
         File selectedFile = fileChooser.showOpenDialog(Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null));
 
         if (selectedFile != null && isVideoFile(selectedFile.getAbsolutePath())) {
-            Media media = new Media(selectedFile.toURI().toURL().toString());
 
 
             video = selectedFile;
